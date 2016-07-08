@@ -1,0 +1,55 @@
+{
+  "name": "0xee",
+  "version": "3.0.0-rc1",
+  "description": "My personal homepage/sandbox",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.config.production.js",
+    "lint": "./node_modules/.bin/eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com:wvbe/0xee.git"
+  },
+  "keywords": [
+    "wybe",
+    "minnebo",
+    "developer",
+    "interaction",
+    "usability",
+    "user experience"
+  ],
+  "author": {
+    "name": "Wybe Minnebo",
+    "email": "wybe@x-54.com",
+    "url": "http://0x.ee"
+  },
+  "homepage": "http://0x.ee",
+  "dependencies": {
+    "babel-runtime": "^6.3.19",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.21",
+    "babel-eslint": "^6.1.0",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-react-transform": "^2.0.0-beta1",
+    "babel-plugin-transform-runtime": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "image-webpack-loader": "^1.8.0",
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.8.0",
+    "react-transform-hmr": "^1.0.1",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.8.4",
+    "webpack-dev-server": "^1.8.0"
+  }
+}

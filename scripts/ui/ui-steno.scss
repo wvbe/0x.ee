@@ -1,0 +1,25 @@
+@import './ui-lookup';
+
+@function ui-font-family ($color, $variation: false) {
+	@return _ui-lookup((
+		// Line height
+		'normal': 'mono',
+
+		// Width and height of one grid item
+		'small': 'Ubuntu Mono'
+	), $color, $variation);
+}
+@function ui-font-size ($color, $variation: false) {
+	@return _ui-lookup((
+		// Line height
+		'normal': $ui-length-unit * 0.8,
+
+		// Width and height of one grid item
+		'small': $ui-length-unit * 0.6
+	), $color, $variation);
+}
+
+@mixin ui-steno ($color) {
+	font-family: ui-font-family($color);
+	font-size: ui-font-size($color);
+}

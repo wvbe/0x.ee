@@ -1,0 +1,18 @@
+@import '../ui';
+
+oksee-flag {
+	align-items: center;
+
+	@include ui-box(ui-color('bg'), ui-length());
+
+	> * {
+		flex: 1 1 auto;
+	}
+	> oksee-logo {
+		flex: 0 0 auto;
+		img {
+			height: 6 * ui-length();
+			width: auto;
+		}
+	}
+}

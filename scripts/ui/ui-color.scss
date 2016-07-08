@@ -1,0 +1,28 @@
+@import './ui-lookup';
+
+$fg: #8e8e8e;
+$bg: #121212;
+$bg-light: #1b1b1b;
+
+@function ui-color ($color, $variation: false) {
+	@return _ui-lookup((
+		// Regular text
+		'fg': $fg,
+		'fg-dim': mix($fg, $bg, 50),
+
+		// Regular background
+		'bg': $bg,
+
+		// As in "interactive", aka not dead.
+		'active': yellow,
+
+		// Contrasting alternative
+		'fg-alt': $fg,
+		'bg-alt': mix($fg, $bg, 7),
+
+		// Soft line on 'bg'
+		'line-soft': mix($fg, $bg, 14),
+		'line': mix($fg, $bg, 21),
+		'line-strong': mix($fg, $bg, 35)
+	), $color, $variation);
+}
