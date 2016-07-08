@@ -1,0 +1,11 @@
+@import '../ui';
+
+oksee-console-input {
+
+}
+oksee-console-input-cursor {
+	display: inline-block;
+	width: 0.5em;
+	height: 1em;
+	background-color: ui-color('fg');
+}
