@@ -1,7 +1,7 @@
 import './console-input.scss';
 
 import React, {Component} from 'react';
-
+import LogErrorComponent from '../log/LogErrorComponent';
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
@@ -13,12 +13,20 @@ export default class ConsoleInputComponent extends Component {
 			selectionEnd: 0
 		};
 
+		this.handleKeyDown = function (event) {
+			if(event.which === 8
+				&& ['input', 'textarea'].indexOf(event.target.tagName.toLowerCase()) >= 0
+				&& !this.state.input.length) {
+				event.preventDefault();
+			}
+		}.bind(this);
+
 		this.handleInputChange = function(event) {
-			let input = event.target.value;
 			this.setState({
-				input
+				input: event.target.value
 			});
 		}.bind(this);
+
 		this.handleSelectionChange = function(event) {
 			if(window.document.activeElement !== this.inputElement)
 				return;
@@ -28,10 +36,13 @@ export default class ConsoleInputComponent extends Component {
 				selectionEnd: this.inputElement.selectionEnd
 			});
 		}.bind(this);
+
 		this.handleFocusChange = function(hasFocus, event) {
-			this.setState({
-				hasFocus: hasFocus
-			});
+			hasFocus
+				? window.addEventListener('keydown', this.handleKeyDown)
+				: window.removeEventListener('keydown', this.handleKeyDown);
+
+			this.setState({ hasFocus });
 		};
 	}
 
@@ -69,17 +80,31 @@ export default class ConsoleInputComponent extends Component {
 
 		event.preventDefault();
 	}
+
+	onSubmit (event) {
+		event.preventDefault();
+
+		this.props.console.input(this.state.input)
+			.catch(err => this.props.console.output(<LogErrorComponent>{err.message}</LogErrorComponent>));
+
+		this.setState({
+			input: ''
+		})
+	}
 	render() {
 		return (<oksee-console-input
 			onClick={this.onClick.bind(this)}
 			class={this.state.hasFocus ? 'has-focus' : 'no-focus'}>
-			<input
-				ref={ x => this.inputElement = x }
-				value={this.state.input}
-				onChange={this.handleInputChange}
-				onBlur={this.handleFocusChange.bind(this, false)}
-				onFocus={this.handleFocusChange.bind(this, true)}
-			/>
+			<form onSubmit={this.onSubmit.bind(this)}>
+				<input
+					autoFocus={true}
+					ref={ x => this.inputElement = x }
+					value={this.state.input}
+					onChange={this.handleInputChange}
+					onBlur={this.handleFocusChange.bind(this, false)}
+					onFocus={this.handleFocusChange.bind(this, true)}
+				/>
+			</form>
 			<oksee-console-input-field>{this.renderInputRuler()}</oksee-console-input-field>
 		</oksee-console-input>);
 	}
