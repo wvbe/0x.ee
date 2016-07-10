@@ -30,8 +30,8 @@ const uiLength = 14,
 
 function handleResize() {
 	let gridDimensions = this.gridElement.getBoundingClientRect(),
-		gridWidth = gridDimensions.width - 2 - 1 - 2, // width - 2x grid border - grid padding left - grid padding right
-		gridHeight = gridDimensions.height - 2 - 4,
+		gridWidth = gridDimensions.width - 1 - 2, // width - 1x grid border - grid padding left - grid padding right
+		gridHeight = gridDimensions.height - 1 - 4,
 		width = Math.max(1, Math.floor(gridWidth / (gridLengthUnit + gridBorderWidth))),
 		height = Math.max(1, Math.floor(gridHeight/ (gridLengthUnit + gridBorderWidth))),
 		itemCount = width * height;
@@ -45,7 +45,6 @@ function handleResize() {
 	}
 
 	this.setState({
-		itemCount,
 		width,
 		height
 	});
@@ -62,40 +61,46 @@ function convertToNumberingScheme(number) {
 
 	return letters;
 }
+
 function startToast() {
 	let derp = () => {
 		this.setState({
 			queue: this.state.queue.slice(1)
 		});
 		if(this.state.queue.length)
-			setTimeout(derp, 50 + 300 * Math.random());
+			setTimeout(derp, 50 + 100 * Math.random());
+
+		// @NOTICE: assumed the queue has at least 5 items initially
+		if(this.state.queue.length === 5)
+			this.handleResize();
 	};
 
 	setTimeout(derp, 1000);
+}
+function mapForLength(iterations, fn) {
+	let arr = [];
+	for(let i = 0; i < iterations; ++i) {
+		arr.push(fn(i, arr));
+	}
+	return arr;
 }
 export default class GridComponent extends Component {
 	constructor() {
 		super();
 		this.items = [];
 		this.state = {
-			width: 1,
-			height: 1,
-			itemCount: 1,
+			width: 0,
+			height: 0,
 			queue: initialQueue,
 			animationStage: 0
 		};
 	}
 
-	handleClick() {
-		console.log('Derp');
-	}
-
 	componentDidMount() {
 		this.handleResize = handleResize.bind(this);
 
-		setImmediate(() => {
-			this.handleResize();
-		});
+		//if(this.state.queue.length < 5)
+		//	setImmediate(this.handleResize);
 
 		startToast.call(this);
 
@@ -106,24 +111,22 @@ export default class GridComponent extends Component {
 		window.removeEventListener('resize', this.handleResize);
 	}
 
-	renderItem(item, index, items) {
-		const x = index % this.state.width,
-			y = Math.floor(index/this.state.width);
-		return (
-			<GridItemComponent key={index}>{convertToNumberingScheme(x + 1)}{y + 1}</GridItemComponent>
-		);
+	renderItems (width, height) {
+		return mapForLength(height, y => mapForLength(width, x => {
+				let key = convertToNumberingScheme(x + 1) + (y + 1);
+				return <GridItemComponent key={key} x={x} y={y}>{key}</GridItemComponent>;
+			}))
+			.reduce((flat, arr) => flat.concat(arr), []);
 	}
+
 	render(){
-		return (<oksee-grid
-				ref={ x => this.gridElement = x }
-				data-animation-stage={this.state.queue.length ? 'queue' : 'ready'}
-			>
+		return (<oksee-grid ref={ x => this.gridElement = x } class={this.state.queue.length ? 'not-ready' : null}>
 			{
 				this.state.queue.length
 					? <ToastComponent message={this.state.queue[0]}/>
 					: null
 			}
-			{this.items.map(this.renderItem, this)}
+			{this.renderItems(this.state.width, this.state.height)}
 		</oksee-grid>);
 	}
 }

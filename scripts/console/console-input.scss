@@ -1,11 +1,31 @@
 @import '../ui';
 
 oksee-console-input {
-
+	@include ui-box(ui-color('bg'), ui-length());
+	input {
+		width: 0;
+		height: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -100;
+	}
 }
+oksee-console-input-field {
+	white-space: pre;
+	> * {
+		display: inline-block;
+		vertical-align: middle;
+		height: ui-length('line');
+	}
+}
+
 oksee-console-input-cursor {
-	display: inline-block;
-	width: 0.5em;
-	height: 1em;
-	background-color: ui-color('fg');
+	min-width: 0.5em;
+	background-color: ui-color('fg-dim');
+	color: ui-color('bg');
+
+	oksee-console-input.has-focus & {
+		background-color: ui-color('fg');
+	}
 }

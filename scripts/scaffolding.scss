@@ -13,22 +13,30 @@
 	background: transparent;
 }
 
-html, body, #root, oksee {
+html,
+body,
+#root,
+oksee {
 	display: block;
 	width: 100vw;
 	height: 100vh;
 }
+
 oksee {
+	position: relative;
 	padding: ui-length();
 	margin: 0;
 	box-sizing: border-box;
+	overflow: hidden;
 }
+
 body {
 	@include ui-steno('normal');
 	background-color: ui-color('bg');
 	color: ui-color('fg');
 	line-height: ui-length('line');
 }
+
 [href] {
 	color: ui-color('active');
 }

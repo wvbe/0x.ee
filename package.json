@@ -27,6 +27,7 @@
   },
   "homepage": "http://0x.ee",
   "dependencies": {
+    "ask-nicely": "^1.1.0",
     "babel-runtime": "^6.3.19",
     "react": "^15.2.0",
     "react-dom": "^15.2.0"

@@ -17,7 +17,6 @@ oksee-grid-subitem {
 }
 
 oksee-grid {
-	background: ui-crossed-background(ui-color('line'));
 	min-width: 3 * $grid-length-unit + 3 * $grid-border-width;
 	box-sizing: border-box;
 	flex-wrap: wrap;
@@ -37,16 +36,8 @@ oksee-grid {
 	}
 
 	transition: border-color 2s;
-	oksee-grid-item {
-		transition: opacity 2s;
-		opacity: 0;
-	}
-	&[data-animation-stage='ready'] {
-		background: transparent;
-		border-color: ui-color('line');
-		oksee-grid-item {
-			opacity: 1;
-		}
+	&.not-ready {
+		background: ui-crossed-background(ui-color('line'));
 	}
 }
 
@@ -68,12 +59,16 @@ oksee-grid-item {
 	transition: border-color 0.2s;
 	//color: ui-color('line');
 
+
 	border: $grid-border-width dashed ui-color('line-soft');
 	&:hover {
 		@include ui-border-blink-animation('line-strong', 'line-soft', 1.5s);
 		z-index: 1;
 	}
 
+	&.hidden {
+		visibility: hidden;
+	}
 	margin: (-$grid-border-width) (-$grid-border-width) 0 0;
 
 	oksee-grid
