@@ -7,13 +7,13 @@ let allLogKeys = 0;
 export default class LogErrorComponent extends Component {
 	constructor () {
 		super();
-		this.key = ++allLogKeys;
-
-		console.log('Construct', this.key);
+		this.log = {
+			time: new Date(),
+			key: ++allLogKeys
+		}
 	}
+
 	render() {
-		return (<oksee-console-log key={this.key}>
-			{this.props.children}
-		</oksee-console-log>);
+		return (<oksee-console-log key={this.log.key}>{this.props.children}</oksee-console-log>);
 	}
 }

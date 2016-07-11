@@ -27,13 +27,6 @@ oksee-grid {
 		basis: auto;
 	}
 
-	border: 1px solid ui-color('line');
-	padding: {
-		left: 1px;
-		top: 2px;
-		right: 2px;
-		bottom: 2px;
-	}
 
 	transition: border-color 2s;
 	&.not-ready {

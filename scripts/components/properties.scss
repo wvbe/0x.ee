@@ -15,8 +15,7 @@ oksee-property-key {
 	display: flex;
 	flex: 0 0 10%;
 	min-width: 4 * ui-length();
-	color: ui-color('fg-dim');
-	margin-right: ui-length();
+	@include ui-steno('small');
 }
 
 oksee-property-value {

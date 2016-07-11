@@ -12,14 +12,20 @@
 @function ui-font-size ($color, $variation: false) {
 	@return _ui-lookup((
 		// Line height
-		'normal': $ui-length-unit * 0.8,
+		'normal': ui-length() * 0.8,
 
 		// Width and height of one grid item
-		'small': $ui-length-unit * 0.6
+		'small': ui-length() * 0.7
 	), $color, $variation);
 }
 
 @mixin ui-steno ($color) {
 	font-family: ui-font-family($color);
 	font-size: ui-font-size($color);
+	line-height: ui-length();
+
+	@if $color == 'small' {
+		text-transform: uppercase;
+		color: ui-color('fg-dim');
+	}
 }

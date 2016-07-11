@@ -1,3 +1,26 @@
-oksee-log-error {
-	color: red;
+@import '../ui';
+
+oksee-log-prefix {
+	width: ui-length('large');
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+oksee-log-message {
+
+	oksee-log-prefix {
+		@include ui-steno('small');
+	}
+	&[data-connotation='error'] {
+		color: ui-color('fg-danger');
+	}
+	&[data-connotation='input'] {
+		color: ui-color('active');
+	}
+}
+
+
+oksee-log-content {
+
 }

@@ -3,6 +3,7 @@ import './console-output.scss';
 import React, {Component} from 'react';
 import ConsoleLogComponent from './ConsoleLogComponent';
 
+// The list of all logs, errors, etc.
 export default class ConsoleOutputComponent extends Component {
 	constructor () {
 		super();

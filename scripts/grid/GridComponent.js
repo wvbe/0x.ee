@@ -30,8 +30,8 @@ const uiLength = 14,
 
 function handleResize() {
 	let gridDimensions = this.gridElement.getBoundingClientRect(),
-		gridWidth = gridDimensions.width - 1 - 2, // width - 1x grid border - grid padding left - grid padding right
-		gridHeight = gridDimensions.height - 1 - 4,
+		gridWidth = gridDimensions.width, // width - 1x grid border - grid padding left - grid padding right
+		gridHeight = gridDimensions.height,
 		width = Math.max(1, Math.floor(gridWidth / (gridLengthUnit + gridBorderWidth))),
 		height = Math.max(1, Math.floor(gridHeight/ (gridLengthUnit + gridBorderWidth))),
 		itemCount = width * height;

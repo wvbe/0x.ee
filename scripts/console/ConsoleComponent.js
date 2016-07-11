@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import Console from './Console';
 import ConsoleInputComponent from './ConsoleInputComponent';
 import ConsoleOutputComponent from './ConsoleOutputComponent';
+import LogHelper from '../log/LogHelper';
 
 export default class ConsoleComponent extends Component {
 	constructor () {
@@ -11,7 +12,8 @@ export default class ConsoleComponent extends Component {
 
 		this.outputDestroyer = null;
 
-		this.app = new Console();
+		this.console = new Console();
+		this.logger= new LogHelper(this.console);
 
 		this.state = {
 			input: '',
@@ -21,8 +23,14 @@ export default class ConsoleComponent extends Component {
 	render() {
 		return (<oksee-console>
 			{this.props.children}
-			<ConsoleOutputComponent console={this.app} />
-			<ConsoleInputComponent console={this.app} />
+			<ConsoleOutputComponent
+				console={this.console}
+				logger={this.logger}
+			/>
+			<ConsoleInputComponent
+				console={this.console}
+				logger={this.logger}
+			/>
 		</oksee-console>);
 	}
 }

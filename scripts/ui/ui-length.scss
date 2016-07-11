@@ -8,6 +8,9 @@ $ui-length-unit: 14px;
 		'line': $ui-length-unit,
 
 		// Width and height of one grid item
+		'large': 4 * $ui-length-unit,
+
+		// Width and height of one grid item
 		'grid-item': 8 * $ui-length-unit
 	), $color, $variation);
 }

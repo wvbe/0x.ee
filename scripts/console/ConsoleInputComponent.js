@@ -1,7 +1,7 @@
 import './console-input.scss';
 
 import React, {Component} from 'react';
-import LogErrorComponent from '../log/LogErrorComponent';
+import LogHelper from '../log/LogHelper';
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
@@ -83,9 +83,9 @@ export default class ConsoleInputComponent extends Component {
 
 	onSubmit (event) {
 		event.preventDefault();
-
-		this.props.console.input(this.state.input)
-			.catch(err => this.props.console.output(<LogErrorComponent>{err.message}</LogErrorComponent>));
+		this.props.logger.input(this.state.input);
+		this.props.console.input(this.state.input, this.props.logger)
+			.catch(err => this.props.logger.error(err.message));
 
 		this.setState({
 			input: ''
