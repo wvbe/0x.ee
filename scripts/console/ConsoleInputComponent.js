@@ -1,13 +1,16 @@
 import './console-input.scss';
 
 import React, {Component} from 'react';
-import LogHelper from '../log/LogHelper';
+
+// The time (ms) between user input logging to console and the controller starts logging output
+const DELAY_BEFORE_INPUT_SEND = 100;
+
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
-
+		this.lastInput = '';
 		this.state = {
-			input: '',
+			input: this.lastInput,
 			hasFocus: false,
 			selectionStart: 0,
 			selectionEnd: 0
@@ -22,9 +25,20 @@ export default class ConsoleInputComponent extends Component {
 		}.bind(this);
 
 		this.handleInputChange = function(event) {
+			let input = event.target.value,
+				old = this.state.input;
+
 			this.setState({
-				input: event.target.value
+				input
 			});
+
+			// Hack to avoid focus-but-not-focused bug
+			if(old && !input) {
+				setImmediate(() => {
+					this.inputElement.blur();
+					this.inputElement.focus();
+				});
+			}
 		}.bind(this);
 
 		this.handleSelectionChange = function(event) {
@@ -54,6 +68,35 @@ export default class ConsoleInputComponent extends Component {
 		window.document.removeEventListener('selectionchange', this.handleSelectionChange);
 	}
 
+	onClick (event) {
+		if(!this.inputElement)
+			return;
+
+		this.inputElement.focus();
+
+		event.preventDefault();
+	}
+
+	onSubmit (event) {
+		event.preventDefault();
+
+		const input = this.state.input;
+		this.props.logger.input(input);
+
+		this.setState({
+			input: ''
+		});
+
+		if(input.trim())
+			return new Promise(res => {
+					setTimeout(res, DELAY_BEFORE_INPUT_SEND)
+				})
+				.then(() => this.props.console.input(input, this.props.logger))
+				.catch(err => this.props.logger.error(err.message));
+		else
+			return Promise.resolve();
+	}
+
 	renderInputRuler () {
 		const spans = [];
 
@@ -72,25 +115,6 @@ export default class ConsoleInputComponent extends Component {
 		return spans;
 	}
 
-	onClick (event) {
-		if(!this.inputElement)
-			return;
-
-		this.inputElement.focus();
-
-		event.preventDefault();
-	}
-
-	onSubmit (event) {
-		event.preventDefault();
-		this.props.logger.input(this.state.input);
-		this.props.console.input(this.state.input, this.props.logger)
-			.catch(err => this.props.logger.error(err.message));
-
-		this.setState({
-			input: ''
-		})
-	}
 	render() {
 		return (<oksee-console-input
 			onClick={this.onClick.bind(this)}

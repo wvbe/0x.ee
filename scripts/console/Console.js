@@ -1,18 +1,17 @@
 import AskNicely from 'ask-nicely';
 
-export default class Console {
-	constructor (name, controller) {
-		this.app = new AskNicely(name, controller);
+const instance = Symbol('ask-nicely instance');
 
-		this.app.setController((req, res) => {
-			res.log('Default response');
-		});
+export default class Console {
+	constructor () {
+		this[instance] = new AskNicely();
+
 
 		this.outputListeners = [];
 	}
 
 	input (input, ...args) {
-		return this.app.interpret((input || '').match(/(?:[^\s"]+|"[^"]*")+/g))
+		return this[instance].interpret((input || '').match(/(?:[^\s"]+|"[^"]*")+/g))
 			.then(req => req.execute(...args));
 	}
 
@@ -27,7 +26,22 @@ export default class Console {
 		}.bind(this);
 	}
 
-	addCommand (name, controller) {
-		return this.app.addCommand(name, controller);
+	addCommand () {
+		return this[instance].addCommand.apply(this[instance], arguments);
+	}
+	addOption () {
+		return this[instance].addOption.apply(this[instance], arguments);
+	}
+	addParameter () {
+		return this[instance].addParameter.apply(this[instance], arguments);
+	}
+	setDescription () {
+		return this[instance].setDescription.apply(this[instance], arguments);
+	}
+	setController () {
+		return this[instance].setController.apply(this[instance], arguments);
+	}
+	addPreController () {
+		return this[instance].addPreController.apply(this[instance], arguments);
 	}
 }

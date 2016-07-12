@@ -1,7 +1,7 @@
 @import '../ui';
 
 oksee-console-input {
-	@include ui-box(ui-color('bg'), ui-length());
+	@include ui-box();
 	input {
 		width: 0;
 		height: 0;
@@ -14,6 +14,7 @@ oksee-console-input {
 oksee-console-input-field {
 	white-space: pre;
 	> * {
+		@include ui-user-select();
 		display: inline-block;
 		vertical-align: middle;
 		height: ui-length('line');

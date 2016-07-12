@@ -22,7 +22,7 @@
 @mixin ui-steno ($color) {
 	font-family: ui-font-family($color);
 	font-size: ui-font-size($color);
-	line-height: ui-length();
+	//line-height: ui-length(); // redundant
 
 	@if $color == 'small' {
 		text-transform: uppercase;

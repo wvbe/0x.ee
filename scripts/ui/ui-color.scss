@@ -12,7 +12,7 @@ $bg-light: #1b1b1b;
 
 		// Regular background
 		'bg': $bg,
-		'bg-dim': mix($fg, $bg, 20),
+		'bg-dim': mix($fg, $bg, 14),
 
 		// As in "interactive", aka not dead.
 		'active': yellow,

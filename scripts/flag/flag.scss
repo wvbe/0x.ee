@@ -3,7 +3,7 @@
 oksee-flag {
 	align-items: center;
 
-	@include ui-box(ui-color('bg'), ui-length());
+	@include ui-box();
 
 	> * {
 		flex: 1 1 auto;

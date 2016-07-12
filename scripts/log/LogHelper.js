@@ -18,6 +18,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={time}
 			connotation='log'
+			prefix={new Date().getTime()}
 		>{message}</LogInputComponent>);
 	}
 
@@ -26,6 +27,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={time}
 			connotation='input'
+			prefix='ANON'
 		>{message}</LogInputComponent>);
 	}
 
@@ -34,6 +36,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={time}
 			connotation='error'
+			prefix='SYS'
 		>{error.stack || error.message || error}</LogInputComponent>);
 	}
 }
