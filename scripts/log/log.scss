@@ -1,23 +1,45 @@
 @import '../ui';
 
 oksee-log-prefix {
-	width: ui-length('large');
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+	.content {
+		width: ui-length('large');
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		padding-left: ui-length() * 0.3;
+	}
+	.arrow {
+		display: inline-block;
+		content: '';
+		width: 0;
+		height: 0;
+		border-top: ui-length() * 0.5 solid transparent;
+		border-bottom: ui-length() * 0.5 solid transparent;
+
+		border-left: ui-length() * 0.3 solid transparent;
+	}
 }
 
 oksee-log-message {
-
 	oksee-log-prefix {
-		@include ui-steno('small');
+		.content {
+			@include ui-steno('small');
+		}
 	}
 	&[data-connotation='error'] {
 		color: ui-color('fg-danger');
 	}
 	&[data-connotation='input'] {
-		color: ui-color('active');
+		oksee-log-prefix {
+			.content {
+				background-color: ui-color('line');
+			}
+			.arrow {
+				border-left-color: ui-color('bg-dim');
+			}
+		}
 	}
+	margin-bottom: 3px;
 }
 
 
