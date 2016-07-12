@@ -29,4 +29,7 @@ oksee-console-input-cursor {
 	oksee-console-input.has-focus & {
 		background-color: ui-color('fg');
 	}
+	oksee-console-input.busy & {
+		display: none;
+	}
 }

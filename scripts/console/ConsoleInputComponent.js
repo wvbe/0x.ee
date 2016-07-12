@@ -8,9 +8,11 @@ const DELAY_BEFORE_INPUT_SEND = 100;
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
-		this.lastInput = '';
+
+
 		this.state = {
-			input: this.lastInput,
+			busy: false,
+			input: '',
 			hasFocus: false,
 			selectionStart: 0,
 			selectionEnd: 0
@@ -25,6 +27,11 @@ export default class ConsoleInputComponent extends Component {
 		}.bind(this);
 
 		this.handleInputChange = function(event) {
+			if(this.state.busy) {
+				// @TODO: flare up with user message/icon
+				return;
+			}
+
 			let input = event.target.value,
 				old = this.state.input;
 
@@ -84,17 +91,18 @@ export default class ConsoleInputComponent extends Component {
 		this.props.logger.input(input);
 
 		this.setState({
-			input: ''
+			busy: true
 		});
 
-		if(input.trim())
-			return new Promise(res => {
-					setTimeout(res, DELAY_BEFORE_INPUT_SEND)
-				})
-				.then(() => this.props.console.input(input, this.props.logger))
-				.catch(err => this.props.logger.error(err.message));
-		else
-			return Promise.resolve();
+		return new Promise(res => {
+				setTimeout(res, DELAY_BEFORE_INPUT_SEND)
+			})
+			.then(() => this.props.console.input(input, this.props.logger))
+			.catch(err => this.props.logger.error(err.message))
+			.then(() => this.setState({
+				busy: false,
+				input: ''
+			}));
 	}
 
 	renderInputRuler () {
@@ -118,7 +126,10 @@ export default class ConsoleInputComponent extends Component {
 	render() {
 		return (<oksee-console-input
 			onClick={this.onClick.bind(this)}
-			class={this.state.hasFocus ? 'has-focus' : 'no-focus'}>
+			class={[
+				this.state.hasFocus ? 'has-focus' : 'no-focus',
+				this.state.busy ? 'busy' : 'idle'
+			].join(' ')}>
 			<form onSubmit={this.onSubmit.bind(this)}>
 				<input
 					autoFocus={true}
