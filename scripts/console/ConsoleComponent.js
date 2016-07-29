@@ -9,11 +9,13 @@ export default class ConsoleComponent extends Component {
 		super();
 
 		this.outputDestroyer = null;
+	}
 
-		this.state = {
-			input: '',
-			output: []
-		}
+	componentDidMount () {
+		let logger = this.props.logger;
+		logger.log('0x.ee found, logging in as ANON');
+		setTimeout(() => logger.log('Login OK, welcome honoured guest!'), 250);
+		setTimeout(() => logger.log('---'), 500);
 	}
 	render() {
 		return (<oksee-console>

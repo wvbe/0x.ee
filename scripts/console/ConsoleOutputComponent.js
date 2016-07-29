@@ -7,16 +7,30 @@ import ConsoleLogComponent from './ConsoleLogComponent';
 export default class ConsoleOutputComponent extends Component {
 	constructor () {
 		super();
+
+		//props.logger
+		//props.maxHistory
 		this.state = {
 			history: []
 		}
 	}
 	componentDidMount () {
-		this.outputDestroyer = this.props.console.onOutput(component => this.setState({
-			history: this.state.history.concat([component])
-		}));
+		// When logger is called from anywhere, do:
+		this.outputDestroyer = this.props.logger.onOutput(component => {
+			let history = this.state.history;
+			history.push(component);
+
+			// Replace history, trim if necessary
+			this.setState({
+				history: this.props.maxHistory && history.length > this.props.maxHistory
+					? history.slice(history.length - this.props.maxHistory)
+					: history
+			})
+		});
 	}
+
 	componentWillUnmount () {
+		// Stop listening to logger calls
 		this.outputDestroyer();
 	}
 

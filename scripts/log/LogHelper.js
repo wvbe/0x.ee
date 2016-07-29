@@ -5,12 +5,21 @@ import LogInputComponent from './LogInputComponent';
 // import LogErrorComponent from './LogErrorComponent';
 
 class LogHelper {
-	constructor(console) {
-		this.console = console;
+	constructor() {
+		this.outputListeners = [];
 	}
 
 	raw (component) {
-		this.console.output(component);
+		this.outputListeners.forEach(callback => callback(component));
+	}
+
+
+	onOutput (callback) {
+		this.outputListeners.push(callback);
+
+		return function () {
+			this.outputListeners.splice(this.outputListeners.indexOf(callback), 1);
+		}.bind(this);
 	}
 
 	log (message) {
@@ -18,7 +27,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={time}
 			connotation='log'
-			prefix={new Date().getTime()}
+			prefix='LOG'
 		>{message}</LogInputComponent>);
 	}
 
@@ -36,7 +45,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={time}
 			connotation='error'
-			prefix='SYS'
+			prefix='ERROR'
 		>{error.stack || error.message || error}</LogInputComponent>);
 	}
 }

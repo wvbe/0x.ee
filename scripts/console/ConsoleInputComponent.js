@@ -9,7 +9,6 @@ export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
 
-
 		this.state = {
 			busy: false,
 			input: '',
@@ -72,6 +71,7 @@ export default class ConsoleInputComponent extends Component {
 	}
 
 	componentWillUnmount () {
+		window.removeEventListener('keydown', this.handleKeyDown)
 		window.document.removeEventListener('selectionchange', this.handleSelectionChange);
 	}
 

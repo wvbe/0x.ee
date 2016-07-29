@@ -1,7 +1,8 @@
 @import '../ui';
 
 oksee-log-prefix {
-	.content {
+	.content,
+	.alt-content {
 		width: ui-length('large');
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -21,26 +22,32 @@ oksee-log-prefix {
 }
 
 oksee-log-message {
+	oksee-log-prefix .alt-content {	display: none; }
+	oksee-log-prefix .content {	display: block; }
+	&:hover oksee-log-prefix .alt-content {	display: block; }
+	&:hover oksee-log-prefix .content {	display: none; }
+
 	oksee-log-prefix {
-		.content {
+		.content,
+		.alt-content {
 			@include ui-steno('small');
 		}
 	}
+
 	&[data-connotation='error'] {
 		color: ui-color('fg-danger');
 	}
-	&[data-connotation='input'] {
-		oksee-log-prefix {
-			.content {
-				background-color: ui-color('line-soft');
-				color: ui-color('fg');
-			}
-			.arrow {
-				border-left-color: ui-color('line-soft');
-			}
+
+	&[data-connotation='input'] oksee-log-prefix {
+		.content, .alt-content {
+			background-color: ui-color('line-soft');
+			color: ui-color('fg');
+		}
+		.arrow {
+			border-left-color: ui-color('line-soft');
 		}
 	}
-	margin-bottom: 3px;
+	padding-bottom: 3px;
 }
 
 
