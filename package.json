@@ -4,8 +4,8 @@
   "description": "My personal homepage/sandbox",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.config.production.js",
+    "start": "node webpack.serve.js",
+    "build": "BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.build.js",
     "lint": "./node_modules/.bin/eslint ."
   },
   "repository": {
