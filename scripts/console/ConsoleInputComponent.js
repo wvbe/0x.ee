@@ -5,6 +5,9 @@ import React, {Component} from 'react';
 // The time (ms) between user input logging to console and the controller starts logging output
 const DELAY_BEFORE_INPUT_SEND = 100;
 
+/**
+ * An input bar with reactive cursor hack etc.
+ */
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();

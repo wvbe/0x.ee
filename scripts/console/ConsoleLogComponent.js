@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 
 let allLogKeys = 0;
 
+// The wrapper for one unit in the console output history
 export default class LogErrorComponent extends Component {
 	constructor () {
 		super();

@@ -1,6 +1,16 @@
+@import '../ui';
+
 oksee-menu {
 	display: block;
 	background-color: ui-color('bg-alt');
 	border: 1px solid ui-color('line');
 	flex: 0 0 auto;
+}
+oksee-menu-item {
+	display: block;
+
+	color: ui-color('fg');
+	&:hover {
+		cursor: pointer;
+	}
 }

@@ -113,7 +113,10 @@ export default class GridComponent extends Component {
 
 	renderItems (width, height) {
 		return mapForLength(height, y => mapForLength(width, x => {
+				// key serves as a good way to flatten the 2d array, as well
+				// as be a somewhat spreadsheet-ish: "A1", "B1", "A2", "B2" (fltr)
 				let key = convertToNumberingScheme(x + 1) + (y + 1);
+
 				return <GridItemComponent key={key} x={x} y={y}>{key}</GridItemComponent>;
 			}))
 			.reduce((flat, arr) => flat.concat(arr), []);
