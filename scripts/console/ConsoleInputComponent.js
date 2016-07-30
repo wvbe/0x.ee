@@ -90,22 +90,14 @@ export default class ConsoleInputComponent extends Component {
 	onSubmit (event) {
 		event.preventDefault();
 
+
 		const input = this.state.input;
-		this.props.logger.input(input);
 
 		this.setState({
-			busy: true
+			input: ''
 		});
 
-		return new Promise(res => {
-				setTimeout(res, DELAY_BEFORE_INPUT_SEND)
-			})
-			.then(() => this.props.console.input(input, this.props.logger))
-			.catch(err => this.props.logger.error(err.message))
-			.then(() => this.setState({
-				busy: false,
-				input: ''
-			}));
+		return this.props.handleSubmit(input);
 	}
 
 	renderInputRuler () {
@@ -131,7 +123,7 @@ export default class ConsoleInputComponent extends Component {
 			onClick={this.onClick.bind(this)}
 			class={[
 				this.state.hasFocus ? 'has-focus' : 'no-focus',
-				this.state.busy ? 'busy' : 'idle'
+				'idle'//this.state.busy ? 'busy' : 'idle'
 			].join(' ')}>
 			<form onSubmit={this.onSubmit.bind(this)}>
 				<input

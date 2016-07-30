@@ -22,28 +22,25 @@ class LogHelper {
 		}.bind(this);
 	}
 
-	log (message) {
-		let time = new Date();
+	log (message, prefix) {
 		this.raw(<LogInputComponent
-			time={time}
+			time={new Date()}
 			connotation='log'
-			prefix='LOG'
+			prefix={prefix || 'LOG'}
 		>{message}</LogInputComponent>);
 	}
 
 	input (message) {
-		let time = new Date();
 		this.raw(<LogInputComponent
-			time={time}
+			time={new Date()}
 			connotation='input'
 			prefix='ANON'
 		>{message}</LogInputComponent>);
 	}
 
 	error (error) {
-		let time = new Date();
 		this.raw(<LogInputComponent
-			time={time}
+			time={new Date()}
 			connotation='error'
 			prefix='ERROR'
 		>{error.stack || error.message || error}</LogInputComponent>);

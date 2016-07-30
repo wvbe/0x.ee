@@ -5,6 +5,9 @@ $ui-length-unit: 14px;
 @function ui-length ($color: 'line', $variation: false) {
 	@return _ui-lookup((
 		// Line height
+		'small': 0.5 * $ui-length-unit,
+
+		// Line height
 		'line': $ui-length-unit,
 
 		// Width and height of one grid item

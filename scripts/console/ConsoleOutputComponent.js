@@ -12,21 +12,45 @@ export default class ConsoleOutputComponent extends Component {
 		//props.maxHistory
 		this.state = {
 			history: []
-		}
+		};
+
+		this.internalQueue = [];
+		this.internalTimeout = null;
 	}
-	componentDidMount () {
-		// When logger is called from anywhere, do:
-		this.outputDestroyer = this.props.logger.onOutput(component => {
+
+	slobberNewOutput (out) {
+		if(out)
+			this.internalQueue.push(out);
+
+		if(this.internalTimeout)
+			return;
+
+		let updateHistory = function () {
+			if(!this.internalQueue.length) {
+				clearTimeout(this.internalTimeout);
+				this.internalTimeout = null;
+				return;
+			}
+
 			let history = this.state.history;
-			history.push(component);
+
+			history.push(this.internalQueue.shift());
 
 			// Replace history, trim if necessary
 			this.setState({
 				history: this.props.maxHistory && history.length > this.props.maxHistory
 					? history.slice(history.length - this.props.maxHistory)
 					: history
-			})
-		});
+			});
+
+			this.internalTimeout = setTimeout(updateHistory, 25);
+		}.bind(this);
+
+		this.internalTimeout = setTimeout(updateHistory, 25);
+	}
+	componentDidMount () {
+		// When logger is called from anywhere, do:
+		this.outputDestroyer = this.props.logger.onOutput(this.slobberNewOutput.bind(this));
 	}
 
 	componentWillUnmount () {

@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from './App';
+import RootComponent from './RootComponent';
 
 render(
-	<App>
+	<RootComponent>
 		<p>Nerf</p>
-	</App>,
+	</RootComponent>,
 	document.getElementById('root')
 );

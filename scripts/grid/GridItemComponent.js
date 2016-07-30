@@ -8,6 +8,7 @@ export default class GridItemComponent extends Component {
 			enabled: true,
 			bootupProgress: 1 - 2 * Math.random()
 		};
+		this.iterations = 0;
 	}
 
 	powerUp() {
@@ -15,11 +16,12 @@ export default class GridItemComponent extends Component {
 			return;
 
 		this.setState({
-			bootupProgress: Math.random() < 0.02
+			bootupProgress: this.iterations >= 75 || Math.random() < 0.02
 				? 1
 				: this.state.bootupProgress + (0.21 - 0.4 * Math.random())
 		});
 
+		++this.iterations;
 
 		this.powerUpTimeout = setTimeout(this.powerUp.bind(this), 30 + 70 * Math.random());
 	}

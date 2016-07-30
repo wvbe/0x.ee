@@ -16,7 +16,7 @@ const flagProperties = {
 
 export default class FlagComponent extends Component {
 	render() {
-		return (<oksee-flag class="flex-row flex-gutter">
+		return (<oksee-flag class="flex-row flex-gutter flex-fixed">
 			<oksee-logo>
 				<img src={logoImageUrl} />
 			</oksee-logo>

@@ -7,9 +7,24 @@ export default class Console {
 		this[instance] = new AskNicely();
 	}
 
+
 	input (input, ...args) {
-		return this[instance].interpret((input || '').match(/(?:[^\s"]+|"[^"]*")+/g))
-			.then(req => req.execute(...args));
+		let words = (input || '').match(/(?:[^\s"]+|"[^"]*")+/g) || [],
+			sentences = words.reduce((sentences, word) => {
+				word === '&&'
+					? sentences.push([])
+					: sentences[sentences.length - 1].push(word);
+
+				return sentences;
+			}, [[]]);
+
+		return sentences.reduce((promise, sentence) => {
+			// @NICETOHAVE: Ignore error if "&" was used instead of "&&"?
+			// @TODO: find out if that is corect behaviour
+			return promise.then(() => this[instance].interpret(sentence)
+					.then(req => req.execute(...args))
+			);
+		}, Promise.resolve());
 	}
 
 	addCommand () {
