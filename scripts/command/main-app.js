@@ -18,12 +18,18 @@ const app = {
 	}
 };
 
+import whoCommand from './whoCommand';
+import motdCommand from './motdCommand';
 import rootCommand from './rootCommand';
 import helpCommand from './helpCommand';
+import viewCommand from './viewCommand';
 
 [
+	whoCommand,
+	motdCommand,
 	rootCommand,
-	helpCommand
+	helpCommand,
+	viewCommand
 ].forEach(mod => mod(app));
 
 

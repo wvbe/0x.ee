@@ -31,7 +31,7 @@ function helpController(req, res) {
 		res.log(props);
 	}
 	if(command.children.length) {
-		res.caption('Child commands');
+		res.log('Child commands');
 		command.children.sort(sortByName).forEach(child => res.log(child.name + child.description));
 	}
 
@@ -44,14 +44,6 @@ function helpController(req, res) {
 	if(options.length) {
 		res.log('Options');
 		res.log(options.sort(sortByName).map(toOptionRow));
-	}
-
-	var examples = command.examples;
-	if(examples && examples.length) {
-		res.log('Examples');
-		examples.forEach(fuckMartin => {
-			res.log(fuckMartin.caption, fuckMartin.content);
-		})
 	}
 }
 

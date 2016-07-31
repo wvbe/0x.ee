@@ -1,6 +1,6 @@
 {
   "name": "0xee",
-  "version": "3.0.0-rc1",
+  "version": "4.0.0-alpha",
   "description": "My personal homepage/sandbox",
   "main": "index.js",
   "scripts": {

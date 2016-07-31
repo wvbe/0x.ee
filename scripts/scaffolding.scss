@@ -43,3 +43,16 @@ body {
 oksee-console {
 	overflow: auto;
 }
+
+oksee.skewed {
+	oksee-grid {
+		margin-top: 30px;
+		transform-origin:right top;
+		transform: skew(0deg, 30deg);
+	}
+	oksee-system {
+		margin-top: 30px;
+		transform-origin:left top;
+		transform: skew(0deg, -10deg);
+	}
+}
