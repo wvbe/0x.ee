@@ -47,37 +47,33 @@ export default class RootComponent extends Component {
 		systemLog.log('GET', 'Method');
 		systemLog.log('101 Switching Protocols', 'Status code');
 		systemLog.log('Upgrade (websocket)', 'Connection');
+		systemLog.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
+		systemLog.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
+		systemLog.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
+		systemLog.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
 
 		setTimeout(() => {
-			systemLog.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
-			systemLog.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
-			systemLog.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
-			systemLog.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
+			var hashbang = (window.location.hash || '').trim();
 
+			if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
+				appLog.log(
+					'opening request: ' + (hashbang.length <= 10 ? hashbang : (hashbang.substr(0,7) + '...')),
+					'init');
+				app.submit(hashbang.substr(3, 1) === '~'
+					? new Buffer(hashbang.substr(4), 'base64').toString()
+					: hashbang.substr(3));
+			} else {
+				appLog.log(
+					'no opening request, starting default procedure',
+					'init');
+				app.submit('motd');
+			}
+
+			systemLog.log('OK', 'Status');
 			appLog.log(
 				'0x.ee v4.0.0-alpha, welcome...',
 				'init');
-
-			setTimeout(() => {
-				setTimeout(() => {
-					var hashbang = (window.location.hash || '').trim();
-
-					if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
-						appLog.log(
-							'opening request: ' + (hashbang.length <= 10 ? hashbang : (hashbang.substr(0,7) + '...')),
-							'init');
-						app.submit(hashbang.substr(3, 1) === '~'
-							? new Buffer(hashbang.substr(4), 'base64').toString()
-							: hashbang.substr(3));
-					} else {
-						appLog.log(
-							'no opening request, starting default procedure',
-							'init');
-						app.submit('motd');
-					}
-				}, 250);
-			}, 250);
-		}, 350 + Math.random() * 100);
+		}, 600);
 	}
 
 	componentWillMount () {
