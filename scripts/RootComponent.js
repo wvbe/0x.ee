@@ -1,112 +1,98 @@
-import './scaffolding.scss';
+import './style.scss';
 
 import React, {Component} from 'react';
 
-import GridComponent from './grid/GridComponent';
-import FlagComponent from './flag/FlagComponent';
-import SystemComponent from './system/SystemComponent';
-import MenuItemComponent from './menu/MenuItemComponent';
+import TileComponent from './flag/TileComponent';
 
-import config from './config/config';
-import ConsoleOutputComponent from './console/ConsoleOutputComponent';
-import ConsoleInputComponent from './console/ConsoleInputComponent';
-import app from './command/main-app';
-import LogHelper from './log/LogHelper';
+function updateSizeForElement(element) {
+	var bb = element.getBoundingClientRect(),
+		size = {
+			x: parseInt(bb.width),
+			y: parseInt(bb.height)
+		},
+		changed = size.x !== this.size.x || size.y !== this.size.y;
 
-const appLog = app.logger;
-const systemLog = new LogHelper();
-function  submitFromHash (logger, cons, event) {
-	var hashbang = (window.location.hash || '').trim(),
-		content = hashbang && hashbang.substr(0,3) === '#!/'
-			? hashbang.substr(3,1) === '~'
-			? new Buffer(hashbang.substr(4), 'base64').toString()
-			: hashbang.substr(3)
-			: '';
+	this.size = size;
 
-	return submitFromContent(logger, cons, content);
+	if(changed)
+		this.emit('resize', this);
 
+	return this;
 }
-function  submitFromContent (logger, cons, content) {
-	logger.input(content);
-	cons.input(content, logger)
-		.catch(e => logger.error(e.message || e));
 
+function createPerspective (degrees, tileSize) {
+
+	let size = {
+		x: 800,
+		y: 600
+	};
+
+	let offset = {
+		x: 0,
+		y: 0
+	};
+
+	let isometricAngle = degrees * (Math.PI / 180);
+	let _isometricCos = Math.cos(isometricAngle);
+	let _isometricSin = Math.sin(isometricAngle);
+	let _isometricTan = Math.tan(isometricAngle);
+	let _isometricDist = Math.sqrt(Math.pow(_isometricCos, 2) + Math.pow(_isometricSin, 2)); // pythagoras
+
+	let tileHeight = tileSize/6;
+
+	return {
+		toPixels: (x, y, z, omitOffset) => {
+			var cartX = (x + y) * _isometricCos,
+				cartY = (x - y) * _isometricSin;
+
+			return [
+				(omitOffset ? 0 : offset.x + 0.5 * size.x)  + cartX * tileSize, // x
+				(omitOffset ? 0 : offset.y + 0.5 * size.y) + cartY * tileSize - tileHeight * z // y
+			];
+		},
+		toCoords: (cartX, cartY, omitOffset) => {
+			// assuming y = ax + b
+			cartX = cartX  - 0.5 * size.x  - (omitOffset ? 0 : offset.x);
+			cartY = -cartY + 0.5 * size.y + (omitOffset ? 0 : offset.y);
+
+			var isoY = (_isometricTan * cartX + cartY),
+				isoX = (cartY - isoY) / -_isometricSin - isoY;
+
+			// this is good so far, b should be rescaled for tile size. as
+			return [
+				isoX / tileSize,
+				isoY / tileSize
+			];
+		}
+	}
 }
+
 export default class RootComponent extends Component {
 	constructor () {
 		super();
 
-		this.state = {
-			isSkewed: config.isSkewed
-		};
-	}
-
-	componentDidMount () {
-		systemLog.log('Connected to 0x.ee, welcome ANON', '$');
-		systemLog.log('0x://websocket', 'Request URL');
-		systemLog.log('GET', 'Method');
-		systemLog.log('101 Switching Protocols', 'Status code');
-		systemLog.log('Upgrade (websocket)', 'Connection');
-		systemLog.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
-		systemLog.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
-		systemLog.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
-		systemLog.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
-
-		setTimeout(() => {
-			var hashbang = (window.location.hash || '').trim();
-
-			if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
-				appLog.log(
-					'opening request: ' + (hashbang.length <= 10 ? hashbang : (hashbang.substr(0,7) + '...')),
-					'init');
-				app.submit(hashbang.substr(3, 1) === '~'
-					? new Buffer(hashbang.substr(4), 'base64').toString()
-					: hashbang.substr(3));
-			} else {
-				appLog.log(
-					'no opening request, starting default procedure',
-					'init');
-				app.submit('motd');
-			}
-
-			systemLog.log('OK', 'Status');
-			appLog.log(
-				'0x.ee v4.0.0-alpha, welcome...',
-				'init');
-		}, 600);
-	}
-
-	componentWillMount () {
-		window.addEventListener('hashchange', submitFromHash.bind(null, app.logger, app.console));
+		this.perspective = createPerspective(30, 30);
 	}
 
 	render() {
-		let className = 'flex-row flex-gutter ' + (this.state.isSkewed ? 'skewed' : 'straight');
-		return (<oksee className={className}>
-			<GridComponent className="flex-full" />
-			<SystemComponent>
-				<ConsoleOutputComponent
-					logger={systemLog}
-					maxHistory={5}
-				/>
-				<FlagComponent />
-				<oksee-menu class="flex-row flex-fixed">
-					<MenuItemComponent input='motd' />
-					<MenuItemComponent input='who' />
-					<MenuItemComponent input='view' />
-					<MenuItemComponent input='--help' />
-				</oksee-menu>
-				<oksee-console class="flex-fluid">
-					<ConsoleOutputComponent
-						logger={app.logger}
-					/>
-					<ConsoleInputComponent
-						console={app.console}
-						logger={app.logger}
-						handleSubmit={app.submit.bind(app)}
-					/>
-				</oksee-console>
-			</SystemComponent>
-		</oksee>);
+		return (
+			<div className='luggage'>
+				<div className='luggage-world'>
+					<TileComponent perspective={this.perspective} x='0' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='1' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='2' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='3' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='1' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='2' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='3' z='0'/>
+					<TileComponent perspective={this.perspective} x='-1' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='-2' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='-3' y='0' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='-1' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='-2' z='0'/>
+					<TileComponent perspective={this.perspective} x='0' y='-3' z='0'/>
+				</div>
+			</div>
+		);
 	}
 }

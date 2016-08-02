@@ -1,0 +1,22 @@
+.luggage, .luggage-world {
+	width: 800px;
+	height: 600px;
+}
+
+.luggage {
+	position: relative;
+	border: 1px solid blue;
+}
+
+.luggage-world {
+	position: absolute;
+	border: 1px solid red;
+}
+.luggage-tile {
+	border: 1px solid rgba(0,0,0,0.2);
+	position: absolute;
+	width: 3px;
+	height: 3px;
+	overflow: hidden;
+	background-color: red;
+}
