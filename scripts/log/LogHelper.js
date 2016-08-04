@@ -34,7 +34,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={new Date()}
 			connotation='input'
-			prefix='ANON'
+			prefix='#!/'
 		>{message}</LogInputComponent>);
 	}
 

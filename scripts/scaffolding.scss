@@ -37,22 +37,37 @@ body {
 	line-height: ui-length('line');
 }
 
-[href] {
-	color: ui-color('active');
+
+a {
+	padding: 0 2px;
+	margin: 0 -2px;
+	color: ui-color('bg');
+	background-color: ui-color('fg');
+	text-decoration: none;
+	&:hover {
+		cursor: pointer;
+		color: ui-color('bg');
+		background-color: ui-color('active');
+	}
 }
 oksee-console {
-	overflow: auto;
+	overflow: hidden;
 }
 
 oksee.skewed {
 	oksee-grid {
 		margin-top: 30px;
 		transform-origin:right top;
-		transform: rotate(-45deg) skew(-150deg, 30deg);
+
+		// Skewed as floor
+		//transform: rotate(-45deg) skew(30deg, 30deg);
+
+		// Skewed as south-facing
+		transform: rotate(0deg) skew(0deg, 15deg);
 	}
 	oksee-system {
 		margin-top: 30px;
 		transform-origin:left top;
-		transform: skew(0deg, -15deg);
+		transform: rotate(0deg) skew(0deg, -15deg);
 	}
 }

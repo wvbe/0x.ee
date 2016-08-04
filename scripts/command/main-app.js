@@ -23,13 +23,15 @@ import motdCommand from './motdCommand';
 import rootCommand from './rootCommand';
 import helpCommand from './helpCommand';
 import viewCommand from './viewCommand';
+import colophonCommand from './colophonCommand';
 
 [
 	whoCommand,
 	motdCommand,
 	rootCommand,
 	helpCommand,
-	viewCommand
+	viewCommand,
+	colophonCommand
 ].forEach(mod => mod(app));
 
 

@@ -12,8 +12,9 @@ export default class MenuItemComponent extends Component {
 
 	render() {
 		return (<oksee-menu-item
-			class="flex-row flex-gutter"
-			onClick={this.handleClick.bind(this)}>
+				class="flex-row flex-gutter"
+				data-command={this.props.input}
+			>
 			{this.props.input}
 		</oksee-menu-item>);
 	}

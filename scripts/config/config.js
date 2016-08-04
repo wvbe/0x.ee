@@ -1,4 +1,4 @@
 module.exports = {
-	isSkewed: true,
+	isSkewed: false,
 	scrollOnOutput: true
 };

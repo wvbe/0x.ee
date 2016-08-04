@@ -15,7 +15,8 @@ import LogHelper from './log/LogHelper';
 
 const appLog = app.logger;
 const systemLog = new LogHelper();
-function  submitFromHash (logger, cons, event) {
+
+function  submitFromHash (event) {
 	var hashbang = (window.location.hash || '').trim(),
 		content = hashbang && hashbang.substr(0,3) === '#!/'
 			? hashbang.substr(3,1) === '~'
@@ -23,15 +24,18 @@ function  submitFromHash (logger, cons, event) {
 			: hashbang.substr(3)
 			: '';
 
-	return submitFromContent(logger, cons, content);
-
+	app.submit(content);
 }
-function  submitFromContent (logger, cons, content) {
-	logger.input(content);
-	cons.input(content, logger)
-		.catch(e => logger.error(e.message || e));
 
+function submitFromClick (event) {
+	let command = event.target.getAttribute('data-command');
+	if(!command)
+		return;
+
+	event.preventDefault();
+	app.submit(command);
 }
+
 export default class RootComponent extends Component {
 	constructor () {
 		super();
@@ -42,6 +46,7 @@ export default class RootComponent extends Component {
 	}
 
 	componentDidMount () {
+		// Bunch of rubarb
 		systemLog.log('Connected to 0x.ee, welcome ANON', '$');
 		systemLog.log('0x://websocket', 'Request URL');
 		systemLog.log('GET', 'Method');
@@ -52,38 +57,46 @@ export default class RootComponent extends Component {
 		systemLog.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
 		systemLog.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
 
+		appLog.log(
+			'0x.ee v4.0.0-alpha, waiting for OK...',
+			'init');
+		// Start running the initial command: something from the URL hash or 'motd'
 		setTimeout(() => {
+			// More rubarb
+			systemLog.log('OK', 'Status');
+
 			var hashbang = (window.location.hash || '').trim();
 
 			if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
 				appLog.log(
-					'opening request: ' + (hashbang.length <= 10 ? hashbang : (hashbang.substr(0,7) + '...')),
+					'OK, opening request: ' + (hashbang.length <= 48 ? hashbang : (hashbang.substr(0,45) + '...')),
 					'init');
 				app.submit(hashbang.substr(3, 1) === '~'
 					? new Buffer(hashbang.substr(4), 'base64').toString()
 					: hashbang.substr(3));
 			} else {
 				appLog.log(
-					'no opening request, starting default procedure',
+					'OK, opening default request: #!/motd',
 					'init');
 				app.submit('motd');
 			}
 
-			systemLog.log('OK', 'Status');
-			appLog.log(
-				'0x.ee v4.0.0-alpha, welcome...',
-				'init');
 		}, 600);
 	}
 
 	componentWillMount () {
-		window.addEventListener('hashchange', submitFromHash.bind(null, app.logger, app.console));
+		window.addEventListener('hashchange', submitFromHash);
+		window.addEventListener('click', submitFromClick);
+	}
+
+	componentWillUnmount () {
+		window.removeEventListener('hashchange', submitFromHash);
+		window.removeEventListener('click', submitFromClick);
 	}
 
 	render() {
 		let className = 'flex-row flex-gutter ' + (this.state.isSkewed ? 'skewed' : 'straight');
 		return (<oksee className={className}>
-			<GridComponent className="flex-full" />
 			<SystemComponent>
 				<ConsoleOutputComponent
 					logger={systemLog}

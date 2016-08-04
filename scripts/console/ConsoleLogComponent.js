@@ -14,7 +14,15 @@ export default class LogErrorComponent extends Component {
 		}
 	}
 
+	componentDidMount () {
+		// When the entry is logged, scroll the containing ConsoleOutputComponent to its bottom.
+		// This is a dirty hack, and it assumes the container is el.parentNode.parentNode
+		// But it works, for now
+		let scrollContainer = this.refs.el.parentNode.parentNode;
+		scrollContainer.scrollTop = scrollContainer.scrollHeight;
+	}
+
 	render() {
-		return (<oksee-console-log key={this.log.key}>{this.props.children}</oksee-console-log>);
+		return (<oksee-console-log ref='el' key={this.log.key}>{this.props.children}</oksee-console-log>);
 	}
 }
