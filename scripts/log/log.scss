@@ -50,5 +50,36 @@ oksee-log-message {
 }
 
 oksee-log-content {
+	width: 100%;
 	white-space: pre-wrap;
+	color: ui-color('fg');
+
+	.log-dim {
+		color: ui-color('fg-dim');
+	}
+	.log-type-small {
+		@include ui-steno('small');
+	}
+
+	.log-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		// { display: 'flex', flexDirection: 'row', flexWrap: 'nowrap' }
+	}
+	.log-col-xs {
+		flex: 0 0 4em;
+	}
+	.log-col-s {
+		flex: 0 0 6em;
+	}
+	.log-col-m {
+		flex: 0 0 8em;
+	}
+	.log-col-l {
+		flex: 0 0 12em;
+	}
+	.log-col-x {
+		flex: 1 1 100%;
+	}
 }

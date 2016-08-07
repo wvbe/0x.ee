@@ -26,7 +26,7 @@ class LogHelper {
 		this.raw(<LogInputComponent
 			time={new Date()}
 			connotation='log'
-			prefix={prefix || 'LOG'}
+			prefix={prefix || ''}
 		>{message}</LogInputComponent>);
 	}
 
