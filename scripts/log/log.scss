@@ -34,10 +34,6 @@ oksee-log-message {
 		}
 	}
 
-	&[data-connotation='error'] {
-		color: ui-color('fg-danger');
-	}
-
 	&[data-connotation='input'] oksee-log-prefix {
 		.content, .alt-content {
 			background-color: ui-color('line-soft');
@@ -52,7 +48,11 @@ oksee-log-message {
 oksee-log-content {
 	width: 100%;
 	white-space: pre-wrap;
+
 	color: ui-color('fg');
+	[data-connotation='error'] & {
+		color: ui-color('fg-danger');
+	}
 
 	.log-dim {
 		color: ui-color('fg-dim');

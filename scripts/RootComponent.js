@@ -28,12 +28,22 @@ function  submitFromHash (event) {
 }
 
 function submitFromClick (event) {
-	let command = event.target.getAttribute('data-command');
-	if(!command)
+	let command = event.target.getAttribute('data-command'),
+		href = event.target.getAttribute('href');
+
+	if(command) {
+		app.submit(command);
+	}
+
+	else if(href && !event.target.getAttribute('no-capture')) {
+		app.submit('redir ' + href);
+	}
+
+	else {
 		return;
+	}
 
 	event.preventDefault();
-	app.submit(command);
 }
 
 export default class RootComponent extends Component {

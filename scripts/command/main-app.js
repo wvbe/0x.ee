@@ -14,7 +14,10 @@ const app = {
 		this.logger.input(content);
 
 		return this.console.input(content, this.logger)
-			.catch(e => this.logger.error(e.message || e));
+			.catch(e => {
+				this.logger.error(e.message || e);
+				e.stack && e.stack.split('\n').forEach(msg => this.logger.log(msg.trim(), 'debug'));
+			});
 	}
 };
 
@@ -23,6 +26,7 @@ import motdCommand from './motdCommand';
 import rootCommand from './rootCommand';
 import helpCommand from './helpCommand';
 import viewCommand from './viewCommand';
+import redirCommand from './redirCommand';
 import colophonCommand from './colophonCommand';
 
 [
@@ -31,6 +35,7 @@ import colophonCommand from './colophonCommand';
 	rootCommand,
 	helpCommand,
 	viewCommand,
+	redirCommand,
 	colophonCommand
 ].forEach(mod => mod(app));
 
