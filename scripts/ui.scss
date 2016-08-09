@@ -1,22 +1,43 @@
 @import './ui/ui-color';
 @import './ui/ui-crossed-background';
-
 @import './ui/ui-steno';
-
 @import './ui/ui-length';
-
 @import './ui/ui-animation';
-	@import './ui/ui-border-blink';
+@import './ui/ui-border-blink';
 
-@mixin ui-box ($bg: ui-color('bg-alt'), $borderColor: ui-color('line'), $padding: ui-length('line')) {
-	display: block;
+@mixin ui-box-padding ($padding: ui-length('line')) {
 	padding: $padding;
+}
+@mixin ui-box-colors ($bg: ui-color('bg-alt'), $borderColor: ui-color('line')) {
+	display: block;
 	background-color: $bg;
 	border: 1px solid $borderColor;
+}
+@mixin ui-box ($bg: ui-color('bg-alt'), $borderColor: ui-color('line'), $padding: ui-length('line')) {
+	@include ui-box-padding($padding);
+	@include ui-box-colors($bg, $borderColor);
 }
 @mixin ui-user-select($mode: none) {
 	-webkit-user-select: $mode;
 	-moz-user-select: $mode;
 	-ms-user-select: $mode;
 	user-select: $mode;
+}
+@mixin ui-click-effect () {
+	@include ui-user-select(none);
+	&:hover {
+		cursor: pointer;
+		background-size: 3px 3px;
+		background-image: linear-gradient(
+				to right top,
+				transparent 33%,
+				ui-color('bg-active') 33%,
+				ui-color('bg-active') 66%,
+				transparent 66%
+		);
+		text-shadow: 0 0 3px ui-color('bg');
+		color: ui-color('active');
+
+		@content;
+	}
 }

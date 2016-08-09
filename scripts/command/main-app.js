@@ -3,7 +3,8 @@ import LogHelper from '../log/LogHelper';
 
 const app = {
 	console: new Console(),
-	logger: new LogHelper(),
+	primaryLogger: new LogHelper(),
+	secondaryLogger: new LogHelper(),
 	submit: function (content) {
 		window.history.pushState({
 				input: content
@@ -11,12 +12,16 @@ const app = {
 			content,
 			'#!/' + (content.indexOf(' ') >= 0 ? '~' + new Buffer(content).toString('base64') : content));
 
-		this.logger.input(content);
+		this.primaryLogger.input(content);
 
-		return this.console.input(content, this.logger)
+		return this.console.input(content, this.primaryLogger)
 			.catch(e => {
-				this.logger.error(e.message || e);
-				e.stack && e.stack.split('\n').forEach(msg => this.logger.log(msg.trim(), 'debug'));
+				this.primaryLogger.error(e.message || e);
+				this.secondaryLogger.log([
+					new Buffer(e.stack || e.message || e).toString('base64').substr(0,16),
+					new Date().toString()
+				].join(' '), 'error');
+				e.stack && e.stack.split('\n').forEach(msg => this.primaryLogger.log(msg.trim(), 'debug'));
 			});
 	}
 };

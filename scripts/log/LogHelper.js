@@ -35,7 +35,7 @@ class LogHelper {
 			time={new Date()}
 			connotation='input'
 			prefix='#!/'
-		>{message}</LogInputComponent>);
+		><a data-command={message} className="incognito">{message}</a></LogInputComponent>);
 	}
 
 	error (error) {

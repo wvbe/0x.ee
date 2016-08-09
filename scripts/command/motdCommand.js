@@ -25,7 +25,7 @@ _______/\\\\\\\\\\_____________________/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\__/\\\\\\\
 			res.log(`       interaction designer, javascript developer and what have you`);
 			res.log('-----------------------------------------------------------------------------');
 			res.log('');
-			res.log(`Welcome to 0x.ee v 3.0-rc1, it has regenerative javascript and extra-futuristic flavour.`);
+			res.log(`Welcome to 0x.ee v 4.0.0-alpha, it has regenerative javascript and extra-futuristic flavour.`);
 			res.log(`Though the command line interface doesn't feel as HTML5 as it actually is, CLI is the most powerful way of communicating with a 'puter.`);
 		});
 }

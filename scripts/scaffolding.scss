@@ -41,13 +41,19 @@ body {
 a {
 	padding: 0 2px;
 	margin: 0 -2px;
-	color: ui-color('bg');
-	background-color: ui-color('fg');
 	text-decoration: none;
+		color: ui-color('active');
 	&:hover {
 		cursor: pointer;
-		color: ui-color('bg');
-		background-color: ui-color('active');
+		color: lighten(ui-color('active'), 20);
+		background-size: 3px 3px;
+		background-image: linear-gradient(
+				to right top,
+				transparent 33%,
+				ui-color('bg-active') 33%,
+				ui-color('bg-active') 66%,
+				transparent 66%
+		);
 	}
 }
 oksee-console {
@@ -55,9 +61,17 @@ oksee-console {
 	@extend .flex-column;
 	justify-content: flex-end;
 }
-
+oksee {
+	oksee-plugboard {
+		@extend .flex-fluid;
+	}
+	oksee-system {
+		@extend .flex-fixed;
+		flex-basis: 600px;
+	}
+}
 oksee.skewed {
-	oksee-grid {
+	oksee-plugboard {
 		margin-top: 30px;
 		transform-origin:right top;
 
@@ -71,5 +85,14 @@ oksee.skewed {
 		margin-top: 30px;
 		transform-origin:left top;
 		transform: rotate(0deg) skew(0deg, -15deg);
+	}
+}
+
+oksee-plugboard {
+	justify-content: space-between;
+	align-items: flex-end;
+
+	.flex-row {
+		justify-content: flex-end;
 	}
 }

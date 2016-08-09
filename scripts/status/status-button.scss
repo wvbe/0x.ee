@@ -1,0 +1,39 @@
+@import '../ui';
+
+oksee-status-board {
+	@include ui-box-colors();
+}
+oksee-status-button {
+	align-items: center;
+	padding: ui-length('small') ui-length('line');
+
+	[data-checkbox-state] {
+		display: block;
+		height: ui-length('small');
+		width: ui-length('small');
+		background-color: green;
+		border: 1px solid ui-color('fg');
+	}
+	[data-checkbox-state='enabled'] {
+		background-color: ui-color('fg');
+	}
+	[data-checkbox-state='disabled'] {
+		background: transparent;//ui-crossed-background(ui-color('fg'));
+	}
+	.oksee-status-button__status {
+		@include ui-steno('small');
+	}
+
+	// @TODO: Make mixin
+	@include ui-click-effect() {
+		.oksee-status-button__status {
+			color: ui-color('active');
+		}
+		[data-checkbox-state] {
+			border: 1px solid ui-color('active');
+		}
+		[data-checkbox-state='enabled'] {
+			background-color: ui-color('active');
+		}
+	};
+}

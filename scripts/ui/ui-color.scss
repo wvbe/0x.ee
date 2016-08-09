@@ -15,8 +15,9 @@ $bg-light: #1b1b1b;
 		'bg-dim': mix($fg, $bg, 14),
 
 		// As in "interactive", aka not dead.
-		'active': yellow,
-		'fg-danger': darkorange,
+		'active': mix($fg, yellow, 50),
+		'bg-active': mix($bg, yellow, 85),
+		'fg-danger': darkred,
 
 		// Contrasting alternative
 		'fg-alt': $fg,
