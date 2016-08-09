@@ -3,6 +3,7 @@
 $fg: #8e8e8e;
 $bg: #121212;
 $bg-light: #1b1b1b;
+$brand: yellow;
 
 @function ui-color ($color, $variation: false) {
 	@return _ui-lookup((
@@ -15,8 +16,8 @@ $bg-light: #1b1b1b;
 		'bg-dim': mix($fg, $bg, 14),
 
 		// As in "interactive", aka not dead.
-		'active': mix($fg, yellow, 50),
-		'bg-active': mix($bg, yellow, 85),
+		'active': $brand,
+		'bg-active': mix($bg, $brand, 65),
 		'fg-danger': darkred,
 
 		// Contrasting alternative

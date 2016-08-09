@@ -11,6 +11,19 @@
 		}
 	}
 }
+@mixin ui-blink-keyframes() {
+	@include ui-keyframes(blink-alt) {
+		from, to {
+			visibility: visible;
+		}
+		50% {
+			visibility: hidden;
+		}
+	}
+}
 @mixin ui-border-blink-animation($fromColor: 'line-soft', $toColor: 'line', $time: 1s) {
 	@include ui-animation('border-blink-alt--#{$fromColor}--#{$toColor} #{$time} step-end infinite');
+}
+@mixin ui-blink-animation($fromColor: 'line-soft', $toColor: 'line', $time: 1s) {
+	@include ui-animation('blink-alt #{$time} step-end infinite');
 }

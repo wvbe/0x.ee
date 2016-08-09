@@ -2,6 +2,13 @@
 
 oksee-console-input {
 	@include ui-box();
+	@include ui-click-effect() {
+		oksee-console-input-cursor {
+			background: ui-color('active') !important;
+			border-color: ui-color('active') !important;
+		}
+	};
+
 	input {
 		width: 0;
 		height: 0;
@@ -9,6 +16,18 @@ oksee-console-input {
 		bottom: 0;
 		left: 0;
 		z-index: -100;
+	}
+
+	&.has-focus oksee-console-input-cursor {
+		background: ui-color('fg');
+		border-color: ui-color('fg');
+	}
+	&.no-focus:not(:hover) oksee-console-input-cursor {
+		background: transparent;
+		border-color: ui-color('fg-dim');
+	}
+	&.busy oksee-console-input-cursor {
+		display: none;
 	}
 }
 oksee-console-input-field {
@@ -21,15 +40,11 @@ oksee-console-input-field {
 	}
 }
 
+@include ui-blink-keyframes();
 oksee-console-input-cursor {
 	min-width: 5px;
-	background-color: ui-color('fg-dim');
+	background-color: transparent;
+	border: 1px solid transparent;
 	color: ui-color('bg');
-
-	oksee-console-input.has-focus & {
-		background-color: ui-color('fg');
-	}
-	oksee-console-input.busy & {
-		display: none;
-	}
 }
+

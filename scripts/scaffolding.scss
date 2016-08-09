@@ -42,10 +42,14 @@ a {
 	padding: 0 2px;
 	margin: 0 -2px;
 	text-decoration: none;
+
+	&:not(.incognito) {
 		color: ui-color('active');
+	}
+
 	&:hover {
 		cursor: pointer;
-		color: lighten(ui-color('active'), 20);
+		color: #fff;
 		background-size: 3px 3px;
 		background-image: linear-gradient(
 				to right top,
@@ -54,6 +58,7 @@ a {
 				ui-color('bg-active') 66%,
 				transparent 66%
 		);
+		text-shadow: 0 0 3px ui-color('bg');
 	}
 }
 oksee-console {

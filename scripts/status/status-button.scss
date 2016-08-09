@@ -30,10 +30,10 @@ oksee-status-button {
 			color: ui-color('active');
 		}
 		[data-checkbox-state] {
-			border: 1px solid ui-color('active');
+			border: 1px solid #fff;
 		}
 		[data-checkbox-state='enabled'] {
-			background-color: ui-color('active');
+			background-color: #fff;
 		}
 	};
 }

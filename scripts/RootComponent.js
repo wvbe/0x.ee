@@ -111,17 +111,9 @@ export default class RootComponent extends Component {
 			<oksee-plugboard class="flex-column flex-gutter flex-fluid">
 				<div className="flex-column flex-gutter">
 					<oksee-plugboard-version class="flex-row flex-gutter">
-						<div>DATE: yes</div>
+						<div>SOURCE: bundle.js?t={new Date().getTime()}</div>
 						<div>BUILD: 367</div>
 					</oksee-plugboard-version>
-					<oksee-menu class="flex-row flex-fixed">
-						<MenuItemComponent input='motd' />
-						<MenuItemComponent input='who' />
-						<MenuItemComponent input='view' />
-						<MenuItemComponent input='--help' />
-					</oksee-menu>
-				</div>
-				<div className="flex-column flex-gutter">
 					<oksee-status-board class="flex-row">
 						<StatusButtonComponent logger={secondaryLogger} name="connection" />
 						<StatusButtonComponent logger={secondaryLogger} name="security" />
