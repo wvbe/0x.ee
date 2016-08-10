@@ -18,12 +18,12 @@ export default class Console {
 				return sentences;
 			}, [[]]);
 
-		return sentences.reduce((promise, sentence) => {
+		return sentences.reduce((promise, sentence, i) => {
 			// @NICETOHAVE: Ignore error if "&" was used instead of "&&"?
-			// @TODO: find out if that is corect behaviour
-			return promise.then(() => this[instance].interpret(sentence)
-					.then(req => req.execute(...args))
-			);
+			// @TODO: find out if that is correct behaviour
+			return promise
+				.then(() => this[instance].interpret(sentence))
+				.then(req => req.execute(...args));
 		}, Promise.resolve());
 	}
 

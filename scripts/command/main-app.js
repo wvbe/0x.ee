@@ -14,6 +14,9 @@ function turnIntoMysteriousString (str) {
 		.toUpperCase();
 }
 
+var fakeErrorSendTimeout = null,
+	fakeErrorSendBufferLength = 0;
+
 const app = {
 	console: new Console(),
 	primaryLogger: new LogHelper(),
@@ -29,6 +32,7 @@ const app = {
 
 		return this.console.input(content, this.primaryLogger)
 			.catch(e => {
+
 				let mysteriousString = turnIntoMysteriousString(e.message || e);
 
 				this.primaryLogger.error(e.message || e);
@@ -40,10 +44,28 @@ const app = {
 				this.primaryLogger.log(mysteriousString, 'Log ID');
 				setTimeout(() => {
 					this.secondaryLogger.log([
+						'Exception',
 						mysteriousString,
 						new Date().toString()
-					].join(' '), 'error');
-				}, 1000);
+					].join(' '), `debug`);
+				}, 250);
+
+				++fakeErrorSendBufferLength;
+
+				if(fakeErrorSendTimeout)
+					clearTimeout(fakeErrorSendTimeout);
+
+				fakeErrorSendTimeout = setTimeout(() => {
+					fakeErrorSendTimeout = null;
+
+					this.secondaryLogger.log(`Send ExceptionReport: ${fakeErrorSendBufferLength}`, `debug`);
+					fakeErrorSendBufferLength = 0;
+
+					setTimeout(() => {
+						this.secondaryLogger.log(`Send ExceptionReport OK`, `debug`);
+					}, 500 + Math.random() * 500)
+				}, 3000);
+
 			});
 	}
 };

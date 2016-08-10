@@ -16,7 +16,7 @@ $brand: yellow;
 		'bg-dim': mix($fg, $bg, 14),
 
 		// As in "interactive", aka not dead.
-		'active': $brand,
+		'active': mix($bg, $brand, 10),
 		'bg-active': mix($bg, $brand, 65),
 		'fg-danger': darkred,
 
