@@ -2,6 +2,7 @@ import './console-input.scss';
 
 import React, {Component} from 'react';
 
+import app from '../command/main-app';
 /**
  * An input bar with reactive cursor hack etc.
  */
@@ -16,6 +17,8 @@ export default class ConsoleInputComponent extends Component {
 			selectionStart: 0,
 			selectionEnd: 0
 		};
+
+		this.onDestroy = [];
 
 		this.handleKeyDown = function (event) {
 			if(event.which === 8
@@ -68,11 +71,18 @@ export default class ConsoleInputComponent extends Component {
 
 	componentDidMount() {
 		window.document.addEventListener('selectionchange', this.handleSelectionChange);
+		this.onDestroy.push(app.onStatusChange(status => {
+			this.setState({
+				busy: !!status.busyReasons.length,
+				busyMessage: status.busyReasons.join(', ')
+			});
+		}));
 	}
 
 	componentWillUnmount () {
 		window.removeEventListener('keydown', this.handleKeyDown)
 		window.document.removeEventListener('selectionchange', this.handleSelectionChange);
+		this.onDestroy.forEach(cb => cb());
 	}
 
 	onClick (event) {
@@ -93,7 +103,8 @@ export default class ConsoleInputComponent extends Component {
 			input: ''
 		});
 
-		return this.props.handleSubmit(input);
+		if(!this.state.busy)
+			this.props.handleSubmit(input);
 	}
 
 	renderInputRuler () {
@@ -131,7 +142,9 @@ export default class ConsoleInputComponent extends Component {
 					onFocus={this.handleFocusChange.bind(this, true)}
 				/>
 			</form>
-			<oksee-console-input-field>{this.renderInputRuler()}</oksee-console-input-field>
+			<oksee-console-input-field>{
+				this.state.busy ? this.state.busyMessage : this.renderInputRuler()
+			}</oksee-console-input-field>
 		</oksee-console-input>);
 	}
 }

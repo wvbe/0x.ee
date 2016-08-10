@@ -1,12 +1,13 @@
+@import url(https://fonts.googleapis.com/css?family=Cousine);
 @import './ui-lookup';
 
 @function ui-font-family ($color, $variation: false) {
 	@return _ui-lookup((
 		// Line height
-		'normal': 'mono',
+		'normal': 'Cousine',
 
 		// Width and height of one grid item
-		'small': 'Ubuntu Mono'
+		'small': 'Cousine'
 	), $color, $variation);
 }
 @function ui-font-size ($color, $variation: false) {

@@ -57,6 +57,7 @@ export default class RootComponent extends Component {
 	}
 
 	componentDidMount () {
+		let unsetBusyReason = app.setBusyReason('console offline');
 		// Bunch of rubarb
 		secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
 		secondaryLogger.log('0x://websocket', 'Request URL');
@@ -82,6 +83,7 @@ export default class RootComponent extends Component {
 				primaryLogger.log(
 					'OK, opening request: ' + (hashbang.length <= 48 ? hashbang : (hashbang.substr(0,45) + '...')),
 					'init');
+				unsetBusyReason();
 				app.submit(hashbang.substr(3, 1) === '~'
 					? new Buffer(hashbang.substr(4), 'base64').toString()
 					: hashbang.substr(3));
@@ -89,6 +91,7 @@ export default class RootComponent extends Component {
 				primaryLogger.log(
 					'OK, opening default request: #!/motd',
 					'init');
+				unsetBusyReason();
 				app.submit('motd');
 			}
 

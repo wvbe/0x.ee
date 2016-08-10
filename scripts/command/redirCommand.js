@@ -16,6 +16,7 @@ export default function (app) {
 			})
 		)
 		.addOption('window', 'w', 'Windowed mode (WIP)')
+		.addOption('fake', 'f')
 		.setController((req, res) => {
 			res.log(
 				'OFF-SITE HTTP REDIRECT IMMINENT',
@@ -29,14 +30,14 @@ export default function (app) {
 			res.log('-----------------------------------------------------------------------------');
 			res.error('Warning, opening new internet connection on protected port: 80');
 			res.log('Charging lasers...');
-			new Promise(resolve => {
+			return new Promise(resolve => {
 				let i = 3,
 					interval = setInterval(() => {
 						if (!i) {
 							clearInterval(interval);
 							res.log('Redirecting now, goodbye lover');
 							setTimeout(() => {
-								window.open(req.parameters.url, '_blank');
+								!req.options.fake && window.open(req.parameters.url, '_blank');
 								resolve();
 							}, 250);
 						} else {
