@@ -1,0 +1,8 @@
+@import '../ui';
+
+oksee-window {
+	@include ui-box-colors;
+	min-height: 2 * ui-length('grid-item');
+	min-width: 500px;
+
+}

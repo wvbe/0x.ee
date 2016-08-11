@@ -11,8 +11,10 @@ import config from './config/config';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import StatusButtonComponent from './status/StatusButtonComponent';
+import WindowComponent from './window/WindowComponent';
 import app from './command/main-app';
 import LogHelper from './log/LogHelper';
+import DraggableComponent from 'react-draggable';
 
 const primaryLogger = app.primaryLogger;
 const secondaryLogger = app.secondaryLogger;
@@ -46,17 +48,34 @@ function submitFromClick (event) {
 
 	event.preventDefault();
 }
-
+var windowIndex = 0;
 export default class RootComponent extends Component {
 	constructor () {
 		super();
 
+		this.onComponentWillUnmount = [];
+
 		this.state = {
-			isSkewed: config.isSkewed
+			isSkewed: config.isSkewed,
+			windows: []
 		};
 	}
 
 	componentDidMount () {
+		this.onComponentWillUnmount.push(app.on('window:new', (name, content) => {
+			secondaryLogger.log('New: ' + name, 'window');
+			let key = ++windowIndex;
+			this.setState({
+				windows: this.state.windows.concat([{
+					name,
+					content: <WindowComponent key={key} name={name}>{content}</WindowComponent>
+				}])
+			});
+		}));
+
+		window.addEventListener('hashchange', submitFromHash);
+		window.addEventListener('click', submitFromClick);
+
 		let unsetBusyReason = app.setBusyReason('console offline');
 		// Bunch of rubarb
 		secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
@@ -98,12 +117,10 @@ export default class RootComponent extends Component {
 		}, 600);
 	}
 
-	componentWillMount () {
-		window.addEventListener('hashchange', submitFromHash);
-		window.addEventListener('click', submitFromClick);
-	}
 
 	componentWillUnmount () {
+		this.onComponentWillUnmount.forEach(cb => cb());
+
 		window.removeEventListener('hashchange', submitFromHash);
 		window.removeEventListener('click', submitFromClick);
 	}
@@ -111,7 +128,10 @@ export default class RootComponent extends Component {
 	render() {
 		let className = 'flex-row flex-gutter ' + (this.state.isSkewed ? 'skewed' : 'straight');
 		return (<oksee className={className}>
-			<oksee-plugboard class="flex-column flex-gutter flex-fluid">
+			<oksee-window-container>
+				{this.state.windows.map(win => win.content)}
+			</oksee-window-container>
+			<oksee-plugboard class="flex-fluid flex-column flex-gutter flex-space-between">
 				<div className="flex-column flex-gutter">
 					<oksee-plugboard-version class="flex-row flex-gutter">
 						<div>SOURCE: bundle.js?t={new Date().getTime()}</div>
@@ -123,6 +143,7 @@ export default class RootComponent extends Component {
 						<StatusButtonComponent logger={secondaryLogger} name="awesome" />
 					</oksee-status-board>
 				</div>
+				<div>NERF</div>
 			</oksee-plugboard>
 			<SystemComponent>
 				<ConsoleOutputComponent

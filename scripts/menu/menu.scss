@@ -6,10 +6,18 @@ oksee-menu {
 }
 
 oksee-menu-item {
+	@include ui-click-effect();
+	&.state-busy {
+		@include ui-microdot(ui-color('fg-dim'));
+		&:hover {
+			@include ui-microdot(ui-color('fg'));
+		}
+	}
 	display: block;
 	padding: ui-length('small') ui-length('line');
 	color: ui-color('fg');
 
-	// @TODO: Make mixin
-	@include ui-click-effect();
+
+
+
 }

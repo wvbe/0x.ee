@@ -23,10 +23,9 @@
 	-ms-user-select: $mode;
 	user-select: $mode;
 }
-@mixin ui-click-effect () {
-	@include ui-user-select(none);
-
+@mixin ui-microdot ($color) {
 	position: relative;
+
 	&::after {
 		position: absolute;
 		top: 3px;
@@ -35,12 +34,23 @@
 		width: 1px;
 		height: 1px;
 		border-radius: 50%;
-		border: 0.3px solid ui-color('active');
+		border: 0.3px solid $color;
 		content: '';
 	}
+	&:hover::after {
+		background-color: $color;
+	}
+}
+@mixin ui-click-effect () {
+	@include ui-user-select(none);
+	@include ui-microdot(ui-color('active'));
+
+	position: relative;
+
 	&:hover {
 		cursor: pointer;
 		color: #fff;
+		text-shadow: 0 0 3px ui-color('bg');
 		background-size: 3px 3px;
 		background-image: linear-gradient(
 				to right top,
@@ -49,10 +59,7 @@
 				ui-color('bg-active') 66%,
 				transparent 66%
 		);
-		text-shadow: 0 0 3px ui-color('bg');
-		&::after {
-			background-color: ui-color('active');
-		}
+
 		@content;
 	}
 }

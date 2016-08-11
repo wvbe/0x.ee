@@ -71,16 +71,16 @@ export default class ConsoleInputComponent extends Component {
 
 	componentDidMount() {
 		window.document.addEventListener('selectionchange', this.handleSelectionChange);
-		this.onDestroy.push(app.onStatusChange(status => {
+		this.onDestroy.push(app.on('busy', busyReasons => {
 			this.setState({
-				busy: !!status.busyReasons.length,
-				busyMessage: status.busyReasons.join(', ')
+				busy: !!busyReasons.length,
+				busyMessage: busyReasons.join(', ')
 			});
 		}));
 	}
 
 	componentWillUnmount () {
-		window.removeEventListener('keydown', this.handleKeyDown)
+		window.removeEventListener('keydown', this.handleKeyDown);
 		window.document.removeEventListener('selectionchange', this.handleSelectionChange);
 		this.onDestroy.forEach(cb => cb());
 	}

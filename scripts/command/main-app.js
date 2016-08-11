@@ -1,5 +1,6 @@
 import Console from '../console/Console';
 import LogHelper from '../log/LogHelper';
+import EventEmitter from '../util/EventEmitter';
 
 function turnIntoMysteriousString (str) {
 	return new Buffer(str)
@@ -17,14 +18,20 @@ function turnIntoMysteriousString (str) {
 var fakeErrorSendTimeout = null,
 	fakeErrorSendBufferLength = 0;
 
-const app = {
-	_statusChangeCallbacks: [],
-	_inputQueue: [],
-	console: new Console(),
-	primaryLogger: new LogHelper(),
-	secondaryLogger: new LogHelper(),
-	busyReasons: [],
-	submit: function (content) {
+class App extends EventEmitter {
+	constructor () {
+		super();
+
+		this._inputQueue = [];
+
+		this.busyReasons = [];
+
+		this.console = new Console();
+			this.primaryLogger = new LogHelper();
+			this.secondaryLogger = new LogHelper();
+	}
+
+	submit (content) {
 		if(this.busyReasons.length) {
 			this._inputQueue.push(content);
 			return;
@@ -78,31 +85,21 @@ const app = {
 				if(this._inputQueue.length)
 					this.submit(this._inputQueue.shift());
 			});
-	},
-	setBusyReason: function (reason) {
+	}
+
+	setBusyReason (reason) {
 		if(this.busyReasons.indexOf(reason) >= 0)
 			throw new Error('Already in this busy state');
 
 		this.busyReasons.push(reason);
 
-		emitStatusChange(this);
+		this.emit('busy', this.busyReasons);
 
 		return () => {
 			this.busyReasons.splice(this.busyReasons.indexOf(reason), 1);
-			emitStatusChange(this);
+			this.emit('busy', this.busyReasons);
 		}
-	},
-	onStatusChange: function (cb) {
-		this._statusChangeCallbacks.push(cb);
-
-		return () => this._statusChangeCallbacks.splice(this._statusChangeCallbacks.indexOf(cb), 1);
 	}
-};
-
-function emitStatusChange (app) {
-	app._statusChangeCallbacks.forEach(cb => cb({
-		busyReasons: app.busyReasons
-	}));
 }
 
 import whoCommand from './whoCommand';
@@ -111,7 +108,10 @@ import rootCommand from './rootCommand';
 import helpCommand from './helpCommand';
 import viewCommand from './viewCommand';
 import redirCommand from './redirCommand';
+import testCommand from './testCommand';
 import colophonCommand from './colophonCommand';
+
+const app = new App();
 
 [
 	whoCommand,
@@ -120,6 +120,7 @@ import colophonCommand from './colophonCommand';
 	helpCommand,
 	viewCommand,
 	redirCommand,
+	testCommand,
 	colophonCommand
 ].forEach(mod => mod(app));
 
