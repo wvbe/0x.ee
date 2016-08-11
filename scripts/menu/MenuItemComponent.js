@@ -15,6 +15,11 @@ export default class MenuItemComponent extends Component {
 		};
 	}
 
+	/**
+	 * Submits to console, or executes callback and syncs busy state on the (optional) Promise
+	 * @param event
+	 * @returns {*}
+	 */
 	handleClick (event) {
 		if(this.props.input)
 			return app.submit(this.props.input);
@@ -24,17 +29,18 @@ export default class MenuItemComponent extends Component {
 
 		this.setBusy(true);
 
+		// @NOTE: intentionally not taking uncaught errors into account
 		Promise.resolve(this.props.onClick(event))
 			.then(v => {
 				this.setBusy(false);
 				return v;
-			})
-			.catch(e => {
-				this.setBusy(false);
-				throw e;
-			})
+			});
 	}
 
+	/**
+	 * Debounces setting the state to unbusy
+	 * @param busy
+	 */
 	setBusy (busy) {
 		if(!!busy === !!this.state.busy)
 			return;

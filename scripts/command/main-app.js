@@ -18,22 +18,33 @@ function turnIntoMysteriousString (str) {
 var fakeErrorSendTimeout = null,
 	fakeErrorSendBufferLength = 0;
 
+const CONFIG = Symbol('config');
+const QUEUE = Symbol('submit queue');
+
 class App extends EventEmitter {
-	constructor () {
+	constructor (config) {
 		super();
 
-		this._inputQueue = [];
+		this[CONFIG] = config;
+		this[QUEUE] = [];
 
 		this.busyReasons = [];
 
 		this.console = new Console();
-			this.primaryLogger = new LogHelper();
-			this.secondaryLogger = new LogHelper();
+		this.primaryLogger = new LogHelper();
+		this.secondaryLogger = new LogHelper();
+	}
+
+	config (name, value) {
+		if (value === undefined)
+			return this[CONFIG][name];
+
+		this[CONFIG][name] = value;
 	}
 
 	submit (content) {
 		if(this.busyReasons.length) {
-			this._inputQueue.push(content);
+			this[QUEUE].push(content);
 			return;
 		}
 		window.history.pushState({
@@ -82,8 +93,8 @@ class App extends EventEmitter {
 			})
 			.then(() => {
 				unsetBusy();
-				if(this._inputQueue.length)
-					this.submit(this._inputQueue.shift());
+				if(this[QUEUE].length)
+					this.submit(this[QUEUE].shift());
 			});
 	}
 
@@ -111,7 +122,10 @@ import redirCommand from './redirCommand';
 import testCommand from './testCommand';
 import colophonCommand from './colophonCommand';
 
-const app = new App();
+const app = new App({
+	isSkewed: false,
+	bootTimeLength: 1000
+});
 
 [
 	whoCommand,

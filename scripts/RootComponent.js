@@ -7,7 +7,6 @@ import FlagComponent from './flag/FlagComponent';
 import SystemComponent from './system/SystemComponent';
 import MenuItemComponent from './menu/MenuItemComponent';
 
-import config from './config/config';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import StatusButtonComponent from './status/StatusButtonComponent';
@@ -31,6 +30,9 @@ function  submitFromHash (event) {
 }
 
 function submitFromClick (event) {
+	if(event.target.getAttribute('no-capture'))
+		return;
+
 	let command = event.target.getAttribute('data-command'),
 		href = event.target.getAttribute('href');
 
@@ -38,7 +40,7 @@ function submitFromClick (event) {
 		app.submit(command);
 	}
 
-	else if(href && !event.target.getAttribute('no-capture')) {
+	else if(href) {
 		app.submit('redir ' + href);
 	}
 
@@ -48,6 +50,57 @@ function submitFromClick (event) {
 
 	event.preventDefault();
 }
+
+function playBootSequence () {
+	let bootTimeLength = app.config('bootTimeLength'),
+		unsetBusyReason = app.setBusyReason('console offline');
+
+	// Bunch of rubarb
+	secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
+	secondaryLogger.log('0x://websocket', 'Request URL');
+	secondaryLogger.log('GET', 'Method');
+	secondaryLogger.log('101 Switching Protocols', 'Status code');
+	secondaryLogger.log('Upgrade (websocket)', 'Connection');
+	setTimeout(() => {
+		secondaryLogger.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
+		secondaryLogger.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
+		secondaryLogger.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
+		secondaryLogger.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
+		secondaryLogger.log('Loading profile', 'init');
+	}, bootTimeLength/2);
+
+	primaryLogger.log('0x.ee v4.0.0-alpha, waiting for OK...', 'init');
+
+	// Start running the initial command: something from the URL hash or 'motd'
+	setTimeout(() => {
+		// More rubarb
+		secondaryLogger.log('OK', 'init');
+
+		var hashbang = (window.location.hash || '').trim();
+
+		if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
+			let trimmedHashbang = hashbang.length <= 48
+				? hashbang
+				: (hashbang.substr(0,45) + '...');
+
+			primaryLogger.log('OK, opening request: ' + trimmedHashbang, 'init');
+
+			unsetBusyReason();
+
+			app.submit(hashbang.substr(3, 1) === '~'
+				? new Buffer(hashbang.substr(4), 'base64').toString()
+				: hashbang.substr(3));
+		} else {
+			primaryLogger.log('OK, opening default request: #!/motd', 'init');
+
+			unsetBusyReason();
+
+			app.submit('motd');
+		}
+	}, bootTimeLength);
+}
+
+
 var windowIndex = 0;
 export default class RootComponent extends Component {
 	constructor () {
@@ -56,7 +109,7 @@ export default class RootComponent extends Component {
 		this.onComponentWillUnmount = [];
 
 		this.state = {
-			isSkewed: config.isSkewed,
+			isSkewed: app.config('isSkewed'),
 			windows: []
 		};
 	}
@@ -76,45 +129,7 @@ export default class RootComponent extends Component {
 		window.addEventListener('hashchange', submitFromHash);
 		window.addEventListener('click', submitFromClick);
 
-		let unsetBusyReason = app.setBusyReason('console offline');
-		// Bunch of rubarb
-		secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
-		secondaryLogger.log('0x://websocket', 'Request URL');
-		secondaryLogger.log('GET', 'Method');
-		secondaryLogger.log('101 Switching Protocols', 'Status code');
-		secondaryLogger.log('Upgrade (websocket)', 'Connection');
-		secondaryLogger.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
-		secondaryLogger.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
-		secondaryLogger.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
-		secondaryLogger.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
-
-		primaryLogger.log(
-			'0x.ee v4.0.0-alpha, waiting for OK...',
-			'init');
-		// Start running the initial command: something from the URL hash or 'motd'
-		setTimeout(() => {
-			// More rubarb
-			secondaryLogger.log('OK', 'Status');
-
-			var hashbang = (window.location.hash || '').trim();
-
-			if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
-				primaryLogger.log(
-					'OK, opening request: ' + (hashbang.length <= 48 ? hashbang : (hashbang.substr(0,45) + '...')),
-					'init');
-				unsetBusyReason();
-				app.submit(hashbang.substr(3, 1) === '~'
-					? new Buffer(hashbang.substr(4), 'base64').toString()
-					: hashbang.substr(3));
-			} else {
-				primaryLogger.log(
-					'OK, opening default request: #!/motd',
-					'init');
-				unsetBusyReason();
-				app.submit('motd');
-			}
-
-		}, 600);
+		playBootSequence();
 	}
 
 
