@@ -1,8 +1,14 @@
 @import '../ui';
 
 oksee-window {
-	@include ui-box-colors;
+	@include ui-box-colors(ui-color('bg'));
 	min-height: 2 * ui-length('grid-item');
 	min-width: 500px;
+}
 
+oksee-window-header {
+	@include ui-striped-background(ui-color('bg-alt'));
+	> *:first-child {
+		padding: ui-length('small') ui-length('line');
+	}
 }

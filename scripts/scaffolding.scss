@@ -100,3 +100,10 @@ oksee-plugboard {
 		justify-content: flex-end;
 	}
 }
+
+oksee-window-container {
+	display: absolute;
+	z-index: 100;
+	top: 0;
+	left: 0;
+}

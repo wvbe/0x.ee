@@ -8,12 +8,12 @@
 @mixin ui-box-padding ($padding: ui-length('line')) {
 	padding: $padding;
 }
-@mixin ui-box-colors ($bg: ui-color('bg-alt'), $borderColor: ui-color('line')) {
+@mixin ui-box-colors ($bg: transparent, $borderColor: ui-color('line')) {
 	display: block;
 	background-color: $bg;
 	border: 1px solid $borderColor;
 }
-@mixin ui-box ($bg: ui-color('bg-alt'), $borderColor: ui-color('line'), $padding: ui-length('line')) {
+@mixin ui-box ($bg: transparent, $borderColor: ui-color('line'), $padding: ui-length('line')) {
 	@include ui-box-padding($padding);
 	@include ui-box-colors($bg, $borderColor);
 }
@@ -41,6 +41,17 @@
 		background-color: $color;
 	}
 }
+@mixin ui-striped-background ($alpha: ui-color('bg-active'), $beta: transparent) {
+	background-size: 3px 3px;
+	background-image: linear-gradient(
+			to right top,
+			$beta 33%,
+			$alpha 33%,
+			$alpha 66%,
+			$beta 66%
+	);
+
+}
 @mixin ui-click-effect () {
 	@include ui-user-select(none);
 	@include ui-microdot(ui-color('active'));
@@ -51,15 +62,7 @@
 		cursor: pointer;
 		color: #fff;
 		text-shadow: 0 0 3px ui-color('bg');
-		background-size: 3px 3px;
-		background-image: linear-gradient(
-				to right top,
-				transparent 33%,
-				ui-color('bg-active') 33%,
-				ui-color('bg-active') 66%,
-				transparent 66%
-		);
-
+		@include ui-striped-background(ui-color('bg-active'));
 		@content;
 	}
 }

@@ -10,10 +10,9 @@ import MenuItemComponent from './menu/MenuItemComponent';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import StatusButtonComponent from './status/StatusButtonComponent';
-import WindowComponent from './window/WindowComponent';
+import WindowContainerComponent from './window/WindowContainerComponent';
 import app from './command/main-app';
 import LogHelper from './log/LogHelper';
-import DraggableComponent from 'react-draggable';
 
 const primaryLogger = app.primaryLogger;
 const secondaryLogger = app.secondaryLogger;
@@ -26,6 +25,8 @@ function  submitFromHash (event) {
 			: hashbang.substr(3)
 			: '';
 
+	app.secondaryLogger.log('Submit "' + content + '"', 'hash');
+
 	app.submit(content);
 }
 
@@ -37,10 +38,12 @@ function submitFromClick (event) {
 		href = event.target.getAttribute('href');
 
 	if(command) {
+		app.secondaryLogger.log('Submit "' + command + '"', 'mouse');
 		app.submit(command);
 	}
 
 	else if(href) {
+		app.secondaryLogger.log('Redir "' + href + '"', 'href');
 		app.submit('redir ' + href);
 	}
 
@@ -101,12 +104,9 @@ function playBootSequence () {
 }
 
 
-var windowIndex = 0;
 export default class RootComponent extends Component {
 	constructor () {
 		super();
-
-		this.onComponentWillUnmount = [];
 
 		this.state = {
 			isSkewed: app.config('isSkewed'),
@@ -115,17 +115,6 @@ export default class RootComponent extends Component {
 	}
 
 	componentDidMount () {
-		this.onComponentWillUnmount.push(app.on('window:new', (name, content) => {
-			secondaryLogger.log('New: ' + name, 'window');
-			let key = ++windowIndex;
-			this.setState({
-				windows: this.state.windows.concat([{
-					name,
-					content: <WindowComponent key={key} name={name}>{content}</WindowComponent>
-				}])
-			});
-		}));
-
 		window.addEventListener('hashchange', submitFromHash);
 		window.addEventListener('click', submitFromClick);
 
@@ -134,8 +123,6 @@ export default class RootComponent extends Component {
 
 
 	componentWillUnmount () {
-		this.onComponentWillUnmount.forEach(cb => cb());
-
 		window.removeEventListener('hashchange', submitFromHash);
 		window.removeEventListener('click', submitFromClick);
 	}
@@ -143,9 +130,7 @@ export default class RootComponent extends Component {
 	render() {
 		let className = 'flex-row flex-gutter ' + (this.state.isSkewed ? 'skewed' : 'straight');
 		return (<oksee className={className}>
-			<oksee-window-container>
-				{this.state.windows.map(win => win.content)}
-			</oksee-window-container>
+			<WindowContainerComponent />
 			<oksee-plugboard class="flex-fluid flex-column flex-gutter flex-space-between">
 				<div className="flex-column flex-gutter">
 					<oksee-plugboard-version class="flex-row flex-gutter">

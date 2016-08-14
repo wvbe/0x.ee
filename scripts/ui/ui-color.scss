@@ -22,8 +22,7 @@ $brand: yellow;
 
 		// Contrasting alternative
 		'fg-alt': $fg,
-		'bg-alt': transparent,
-		//'bg-alt': mix($fg, $bg, 7),
+		'bg-alt': mix($fg, $bg, 7),
 
 		// Soft line on 'bg'
 		'line-soft': mix($fg, $bg, 14),
