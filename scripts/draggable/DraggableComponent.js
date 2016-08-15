@@ -2,6 +2,17 @@ import './draggable.scss';
 
 import React, {Component} from 'react';
 
+function stopDrag (component, e) {
+	component.lastDragStart = null;
+
+	window.removeEventListener('mouseup', component.onDragStop);
+	window.removeEventListener('mousemove', component.onDragMove);
+
+	component.refs.draggable.addEventListener('mousedown', component.onDragStart);
+
+	e.preventDefault();
+}
+
 export default class DraggableComponent extends Component {
 	constructor () {
 		super();
@@ -14,6 +25,10 @@ export default class DraggableComponent extends Component {
 		this.lastDragStart = null;
 
 		this.onDragStart = (e) => {
+			if(e.which !== 1) {
+				return;
+			}
+
 			let bb = this.refs.draggable.getBoundingClientRect();
 
 			this.lastDragStart = {
@@ -44,14 +59,7 @@ export default class DraggableComponent extends Component {
 		};
 
 		this.onDragStop = (e) => {
-			this.lastDragStart = null;
-
-			window.removeEventListener('mouseup', this.onDragStop);
-			window.removeEventListener('mousemove', this.onDragMove);
-
-			this.refs.draggable.addEventListener('mousedown', this.onDragStart);
-
-			e.preventDefault();
+			stopDrag(this, e);
 		};
 	}
 

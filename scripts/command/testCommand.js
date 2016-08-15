@@ -1,4 +1,3 @@
-import app from '../command/main-app';
 import AskNicely from 'ask-nicely';
 import React, {Component} from 'react';
 

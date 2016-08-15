@@ -119,6 +119,7 @@ import rootCommand from './rootCommand';
 import helpCommand from './helpCommand';
 import viewCommand from './viewCommand';
 import redirCommand from './redirCommand';
+import cvCommand from './cvCommand';
 import testCommand from './testCommand';
 import colophonCommand from './colophonCommand';
 
@@ -134,6 +135,7 @@ const app = new App({
 	helpCommand,
 	viewCommand,
 	redirCommand,
+	cvCommand,
 	testCommand,
 	colophonCommand
 ].forEach(mod => mod(app));
