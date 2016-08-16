@@ -1,0 +1,13 @@
+@import '../ui';
+
+.cv-root {
+	display: block;
+	@include ui-box-padding();
+
+	> * {
+		margin-bottom: ui-length('line');
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

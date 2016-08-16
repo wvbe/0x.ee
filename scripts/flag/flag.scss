@@ -1,8 +1,6 @@
 @import '../ui';
 
 oksee-flag {
-	align-items: center;
-
 	@include ui-box();
 
 	> * {

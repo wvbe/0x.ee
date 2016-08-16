@@ -4,8 +4,10 @@ oksee-console-input {
 	@include ui-box();
 	@include ui-click-effect() {
 		oksee-console-input-cursor {
-			background: ui-color('active') !important;
 			border-color: ui-color('active') !important;
+		}
+		&.has-focus oksee-console-input-cursor {
+			background: ui-color('active') !important;
 		}
 	};
 

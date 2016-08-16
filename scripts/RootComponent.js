@@ -138,9 +138,11 @@ export default class RootComponent extends Component {
 						<div>BUILD: 367</div>
 					</oksee-plugboard-version>
 					<oksee-status-board class="flex-row">
-						<StatusButtonComponent logger={secondaryLogger} name="connection" />
-						<StatusButtonComponent logger={secondaryLogger} name="security" />
-						<StatusButtonComponent logger={secondaryLogger} name="awesome" />
+						<StatusButtonComponent
+							name="skew projection"
+							enabled={ this.state.isSkewed }
+							toggle={(currentState) => { this.setState({ isSkewed: !currentState }); }}
+						/>
 					</oksee-status-board>
 				</div>
 				<div>NERF</div>

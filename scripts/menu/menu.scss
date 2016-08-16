@@ -7,6 +7,7 @@ oksee-menu {
 
 oksee-menu-item {
 	@include ui-click-effect();
+	white-space: nowrap;
 	&.state-busy {
 		@include ui-microdot(ui-color('fg-dim'));
 		&:hover {
@@ -16,8 +17,4 @@ oksee-menu-item {
 	display: block;
 	padding: ui-length('small') ui-length('line');
 	color: ui-color('fg');
-
-
-
-
 }

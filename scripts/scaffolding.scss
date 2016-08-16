@@ -64,33 +64,36 @@ a {
 ul, ol {
 	padding-left: 2 * ui-length('line');
 }
-p, ol, ul, table {
-	margin-bottom: ui-length('line');
-	&:last-child {
-		margin-bottom: 0;
-	}
-}
-ul > ol, ol > ul, ul > ul, ol > ol {
-	margin-bottom: 0;
-}
 oksee-console {
 	overflow: hidden;
 	@extend .flex-column;
 	justify-content: flex-end;
 }
 oksee {
+	oksee-window {
+		transition: transform 0.2s;
+	}
 	oksee-plugboard {
 		@extend .flex-fluid;
+		transform-origin:right bottom;
+		transition: transform 0.2s, margin-top 0.2s;
+		margin-top: 0;
 	}
 	oksee-system {
+		transform-origin:left bottom;
+		transition: transform 0.2s, margin-top 0.2s;
+		margin-top: 0;
+
 		@extend .flex-fixed;
 		flex-basis: 600px;
 	}
 }
 oksee.skewed {
+	oksee-window {
+		transform: rotate(0deg) skew(0deg, 15deg);
+	}
 	oksee-plugboard {
 		margin-top: 30px;
-		transform-origin:right top;
 
 		// Skewed as floor
 		//transform: rotate(-45deg) skew(30deg, 30deg);
@@ -100,7 +103,6 @@ oksee.skewed {
 	}
 	oksee-system {
 		margin-top: 30px;
-		transform-origin:left top;
 		transform: rotate(0deg) skew(0deg, -15deg);
 	}
 }

@@ -32,7 +32,9 @@
 .flex-items-start {
 	align-items: flex-start;
 }
-
+.flex-items-center, .flex-kebab {
+	align-items: center;
+}
 
 .flex-fixed {
 	flex: 0 0 auto;

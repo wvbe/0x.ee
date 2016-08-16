@@ -4,8 +4,8 @@ oksee-status-board {
 	@include ui-box-colors();
 }
 oksee-status-button {
-	align-items: center;
 	padding: ui-length('small') ui-length('line');
+	white-space: nowrap;
 
 	[data-checkbox-state] {
 		display: block;

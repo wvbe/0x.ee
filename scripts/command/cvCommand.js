@@ -1,3 +1,5 @@
+import './cvWindow.scss';
+
 import AskNicely from 'ask-nicely';
 import React, {Component} from 'react';
 import mugshotImage from './mugshot.jpg';
@@ -10,10 +12,16 @@ const cvProperties = {
 	'Birth': '10-JUL-1988'
 };
 
-const cvContent = <div>
+const cvContent = <div className="cv-root">
 	<h1>Curriculum vitae</h1>
-	<img src={mugshotImage} />
-	<PropertiesComponent {...cvProperties} />
+	<div className="flex-row flex-gutter flex-items-center">
+		<div className="flex-fixed">
+			<img src={mugshotImage} style={{ width: '100px', height: '100px' }} />
+		</div>
+		<div className="flex-fluid">
+			<PropertiesComponent {...cvProperties} />
+		</div>
+	</div>
 	<p>My professional vitae so far has been:</p>
 	<ol>
 		<li>Teach self to write HTML, CSS, PHP, MySQL (2001 - 2013)</li>
