@@ -129,47 +129,49 @@ export default class RootComponent extends Component {
 
 	render() {
 		let className = 'flex-row flex-gutter ' + (this.state.isSkewed ? 'skewed' : 'straight');
-		return (<oksee className={className}>
-			<WindowContainerComponent />
-			<oksee-plugboard class="flex-fluid flex-column flex-gutter flex-space-between">
-				<div className="flex-column flex-gutter">
-					<oksee-plugboard-version class="flex-row flex-gutter">
-						<div>SOURCE: bundle.js?t={new Date().getTime()}</div>
-						<div>BUILD: 367</div>
-					</oksee-plugboard-version>
-					<oksee-status-board class="flex-row">
-						<StatusButtonComponent
-							name="skew projection"
-							enabled={ this.state.isSkewed }
-							toggle={(currentState) => { this.setState({ isSkewed: !currentState }); }}
-						/>
-					</oksee-status-board>
-				</div>
-				<div>NERF</div>
-			</oksee-plugboard>
-			<SystemComponent>
-				<ConsoleOutputComponent
-					logger={secondaryLogger}
-					maxHistory={5}
-				/>
-				<FlagComponent />
-				<oksee-menu class="flex-row flex-fixed">
-					<MenuItemComponent input='motd' />
-					<MenuItemComponent input='who' />
-					<MenuItemComponent input='view' />
-					<MenuItemComponent input='--help' />
-				</oksee-menu>
-				<oksee-console class="flex-fluid">
+		return (<div>
+			<oksee className={className}>
+				<oksee-plugboard class="flex-fluid flex-column flex-gutter flex-space-between">
+					<div className="flex-column flex-gutter">
+						<oksee-plugboard-version class="flex-row flex-gutter">
+							<div>SOURCE: bundle.js?t={new Date().getTime()}</div>
+							<div>BUILD: 367</div>
+						</oksee-plugboard-version>
+						<oksee-status-board class="flex-row">
+							<StatusButtonComponent
+								name="skew projection"
+								enabled={ this.state.isSkewed }
+								toggle={(currentState) => { this.setState({ isSkewed: !currentState }); }}
+							/>
+						</oksee-status-board>
+					</div>
+					<div>NERF</div>
+				</oksee-plugboard>
+				<SystemComponent>
 					<ConsoleOutputComponent
-						logger={primaryLogger}
+						logger={secondaryLogger}
+						maxHistory={5}
 					/>
-					<ConsoleInputComponent
-						console={app.console}
-						logger={primaryLogger}
-						handleSubmit={app.submit.bind(app)}
-					/>
-				</oksee-console>
-			</SystemComponent>
-		</oksee>);
+					<FlagComponent />
+					<oksee-menu class="flex-row flex-fixed">
+						<MenuItemComponent input='motd' />
+						<MenuItemComponent input='who' />
+						<MenuItemComponent input='view' />
+						<MenuItemComponent input='--help' />
+					</oksee-menu>
+					<oksee-console class="flex-fluid">
+						<ConsoleOutputComponent
+							logger={primaryLogger}
+						/>
+						<ConsoleInputComponent
+							console={app.console}
+							logger={primaryLogger}
+							handleSubmit={app.submit.bind(app)}
+						/>
+					</oksee-console>
+				</SystemComponent>
+			</oksee>
+			<WindowContainerComponent />
+		</div>);
 	}
 }

@@ -1,6 +1,7 @@
 import './draggable.scss';
 
 import React, {Component} from 'react';
+import PropertiesComponent from '../components/PropertiesComponent';
 
 function stopDrag (component, e) {
 	component.lastDragStart = null;
@@ -10,6 +11,9 @@ function stopDrag (component, e) {
 
 	component.refs.draggable.addEventListener('mousedown', component.onDragStart);
 
+	component.setState({
+		ghost: false
+	});
 	e.preventDefault();
 }
 
@@ -18,6 +22,7 @@ export default class DraggableComponent extends Component {
 		super();
 
 		this.state = {
+			ghost: false,
 			x: 0,
 			y: 0
 		};
@@ -34,9 +39,20 @@ export default class DraggableComponent extends Component {
 			this.lastDragStart = {
 				x: e.clientX,
 				y: e.clientY,
+				width: bb.width,
+				height: bb.height,
 				left: bb.left,
 				top: bb.top
 			};
+
+			this.setState({
+				ghost: {
+					width: (bb.width + 10) + 'px',
+					height: (bb.height + 10) + 'px',
+					top: bb.top - 5,
+					left: bb.left - 5
+				}
+			});
 
 			this.refs.draggable.removeEventListener('mousedown', this.onDragStart);
 
@@ -74,15 +90,33 @@ export default class DraggableComponent extends Component {
 	}
 
 	render() {
+
 		let style = {
 			top: this.state.y,
-			left: this.state.x,
-			position: 'absolute'
+			left: this.state.x
 		};
-		return (<oksee-draggable
-			ref='draggable'
-			style={style}
-			onMouseDown={this.onDragStart}
-		>{this.props.children}</oksee-draggable>);
+
+		let ghost = null;
+
+		if(this.state.ghost) {
+			let dicks = {
+				'position': `${this.state.x}, ${this.state.y}`,
+				'delta': `${this.state.x - this.lastDragStart.left}, ${this.state.y - this.lastDragStart.top}`,
+				'size': `${this.lastDragStart.width} x ${this.lastDragStart.height}`
+			};
+			ghost = (<oksee-draggable-ghost style={this.state.ghost}>
+				<PropertiesComponent {...dicks} />
+				<p>Release mouse to drop</p>
+			</oksee-draggable-ghost>);
+		}
+
+		return (<oksee-draggable-wrapper>
+			{ghost}
+			<oksee-draggable
+				ref='draggable'
+				style={style}
+				onMouseDown={this.onDragStart}
+			>{this.props.children}</oksee-draggable>
+		</oksee-draggable-wrapper>);
 	}
 }

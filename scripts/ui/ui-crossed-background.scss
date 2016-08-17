@@ -1,4 +1,4 @@
-@function ui-crossed-background ($color, $width: 1px) {
+@function ui-crossed-background ($color, $width: 0.8px) {
 	@return linear-gradient(to top left,
 			rgba($color, 0) 0%,
 			rgba($color, 0) calc(50% - #{$width}),

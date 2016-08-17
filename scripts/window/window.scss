@@ -1,5 +1,9 @@
 @import '../ui';
-
+oksee-window-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
 oksee-window {
 	@include ui-box-colors(ui-color('bg'));
 	min-height: 2 * ui-length('grid-item');

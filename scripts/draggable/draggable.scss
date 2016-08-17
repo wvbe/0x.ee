@@ -1,2 +1,19 @@
 @import '../ui';
-
+oksee-draggable-wrapper,
+oksee-draggable-ghost,
+oksee-draggable {
+	display: block;
+}
+oksee-draggable-wrapper {
+	position: relative;
+	> * {
+		position: absolute;
+	}
+	oksee-draggable-ghost {
+		@include ui-box-padding();
+		background: ui-crossed-background(ui-color('line'));
+		box-sizing: border-box;
+		background-color: rgba(ui-color('bg'), 0.7);
+		border: 1px solid ui-color('line');
+	}
+}
