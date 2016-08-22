@@ -1,7 +1,7 @@
 import './menu.scss';
 
 import React, {Component} from 'react';
-import app from '../command/main-app';
+import api from '../api';
 
 
 export default class MenuItemComponent extends Component {
@@ -22,7 +22,7 @@ export default class MenuItemComponent extends Component {
 	 */
 	handleClick (event) {
 		if(this.props.input)
-			return app.submit(this.props.input);
+			return api.submit(this.props.input);
 
 		if(!this.props.onClick)
 			return;
@@ -68,9 +68,9 @@ export default class MenuItemComponent extends Component {
 		if(!this.props.input)
 			return;
 
-		this.setBusy(!!app.busyReasons.length);
+		this.setBusy(!!api.busyReasons.length);
 
-		this.onComponentWillUnmount.push(app.on('busy', busyReasons => this.setBusy(busyReasons.length)));
+		this.onComponentWillUnmount.push(api.on('busy', busyReasons => this.setBusy(busyReasons.length)));
 	}
 	componentWillUnmount () {
 		this.onComponentWillUnmount.forEach(cb => cb());

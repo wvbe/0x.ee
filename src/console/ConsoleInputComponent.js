@@ -2,7 +2,7 @@ import './console-input.scss';
 
 import React, {Component} from 'react';
 
-import app from '../command/main-app';
+import api from '../api';
 /**
  * An input bar with reactive cursor hack etc.
  */
@@ -71,7 +71,7 @@ export default class ConsoleInputComponent extends Component {
 
 	componentDidMount() {
 		window.document.addEventListener('selectionchange', this.handleSelectionChange);
-		this.onDestroy.push(app.on('busy', busyReasons => {
+		this.onDestroy.push(api.on('busy', busyReasons => {
 			this.setState({
 				busy: !!busyReasons.length,
 				busyMessage: busyReasons.join(', ')

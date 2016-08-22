@@ -1,6 +1,7 @@
 import './scaffolding.scss';
 
 import React, {Component} from 'react';
+import {render} from 'react-dom';
 
 import GridComponent from './grid/GridComponent';
 import FlagComponent from './flag/FlagComponent';
@@ -11,11 +12,11 @@ import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import StatusButtonComponent from './status/StatusButtonComponent';
 import WindowContainerComponent from './window/WindowContainerComponent';
-import app from './command/main-app';
-import LogHelper from './log/LogHelper';
 
-const primaryLogger = app.primaryLogger;
-const secondaryLogger = app.secondaryLogger;
+import api from './api';
+
+const primaryLogger = api.primaryLogger;
+const secondaryLogger = api.secondaryLogger;
 
 function  submitFromHash (event) {
 	var hashbang = (window.location.hash || '').trim(),
@@ -25,9 +26,9 @@ function  submitFromHash (event) {
 			: hashbang.substr(3)
 			: '';
 
-	app.secondaryLogger.log('Submit "' + content + '"', 'hash');
+	api.secondaryLogger.log('Submit "' + content + '"', 'hash');
 
-	app.submit(content);
+	api.submit(content);
 }
 
 function submitFromClick (event) {
@@ -38,13 +39,13 @@ function submitFromClick (event) {
 		href = event.target.getAttribute('href');
 
 	if(command) {
-		app.secondaryLogger.log('Submit "' + command + '"', 'mouse');
-		app.submit(command);
+		api.secondaryLogger.log('Submit "' + command + '"', 'mouse');
+		api.submit(command);
 	}
 
 	else if(href) {
-		app.secondaryLogger.log('Redir "' + href + '"', 'href');
-		app.submit('redir ' + href);
+		api.secondaryLogger.log('Redir "' + href + '"', 'href');
+		api.submit('redir ' + href);
 	}
 
 	else {
@@ -55,8 +56,8 @@ function submitFromClick (event) {
 }
 
 function playBootSequence () {
-	let bootTimeLength = app.config('bootTimeLength'),
-		unsetBusyReason = app.setBusyReason('console offline');
+	let bootTimeLength = api.config('bootTimeLength'),
+		unsetBusyReason = api.setBusyReason('console offline');
 
 	// Bunch of rubarb
 	secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
@@ -90,7 +91,7 @@ function playBootSequence () {
 
 			unsetBusyReason();
 
-			app.submit(hashbang.substr(3, 1) === '~'
+			api.submit(hashbang.substr(3, 1) === '~'
 				? new Buffer(hashbang.substr(4), 'base64').toString()
 				: hashbang.substr(3));
 		} else {
@@ -98,18 +99,17 @@ function playBootSequence () {
 
 			unsetBusyReason();
 
-			app.submit('motd');
+			api.submit('motd');
 		}
 	}, bootTimeLength);
 }
 
-
-export default class RootComponent extends Component {
+class RootComponent extends Component {
 	constructor () {
 		super();
 
 		this.state = {
-			isSkewed: app.config('isSkewed'),
+			isSkewed: api.config('isSkewed'),
 			windows: []
 		};
 	}
@@ -164,9 +164,9 @@ export default class RootComponent extends Component {
 							logger={primaryLogger}
 						/>
 						<ConsoleInputComponent
-							console={app.console}
+							console={api.console}
 							logger={primaryLogger}
-							handleSubmit={app.submit.bind(app)}
+							handleSubmit={api.submit.bind(api)}
 						/>
 					</oksee-console>
 				</SystemComponent>
@@ -175,3 +175,8 @@ export default class RootComponent extends Component {
 		</div>);
 	}
 }
+
+render(
+	<RootComponent />,
+	document.getElementById('root')
+);

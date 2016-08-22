@@ -1,7 +1,7 @@
 import './window.scss';
 
 import React, {Component} from 'react';
-import app from '../command/main-app';
+import api from '../api';
 import MenuItemComponent from '../menu/MenuItemComponent';
 import ToastComponent from '../toast/ToastComponent';
 
@@ -12,7 +12,7 @@ export default class WindowComponent extends Component {
 			ready: false
 		};
 		this.close = () => {
-			app.emit('window:destroy', this.props.name);
+			api.emit('window:destroy', this.props.name);
 		}
 	}
 

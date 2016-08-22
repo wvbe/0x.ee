@@ -1,6 +1,6 @@
-import Console from '../console/Console';
-import LogHelper from '../log/LogHelper';
-import EventEmitter from '../util/EventEmitter';
+import Console from './console/Console';
+import LogHelper from './log/LogHelper';
+import EventEmitter from './util/EventEmitter';
 
 function turnIntoMysteriousString (str) {
 	return new Buffer(str)
@@ -20,6 +20,11 @@ var fakeErrorSendTimeout = null,
 
 const CONFIG = Symbol('config');
 const QUEUE = Symbol('submit queue');
+
+// EVENTS:
+// busy - Emits an updated list of reasons why the UI is simulated to be busy. If length is 0 the system is not busy.
+// window:new - A new window was opened. Two arguments for name and contents resp.
+// window:destroy - A window of given name was closed
 
 class App extends EventEmitter {
 	constructor (config) {
@@ -113,15 +118,15 @@ class App extends EventEmitter {
 	}
 }
 
-import whoCommand from './whoCommand';
-import motdCommand from './motdCommand';
-import rootCommand from './rootCommand';
-import helpCommand from './helpCommand';
-import viewCommand from './viewCommand';
-import redirCommand from './redirCommand';
-import cvCommand from './cvCommand';
-import testCommand from './testCommand';
-import colophonCommand from './colophonCommand';
+import whoCommand from './command/whoCommand';
+import motdCommand from './command/motdCommand';
+import rootCommand from './command/rootCommand';
+import helpCommand from './command/helpCommand';
+import viewCommand from './command/viewCommand';
+import redirCommand from './command/redirCommand';
+import cvCommand from './command/cvCommand';
+import testCommand from './command/testCommand';
+import colophonCommand from './command/colophonCommand';
 
 const app = new App({
 	isSkewed: false,

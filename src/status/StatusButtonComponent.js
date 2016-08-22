@@ -1,5 +1,5 @@
 import './status-button.scss';
-import app from '../command/main-app';
+import api from '../api';
 import React, {Component} from 'react';
 
 export default class StatusButtonComponent extends Component {
@@ -7,7 +7,7 @@ export default class StatusButtonComponent extends Component {
 		super();
 
 		this.switchState = function () {
-			app.secondaryLogger.log(
+			api.secondaryLogger.log(
 				`Toggle ${this.props.name}: ${!this.props.enabled}`,
 				`Status`);
 
