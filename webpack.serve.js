@@ -7,7 +7,7 @@ var config = Object.assign({}, require('./webpack.config'), {
 	entry: [
 		'webpack-dev-server/client?http://localhost:5000',
 		'webpack/hot/dev-server',
-		'./scripts/index'
+		'./src/index'
 	],
 	output: {
 		path: __dirname,

@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = Object.assign({}, require('./webpack.config'), {
-	entry: './scripts/index',
+	entry: './src/index',
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'bundle.js',
