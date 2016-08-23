@@ -54,6 +54,8 @@ export default class Api extends EventEmitter {
 	}
 
 	submit (content) {
+		if(!content || !content.trim())
+			return;
 		if(this.busyReasons.length) {
 			this[QUEUE].push(content);
 			return;

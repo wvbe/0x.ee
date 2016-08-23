@@ -1,6 +1,7 @@
 @import '../ui';
 
 oksee-console-input {
+
 	@include ui-box();
 	@include ui-click-effect() {
 		oksee-console-input-cursor {
@@ -24,6 +25,10 @@ oksee-console-input {
 		background: ui-color('fg');
 		border-color: ui-color('fg');
 	}
+
+	&.has-focus:not(:hover) {
+		@include ui-striped-background(ui-color('line'));
+	}
 	&.no-focus:not(:hover) oksee-console-input-cursor {
 		background: transparent;
 		border-color: ui-color('fg-dim');
@@ -33,20 +38,22 @@ oksee-console-input {
 	}
 }
 oksee-console-input-field {
-	white-space: pre;
+	white-space: pre-wrap;
 	> * {
 		@include ui-user-select();
-		display: inline-block;
 		vertical-align: middle;
-		height: ui-length('line');
 	}
 }
 
 @include ui-blink-keyframes();
 oksee-console-input-cursor {
+
+	display: inline-block;
+	height: ui-length('line');
 	min-width: 5px;
 	background-color: transparent;
 	border: 1px solid transparent;
 	color: ui-color('bg');
+	box-sizing: border-box;
 }
 

@@ -15,12 +15,37 @@ export default class ConsoleInputComponent extends Component {
 			input: '',
 			hasFocus: false,
 			selectionStart: 0,
-			selectionEnd: 0
+			selectionEnd: 0,
+			historyInput: null
 		};
 
 		this.onDestroy = [];
 
+		this.stashedInput = null;
+		this.historyCursor = 0;
 		this.handleKeyDown = function (event) {
+			if(event.which === 38 || event.which === 40) {
+				let history = api.store.get('history');
+				// 38 (up)
+				if(event.which === 38 && this.historyCursor < history.length)
+					++this.historyCursor;
+				else if(event.which === 40 && this.historyCursor > 0)
+					--this.historyCursor;
+				this.setState({
+					historyInput: history[history.length - this.historyCursor] || null
+				});
+
+				return event.preventDefault();
+			} else if(this.historyCursor) {
+				this.historyCursor = 0;
+				this.setState({
+					input: this.state.historyInput,
+					historyInput: null
+				});
+			}
+
+
+			// Stop backspaces from unfocusing anything for some reason
 			if(event.which === 8
 				&& ['input', 'textarea'].indexOf(event.target.tagName.toLowerCase()) >= 0
 				&& !this.state.input.length) {
@@ -97,10 +122,15 @@ export default class ConsoleInputComponent extends Component {
 	onSubmit (event) {
 		event.preventDefault();
 
-		const input = this.state.input;
+		const input = this.state.historyInput === null
+			? this.state.input
+			: this.state.historyInput;
+
+		this.historyCursor = 0;
 
 		this.setState({
-			input: ''
+			input: '',
+			historyInput: null
 		});
 
 		if(!this.state.busy)
@@ -143,7 +173,7 @@ export default class ConsoleInputComponent extends Component {
 				/>
 			</form>
 			<oksee-console-input-field>{
-				this.state.busy ? this.state.busyMessage : this.renderInputRuler()
+				this.state.busy ? this.state.busyMessage : (this.state.historyInput === null ? this.renderInputRuler() : this.state.historyInput)
 			}</oksee-console-input-field>
 		</oksee-console-input>);
 	}
