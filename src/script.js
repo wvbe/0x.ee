@@ -77,8 +77,21 @@ function playBootSequence () {
 
 	// Start running the initial command: something from the URL hash or 'motd'
 	setTimeout(() => {
+		let lastVisit = api.store.get('last-submit'),
+			history = api.store.get('history');
+		if(lastVisit) {
+			primaryLogger.log(`Welcome back, last visited on: ${new Date(parseInt(lastVisit))}`);
+			primaryLogger.log(`  found ${history.length} commands in your history`);
+			primaryLogger.log(<div>Type <a data-command="profile --clear">profile --clear</a> to wipe your data.</div>);
+		} else {
+			primaryLogger.log(`Looks like you haven't visited before, welcome!`);
+		}
+	}, bootTimeLength * 0.7);
+
+	setTimeout(() => {
 		// More rubarb
 		secondaryLogger.log('OK', 'init');
+
 
 		var hashbang = (window.location.hash || '').trim();
 

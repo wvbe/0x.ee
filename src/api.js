@@ -25,6 +25,37 @@ const QUEUE = Symbol('submit queue');
 // busy - Emits an updated list of reasons why the UI is simulated to be busy. If length is 0 the system is not busy.
 // window:new - A new window was opened. Two arguments for name and contents resp.
 // window:destroy - A window of given name was closed
+class Store {
+	constructor () {
+		this.defaults = {};
+	}
+
+	get (name) {
+		let val = window.localStorage.getItem(name);
+
+		if(val === null && this.defaults[name])
+			return this.defaults[name];
+
+		return JSON.parse(window.localStorage.getItem(name));
+	}
+
+	setDefault (name, val) {
+		this.defaults[name] = val;
+	}
+
+	set (name, val) {
+		window.localStorage.setItem(name, JSON.stringify(val));
+	}
+
+	push (name, val) {
+		return this.set(name, this.get(name).concat([val]));
+	}
+
+	remove (name) {
+		window.localStorage.removeItem(name);
+	}
+}
+
 
 class App extends EventEmitter {
 	constructor (config) {
@@ -36,8 +67,12 @@ class App extends EventEmitter {
 		this.busyReasons = [];
 
 		this.console = new Console();
+		this.store = new Store();
+
 		this.primaryLogger = new LogHelper();
 		this.secondaryLogger = new LogHelper();
+
+		this.store.setDefault('history', []);
 	}
 
 	config (name, value) {
@@ -57,6 +92,13 @@ class App extends EventEmitter {
 			},
 			content,
 			'#!/' + (content.indexOf(' ') >= 0 ? '~' + new Buffer(content).toString('base64') : content));
+
+		this.store.set('last-submit', new Date().getTime());
+
+		let history = this.store.get('history');
+		if(!history.length || history[history.length - 1] !== content) {
+			this.store.push('history', content);
+		}
 
 		this.primaryLogger.input(content);
 		var unsetBusy = this.setBusyReason(`executing: ${content}`);
@@ -125,12 +167,13 @@ import helpCommand from './command/helpCommand';
 import viewCommand from './command/viewCommand';
 import redirCommand from './command/redirCommand';
 import cvCommand from './command/cvCommand';
+import profileCommand from './command/profileCommand';
 import testCommand from './command/testCommand';
 import colophonCommand from './command/colophonCommand';
 
 const app = new App({
 	isSkewed: false,
-	bootTimeLength: 1000
+	bootTimeLength: 2000
 });
 
 [
@@ -141,6 +184,7 @@ const app = new App({
 	viewCommand,
 	redirCommand,
 	cvCommand,
+	profileCommand,
 	testCommand,
 	colophonCommand
 ].forEach(mod => mod(app));
