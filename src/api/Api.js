@@ -16,11 +16,40 @@ function turnIntoMysteriousString (str) {
 		.toUpperCase();
 }
 
-var fakeErrorSendTimeout = null,
-	fakeErrorSendBufferLength = 0;
-
 const CONFIG = Symbol('config');
 const QUEUE = Symbol('submit queue');
+
+function debounce (delay, fn) {
+	var timeout = null,
+		index = 0;
+
+	return (...args) => {
+		++index;
+
+		if(timeout) {
+			clearTimeout(timeout);
+		}
+
+		timeout = setTimeout(() => {
+			timeout = null;
+
+			fn(index, ...args);
+
+			index = 0;
+		}, delay);
+	}
+}
+
+const debounced = {
+	fakeExceptionReport: debounce(3000, (index, logger) => {
+		logger.log(`Send ExceptionReport (${index})`, `debug`);
+
+		setTimeout(() => {
+			logger.log(`Send ExceptionReport OK`, `debug`);
+		}, 500 + Math.random() * 500)
+	})
+};
+
 
 // EVENTS:
 // busy - Emits an updated list of reasons why the UI is simulated to be busy. If length is 0 the system is not busy.
@@ -56,10 +85,12 @@ export default class Api extends EventEmitter {
 	submit (content) {
 		if(!content || !content.trim())
 			return;
+
 		if(this.busyReasons.length) {
 			this[QUEUE].push(content);
 			return;
 		}
+
 		window.history.pushState({
 				input: content
 			},
@@ -74,7 +105,9 @@ export default class Api extends EventEmitter {
 		}
 
 		this.primaryLogger.input(content);
+
 		var unsetBusy = this.setBusyReason(`executing: ${content}`);
+
 		this.console.input(content, this.primaryLogger)
 			.catch(e => {
 
@@ -95,23 +128,7 @@ export default class Api extends EventEmitter {
 					].join(' '), `debug`);
 				}, 250);
 
-
-				// Fake sending an error report
-				++fakeErrorSendBufferLength;
-
-				if(fakeErrorSendTimeout)
-					clearTimeout(fakeErrorSendTimeout);
-
-				fakeErrorSendTimeout = setTimeout(() => {
-					fakeErrorSendTimeout = null;
-
-					this.secondaryLogger.log(`Send ExceptionReport (${fakeErrorSendBufferLength})`, `debug`);
-					fakeErrorSendBufferLength = 0;
-
-					setTimeout(() => {
-						this.secondaryLogger.log(`Send ExceptionReport OK`, `debug`);
-					}, 500 + Math.random() * 500)
-				}, 3000);
+				debounced.fakeExceptionReport(this.secondaryLogger);
 			})
 			.then(() => {
 				unsetBusy();

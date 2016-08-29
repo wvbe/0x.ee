@@ -3,7 +3,11 @@ import './cvWindow.scss';
 import AskNicely from 'ask-nicely';
 import React, {Component} from 'react';
 import mugshotImage from './mugshot.jpg';
+import terribleAnimatedHeaderImage from './cv-header.gif';
+import terribleAnimatedCounterImage from './cv-counter.gif';
+import terribleAnimatedEmailImage from './cv-email.gif';
 import PropertiesComponent from '../components/PropertiesComponent';
+
 
 const cvProperties = {
 	'Name': 'Wybe Minnebo',
@@ -13,7 +17,8 @@ const cvProperties = {
 };
 
 const cvContent = <div className="cv-root">
-	<h1>Curriculum vitae</h1>
+	<img src={terribleAnimatedHeaderImage} alt="curriculum vitae" />
+
 	<div className="flex-row flex-gutter flex-items-center">
 		<div className="flex-fixed">
 			<img src={mugshotImage} style={{ width: '100px', height: '100px' }} />
@@ -22,6 +27,9 @@ const cvContent = <div className="cv-root">
 			<PropertiesComponent {...cvProperties} />
 		</div>
 	</div>
+
+	<hr />
+
 	<p>My professional vitae so far has been:</p>
 	<ol>
 		<li>Teach self to write HTML, CSS, PHP, MySQL (2001 - 2013)</li>
@@ -37,6 +45,12 @@ const cvContent = <div className="cv-root">
 			<li>Lots of cool stuff</li>
 		</ul>
 	</ol>
+
+	<div style={{textAlign: 'center'}}>
+		<p>The amount of visitors on my home page: <img src={terribleAnimatedCounterImage} /></p>
+		<p><b>Copyright (c) 2003 Wybe Minnebo, the netherlands</b></p>
+		<p style={{fontSize: '0.5em'}}>If you are the maker of the animated gifs on this site you can have full copyright. please email us and we will give you major credit or even affiliate with you!!!!</p>
+	</div>
 </div>;
 
 export default function (app) {
