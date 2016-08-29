@@ -1,6 +1,7 @@
 import Api from './api/Api';
 
 import whoCommand from './command/whoCommand';
+import echoCommand from './command/echoCommand';
 import motdCommand from './command/motdCommand';
 import rootCommand from './command/rootCommand';
 import helpCommand from './command/helpCommand';
@@ -18,6 +19,7 @@ const api = new Api({
 
 [
 	whoCommand,
+	echoCommand,
 	motdCommand,
 	rootCommand,
 	helpCommand,

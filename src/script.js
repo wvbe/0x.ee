@@ -83,7 +83,7 @@ function playBootSequence () {
 		if(lastVisit) {
 			primaryLogger.log(`Welcome back, last visited on: ${new Date(parseInt(lastVisit))}`);
 			primaryLogger.log(`  found ${history.length} commands in your history`);
-			primaryLogger.log(<div>Type <a data-command="profile clear">profile clear</a> to wipe your data or <a data-command="profile history">profile history</a>.</div>);
+			primaryLogger.log(<div>Type <a data-command="profile clear">profile clear</a> to wipe your data or <a data-command="profile history">profile history</a> to view.</div>);
 		} else {
 			primaryLogger.log(`Looks like you haven't visited before, welcome!`);
 		}

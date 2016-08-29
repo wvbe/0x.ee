@@ -6,8 +6,6 @@ oksee-window-container {
 }
 oksee-window {
 	@include ui-box-colors(ui-color('bg'));
-	min-height: 2 * ui-length('grid-item');
-	min-width: 500px;
 }
 
 oksee-window-header {

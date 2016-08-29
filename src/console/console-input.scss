@@ -29,9 +29,13 @@ oksee-console-input {
 	&.has-focus:not(:hover) {
 		@include ui-striped-background(ui-color('line'));
 	}
-	&.no-focus:not(:hover) oksee-console-input-cursor {
-		background: transparent;
-		border-color: ui-color('fg-dim');
+
+	&.no-focus:not(:hover) {
+		@include ui-striped-background(ui-color('bg-alt'));
+		oksee-console-input-cursor {
+			background: transparent;
+			border-color: ui-color('fg-dim');
+		}
 	}
 	&.busy oksee-console-input-cursor {
 		display: none;

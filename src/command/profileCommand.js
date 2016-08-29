@@ -22,8 +22,18 @@ export default function (app) {
 			res.log('Dump command history...');
 			res.log('-----------------------');
 
-			app.store.get('history').forEach(item => {
-				res.log(item);
-			});
-		});
+			let history = app.store.get('history');
+			history
+				.slice(
+					req.options.limit === '*' ? 0 : history.length - parseInt(req.options.limit)
+				)
+				.forEach((item, i) => {
+					res.log(item, 'hist' + i);
+				});
+		})
+		.addOption(new AskNicely.Option('limit')
+			.setShort('l')
+			.setDefault(10, true)
+			.setDescription('Limit the amount of commands displayed, defaults to 10. Set to "*" to show all.')
+		);
 }
