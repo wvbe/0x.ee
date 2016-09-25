@@ -16,7 +16,12 @@ function stopDrag (component, e) {
 	});
 	e.preventDefault();
 }
-
+function getStyleForDelta(delta) {
+	return {
+		width: Math.sqrt(delta.x*delta.x + delta.y*delta.y),
+		transform: Math.atan2(delta.y, delta.x)// + (delta.y > 0 ? 2 * Math.PI : 0)
+	}
+}
 export default class DraggableComponent extends Component {
 	constructor () {
 		super();
@@ -56,6 +61,7 @@ export default class DraggableComponent extends Component {
 
 			this.refs.draggable.removeEventListener('mousedown', this.onDragStart);
 
+
 			window.addEventListener('mouseup', this.onDragStop);
 			window.addEventListener('mousemove', this.onDragMove);
 
@@ -65,6 +71,24 @@ export default class DraggableComponent extends Component {
 		this.onDragMove = (e) => {
 			let dx = e.clientX - this.lastDragStart.x,
 				dy = e.clientY - this.lastDragStart.y;
+
+			if(this.angleCanvas) {
+				let ctx = this.angleCanvas.getContext("2d"),
+					transform = getStyleForDelta({ x: dx, y: dy });
+				console.log(transform);
+				ctx.clearRect(0, 0, 36, 36);
+				ctx.beginPath();
+				ctx.arc(
+					18,
+					18,
+					16,
+					0,
+					transform.transform,
+					true
+				);
+				ctx.strokeStyle = '#2c2c2c';
+				ctx.stroke();
+			}
 
 			this.setState({
 				x: this.lastDragStart.left + dx,
@@ -99,14 +123,28 @@ export default class DraggableComponent extends Component {
 		let ghost = null;
 
 		if(this.state.ghost) {
-			let dicks = {
-				'position': `${this.state.x}, ${this.state.y}`,
-				'delta': `${this.state.x - this.lastDragStart.left}, ${this.state.y - this.lastDragStart.top}`,
-				'size': `${this.lastDragStart.width} x ${this.lastDragStart.height}`
-			};
+			let delta = {
+					x:this.state.x - this.lastDragStart.left,
+					y: this.state.y - this.lastDragStart.top
+				},
+				transform = getStyleForDelta(delta),
+				dickStyle = {
+					width: `${transform.width}px`,
+					transform: `rotate(${transform.transform}rad)`
+				},
+				dicks = {
+					'position': `${this.state.x}, ${this.state.y}`,
+					'delta': `${delta.x}, ${delta.y}`,
+					'size': `${this.lastDragStart.width} x ${this.lastDragStart.height}`,
+					'vector': `${Math.round(transform.width * 100) / 100}, ${transform.transform}rad`
+				};
 			ghost = (<oksee-draggable-ghost style={this.state.ghost}>
+				<hr style={dickStyle}/>
+				<hr style={dickStyle}/>
+				<hr style={dickStyle}/>
+				<hr style={dickStyle}/>
+				<canvas width="36" height="36" ref={(c) => this.angleCanvas = c }/>
 				<PropertiesComponent {...dicks} />
-				<p>Release mouse to drop</p>
 			</oksee-draggable-ghost>);
 		}
 

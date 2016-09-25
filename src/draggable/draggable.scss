@@ -11,9 +11,38 @@ oksee-draggable-wrapper {
 	}
 	oksee-draggable-ghost {
 		@include ui-box-padding();
-		background: ui-crossed-background(ui-color('line'));
+		background: ui-crossed-background(ui-color('line-soft'));
 		box-sizing: border-box;
 		background-color: rgba(ui-color('bg'), 0.7);
 		border: 1px solid ui-color('line');
+
+		> hr {
+			transform-origin: top left;
+			position: absolute;
+			border-top: 1px dashed ui-color('line');
+
+			&:nth-child(1) {
+				top: 0;
+				left: 0;
+			}
+			&:nth-child(2) {
+				top: 100%;
+				left: 0;
+			}
+			&:nth-child(3) {
+				top: 100%;
+				left: 100%;
+			}
+			&:nth-child(4) {
+				top: 0;
+				left: 100%;
+			}
+		}
+		canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			transform: translate(-50%, -50%);
+		}
 	}
 }
