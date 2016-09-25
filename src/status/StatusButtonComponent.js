@@ -19,7 +19,7 @@ export default class StatusButtonComponent extends Component {
 		let statusString = this.props.enabled ? 'enabled' : 'disabled';
 		return (<oksee-status-button class="flex-row flex-gutter flex-items-center" onClick={this.switchState}>
 			<div
-				className="oksee-status-button__checkbox"
+				className="oksee-status-button__widget"
 				data-checkbox-state={statusString}
 			></div>
 			<div className="flex-column">

@@ -48,6 +48,10 @@ export default class ConsoleOutputComponent extends Component {
 
 		this.internalTimeout = setTimeout(updateHistory, 25);
 	}
+	shouldComponentUpdate (nextProps, nextState) {
+		return !!this.internalQueue.length;
+	}
+
 	componentDidMount () {
 		// When logger is called from anywhere, do:
 		this.outputDestroyer = this.props.logger.onOutput(this.slobberNewOutput.bind(this));

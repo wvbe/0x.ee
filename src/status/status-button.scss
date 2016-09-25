@@ -3,14 +3,23 @@
 oksee-status-board {
 	@include ui-box-colors();
 }
-oksee-status-button {
+oksee-status-button,
+oksee-status-widget{
 	padding: ui-length('small') ui-length('line');
 	white-space: nowrap;
 
-	[data-checkbox-state] {
+	.oksee-status-button__widget {
 		display: block;
-		height: ui-length('small');
-		width: ui-length('small');
+		min-height: ui-length('small');
+		min-width: ui-length('small');
+	}
+	.oksee-status-button__status {
+		@include ui-steno('small');
+	}
+}
+
+oksee-status-button {
+	[data-checkbox-state] {
 		background-color: green;
 		border: 1px solid ui-color('fg');
 	}
@@ -19,9 +28,6 @@ oksee-status-button {
 	}
 	[data-checkbox-state='disabled'] {
 		background: transparent;//ui-crossed-background(ui-color('fg'));
-	}
-	.oksee-status-button__status {
-		@include ui-steno('small');
 	}
 
 	// @TODO: Make mixin

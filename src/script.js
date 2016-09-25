@@ -11,6 +11,7 @@ import MenuItemComponent from './menu/MenuItemComponent';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import StatusButtonComponent from './status/StatusButtonComponent';
+import StatusWidgetComponent from './status/StatusWidgetComponent';
 import WindowContainerComponent from './window/WindowContainerComponent';
 
 import api from './api';
@@ -125,6 +126,8 @@ class RootComponent extends Component {
 			isSkewed: api.config('isSkewed'),
 			windows: []
 		};
+
+		this.nerfPerDerpDestroyer = null;
 	}
 
 	componentDidMount () {
@@ -138,6 +141,8 @@ class RootComponent extends Component {
 	componentWillUnmount () {
 		window.removeEventListener('hashchange', submitFromHash);
 		window.removeEventListener('click', submitFromClick);
+
+		clearInterval(this.nerfPerDerpDestroyer);
 	}
 
 	render() {
@@ -151,6 +156,11 @@ class RootComponent extends Component {
 							<div>BUILD: 367</div>
 						</oksee-plugboard-version>
 						<oksee-status-board class="flex-row">
+							<StatusWidgetComponent
+								name="LPS"
+								status="experimental"
+								enabled={ false }
+							>N/D</StatusWidgetComponent>
 							<StatusButtonComponent
 								name="skew projection"
 								enabled={ this.state.isSkewed }
