@@ -184,6 +184,7 @@ class RootComponent extends Component {
 					<oksee-console class="flex-fluid">
 						<ConsoleOutputComponent
 							logger={primaryLogger}
+							maxHistory={100}
 						/>
 						<ConsoleInputComponent
 							console={api.console}

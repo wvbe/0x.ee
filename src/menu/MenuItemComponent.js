@@ -21,20 +21,16 @@ export default class MenuItemComponent extends Component {
 	 * @returns {*}
 	 */
 	handleClick (event) {
+		if(!this.props.onClick && !this.props.input)
+			return;
+
+		event.preventDefault();
+
 		if(this.props.input)
 			return api.submit(this.props.input);
 
-		if(!this.props.onClick)
-			return;
-
-		this.setBusy(true);
-
 		// @NOTE: intentionally not taking uncaught errors into account
-		Promise.resolve(this.props.onClick(event))
-			.then(v => {
-				this.setBusy(false);
-				return v;
-			});
+		return Promise.resolve(this.props.onClick(event));
 	}
 
 	/**

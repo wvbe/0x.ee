@@ -11,9 +11,11 @@ export default class ConsoleOutputComponent extends Component {
 		//props.logger
 		//props.maxHistory
 		this.state = {
-			history: []
+			historyStart: 0,
+			historyEnd: 0
 		};
 
+		this.history = [];
 		this.internalQueue = [];
 		this.internalTimeout = null;
 	}
@@ -32,15 +34,12 @@ export default class ConsoleOutputComponent extends Component {
 				return;
 			}
 
-			let history = this.state.history;
-
-			history.push(this.internalQueue.shift());
+			this.history.push(this.internalQueue.shift());
 
 			// Replace history, trim if necessary
 			this.setState({
-				history: this.props.maxHistory && history.length > this.props.maxHistory
-					? history.slice(history.length - this.props.maxHistory)
-					: history
+				historyStart: Math.max(0, this.history.length - this.props.maxHistory),
+				historyEnd: this.history.length
 			});
 
 			this.internalTimeout = setTimeout(updateHistory, 25);
@@ -64,7 +63,7 @@ export default class ConsoleOutputComponent extends Component {
 
 	render() {
 		return (<oksee-console-output>
-			{this.state.history.map((log, i) => <ConsoleLogComponent key={i}>{log}</ConsoleLogComponent>)}
+			{this.history.slice(this.state.historyStart, this.state.historyEnd).map((log, i) => <ConsoleLogComponent key={i}>{log}</ConsoleLogComponent>)}
 		</oksee-console-output>);
 	}
 }

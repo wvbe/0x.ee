@@ -5,7 +5,6 @@ import React, {Component} from 'react';
 import mugshotImage from './mugshot.jpg';
 import terribleAnimatedHeaderImage from './cv-header.gif';
 import terribleAnimatedCounterImage from './cv-counter.gif';
-import terribleAnimatedEmailImage from './cv-email.gif';
 import PropertiesComponent from '../components/PropertiesComponent';
 
 

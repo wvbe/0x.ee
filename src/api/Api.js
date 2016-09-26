@@ -2,6 +2,7 @@ import Console from './Console';
 import Logger from './Logger';
 import Store from './Store';
 import EventEmitter from '../util/EventEmitter';
+import debounce from '../util/debounce';
 
 function turnIntoMysteriousString (str) {
 	return new Buffer(str)
@@ -19,26 +20,6 @@ function turnIntoMysteriousString (str) {
 const CONFIG = Symbol('config');
 const QUEUE = Symbol('submit queue');
 
-function debounce (delay, fn) {
-	var timeout = null,
-		index = 0;
-
-	return (...args) => {
-		++index;
-
-		if(timeout) {
-			clearTimeout(timeout);
-		}
-
-		timeout = setTimeout(() => {
-			timeout = null;
-
-			fn(index, ...args);
-
-			index = 0;
-		}, delay);
-	}
-}
 
 const debounced = {
 	fakeExceptionReport: debounce(3000, (index, logger) => {
