@@ -8,6 +8,10 @@ function getClockTime (date) {
 }
 
 export default class LogInputComponent extends Component {
+	shouldComponentUpdate (nextProps, nextState) {
+		return false;
+	}
+
 	render() {
 		return (<oksee-log-message class='flex-row flex-gutter' data-connotation={this.props.connotation || 'log'}>
 			<oksee-log-prefix class="flex-row flex-items-start">

@@ -16,13 +16,17 @@ export default class ConsoleOutputComponent extends Component {
 		};
 
 		this.history = [];
+		this.historyIndex = 0;
 		this.internalQueue = [];
 		this.internalTimeout = null;
 	}
 
 	slobberNewOutput (out) {
 		if(out)
-			this.internalQueue.push(out);
+			this.internalQueue.push({
+				index: ++this.historyIndex,
+				component: out
+			});
 
 		if(this.internalTimeout)
 			return;
@@ -47,9 +51,10 @@ export default class ConsoleOutputComponent extends Component {
 
 		this.internalTimeout = setTimeout(updateHistory, 25);
 	}
-	shouldComponentUpdate (nextProps, nextState) {
-		return !!this.internalQueue.length;
-	}
+
+	// shouldComponentUpdate (nextProps, nextState) {
+	// 	return !!this.internalQueue.length;
+	// }
 
 	componentDidMount () {
 		// When logger is called from anywhere, do:
@@ -63,7 +68,7 @@ export default class ConsoleOutputComponent extends Component {
 
 	render() {
 		return (<oksee-console-output>
-			{this.history.slice(this.state.historyStart, this.state.historyEnd).map((log, i) => <ConsoleLogComponent key={i}>{log}</ConsoleLogComponent>)}
+			{this.history.slice(this.state.historyStart, this.state.historyEnd).map(log => <ConsoleLogComponent key={log.index}>{log.component}</ConsoleLogComponent>)}
 		</oksee-console-output>);
 	}
 }

@@ -28,6 +28,10 @@ export default class LogErrorComponent extends Component {
 		console.log('Unmount log');
 	}
 
+	shouldComponentUpdate (nextProps, nextState) {
+		return false;
+	}
+
 	render() {
 		return (<oksee-console-log ref='el' key={this.log.key}>{this.props.children}</oksee-console-log>);
 	}
