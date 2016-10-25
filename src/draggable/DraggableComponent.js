@@ -14,13 +14,57 @@ function stopDrag (component, e) {
 	component.setState({
 		ghost: false
 	});
+
 	e.preventDefault();
 }
-function getStyleForDelta(delta) {
+
+function getTransformationForDelta(delta) {
 	return {
 		width: Math.sqrt(delta.x*delta.x + delta.y*delta.y),
-		transform: Math.atan2(delta.y, delta.x)// + (delta.y > 0 ? 2 * Math.PI : 0)
+		transform: Math.atan2(delta.y, delta.x)
 	}
+}
+
+function getGhostElement (component) {
+	let state = component.state,
+		lastDragStart = component.lastDragStart;
+
+	let delta = {
+			x:state.x - lastDragStart.left,
+			y: state.y - lastDragStart.top
+		},
+		connectingLineTransformation = getTransformationForDelta(delta),
+		connectingLineStyle = {
+			width: `${connectingLineTransformation.width}px`,
+			transform: `rotate(${connectingLineTransformation.transform}rad)`
+		},
+		connectingLineInfo = {
+			'position': [
+				state.x,
+				state.y
+			].join(', '),
+			'delta': [
+				delta.x,
+				delta.y
+			].join(', '),
+			'size': [
+				lastDragStart.width,
+				lastDragStart.height
+			].join(' x '),
+			'vector': [
+				Math.round(connectingLineTransformation.width * 1000) / 1000,
+				(Math.round(connectingLineTransformation.transform * 1000) / 1000) + 'rad'
+			].join(', ')
+		};
+
+	return (<oksee-draggable-ghost style={state.ghost}>
+		<hr style={connectingLineStyle}/>
+		<hr style={connectingLineStyle}/>
+		<hr style={connectingLineStyle}/>
+		<hr style={connectingLineStyle}/>
+		<canvas width="36" height="36" ref={(c) => component.angleCanvas = c }/>
+		<PropertiesComponent {...connectingLineInfo} />
+	</oksee-draggable-ghost>);
 }
 export default class DraggableComponent extends Component {
 	constructor () {
@@ -31,6 +75,8 @@ export default class DraggableComponent extends Component {
 			x: 0,
 			y: 0
 		};
+
+		this.angleCanvas = null;
 
 		this.lastDragStart = null;
 
@@ -74,18 +120,11 @@ export default class DraggableComponent extends Component {
 
 			if(this.angleCanvas) {
 				let ctx = this.angleCanvas.getContext("2d"),
-					transform = getStyleForDelta({ x: dx, y: dy });
-				console.log(transform);
+					transform = getTransformationForDelta({ x: dx, y: dy });
+
 				ctx.clearRect(0, 0, 36, 36);
 				ctx.beginPath();
-				ctx.arc(
-					18,
-					18,
-					16,
-					0,
-					transform.transform,
-					true
-				);
+				ctx.arc(18, 18, 16, 0, transform.transform, true);
 				ctx.strokeStyle = '#2c2c2c';
 				ctx.stroke();
 			}
@@ -114,45 +153,14 @@ export default class DraggableComponent extends Component {
 	}
 
 	render() {
-
-		let style = {
-			top: this.state.y,
-			left: this.state.x
-		};
-
-		let ghost = null;
-
-		if(this.state.ghost) {
-			let delta = {
-					x:this.state.x - this.lastDragStart.left,
-					y: this.state.y - this.lastDragStart.top
-				},
-				transform = getStyleForDelta(delta),
-				dickStyle = {
-					width: `${transform.width}px`,
-					transform: `rotate(${transform.transform}rad)`
-				},
-				dicks = {
-					'position': `${this.state.x}, ${this.state.y}`,
-					'delta': `${delta.x}, ${delta.y}`,
-					'size': `${this.lastDragStart.width} x ${this.lastDragStart.height}`,
-					'vector': `${Math.round(transform.width * 100) / 100}, ${transform.transform}rad`
-				};
-			ghost = (<oksee-draggable-ghost style={this.state.ghost}>
-				<hr style={dickStyle}/>
-				<hr style={dickStyle}/>
-				<hr style={dickStyle}/>
-				<hr style={dickStyle}/>
-				<canvas width="36" height="36" ref={(c) => this.angleCanvas = c }/>
-				<PropertiesComponent {...dicks} />
-			</oksee-draggable-ghost>);
-		}
-
 		return (<oksee-draggable-wrapper>
-			{ghost}
+			{this.state.ghost ? getGhostElement(this) : null}
 			<oksee-draggable
 				ref='draggable'
-				style={style}
+				style={{
+					top: this.state.y,
+					left: this.state.x
+				}}
 				onMouseDown={this.onDragStart}
 			>{this.props.children}</oksee-draggable>
 		</oksee-draggable-wrapper>);
