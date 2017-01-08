@@ -179,6 +179,7 @@ class RootComponent extends Component {
 						<MenuItemComponent input='motd' />
 						<MenuItemComponent input='who' />
 						<MenuItemComponent input='view' />
+						<MenuItemComponent input='cv' />
 						<MenuItemComponent input='--help' />
 					</oksee-menu>
 					<oksee-console class="flex-fluid">

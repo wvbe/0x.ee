@@ -6,10 +6,13 @@
 	min-width: 600px;
 	width: 60vw;
 	max-width: 1000px;
+	min-height: 300px;
+	height: 60vh;
+	max-height: 1000px;
 
-	font-family: 'Times New Roman' !important;
-	font-size: 16px;
-	line-height: initial;
+	//font-family: 'Times New Roman' !important;
+	//font-size: 16px;
+	//line-height: initial;
 
 	h1, h2, h3 {
 		font-weight: bold;
@@ -32,5 +35,14 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
+	}
+
+	table, td, th {
+		border: 1px solid ui-color('bg-dim');
+		border-collapse: collapse;
+	}
+
+	td, th {
+		padding: ui-length('small') ui-length('line');
 	}
 }
