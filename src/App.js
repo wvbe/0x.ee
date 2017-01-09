@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 
-import GridComponent from './grid/GridComponent';
-import FlagComponent from './flag/FlagComponent';
-import SystemComponent from './system/SystemComponent';
 import MenuItemComponent from './menu/MenuItemComponent';
 
+import logoImageUrl from './logo.png';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
-import StatusButtonComponent from './status/StatusButtonComponent';
-import StatusWidgetComponent from './status/StatusWidgetComponent';
 import WindowContainerComponent from './window/WindowContainerComponent';
 
 import api from './api';
@@ -117,26 +113,6 @@ function playBootSequence () {
 	}, bootTimeLength);
 }
 
-const okseeStyle = styles.merge(
-	styles.flex.horizontal,
-	styles.display.block,
-	styles.position.relative,
-	styles.steno.normal,
-	{
-		width: '100vw',
-		height: '100vh',
-		color: styles.palette.fg.toString(),
-		backgroundColor: styles.palette.bg.toString(),
-		boxSizing: 'border-box',
-		overflow: 'hidden'
-	});
-// class="flex-fluid flex-column flex-gutter flex-space-between"
-const plugboardStyle = styles.merge(
-	styles.flex.fluid,
-	styles.flex.vertical,
-	styles.flex.gutter,
-	styles.flex.spaceBetween);
-
 export default class RootComponent extends Component {
 	constructor () {
 		super();
@@ -165,54 +141,56 @@ export default class RootComponent extends Component {
 	}
 
 	render() {
-		return (<div>
-			<oksee { ...okseeStyle }>
-				<oksee-plugboard { ...plugboardStyle }>
-				<div { ...styles.merge(styles.flex.vertical, styles.flex.gutter) }>
-					<oksee-plugboard-version { ...styles.merge(styles.flex.vertical, styles.flex.gutter) }>
-					<div>SOURCE: bundle.js?t={new Date().getTime()}</div>
-					<div>BUILD: 367</div>
-				</oksee-plugboard-version>
-				<oksee-status-board { ...styles.merge(styles.flex.horizontal) }>
-					<StatusWidgetComponent
-						name="LPS"
-						status="experimental"
-						enabled={ false }
-					>N/D</StatusWidgetComponent>
-					<StatusButtonComponent
-						name="skew projection"
-						enabled={ this.state.isSkewed }
-						toggle={(currentState) => { this.setState({ isSkewed: !currentState }); }}
-					/>
-				</oksee-status-board>
-			</div>
-		</oksee-plugboard>
-		<SystemComponent>
-			<ConsoleOutputComponent
-				logger={secondaryLogger}
-				maxHistory={5}
-			/>
-				<FlagComponent />
-				<oksee-menu  { ...styles.merge(styles.flex.horizontal, styles.flex.fixed) }>
+
+		const bannerHeight = 100;
+		const style = styles.merge(
+			styles.display.block,
+			{
+				margin: 'auto'
+			});
+		const bannerLeftStyle = styles.merge(styles.flex.vertical);
+		const bannerMiddleStyle = styles.merge({
+			height: bannerHeight,
+			width: 'auto'
+		});
+		const bannerRightStyle = styles.merge(
+			styles.display.block,
+			styles.steno.micro,
+			{
+				textAlign: 'right',
+				height: bannerHeight
+			});
+		const consoleStyle = styles.merge({
+			height: 200
+		});
+		return (<div { ...style }>
+			<div { ...styles.merge(styles.flex.horizontal) }>
+				<oksee-menu  { ...bannerLeftStyle }>
 					<MenuItemComponent input='motd' />
 					<MenuItemComponent input='who' />
 					<MenuItemComponent input='view' />
 					<MenuItemComponent input='cv' />
 					<MenuItemComponent input='--help' />
 				</oksee-menu>
-				<oksee-console class="flex-fluid">
+				<img src={ logoImageUrl } { ...bannerMiddleStyle } />
+				<div { ...bannerRightStyle }>
 					<ConsoleOutputComponent
-						logger={primaryLogger}
-						maxHistory={100}
+						logger={secondaryLogger}
+						maxHistory={5}
 					/>
-					<ConsoleInputComponent
-						console={api.console}
-						logger={primaryLogger}
-						handleSubmit={api.submit.bind(api)}
-					/>
-				</oksee-console>
-			</SystemComponent>
-		</oksee>
+				</div>
+			</div>
+			<oksee-console { ...consoleStyle }>
+				<ConsoleOutputComponent
+					logger={primaryLogger}
+					maxHistory={100}
+				/>
+				<ConsoleInputComponent
+					console={api.console}
+					logger={primaryLogger}
+					handleSubmit={api.submit.bind(api)}
+				/>
+			</oksee-console>
 		<WindowContainerComponent />
 </div>);
 	}

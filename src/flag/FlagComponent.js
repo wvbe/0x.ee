@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropertiesComponent from '../components/PropertiesComponent';
-import logoImageUrl from './logo.png';
+import logoImageUrl from '../logo.png';
 const packageJson = {
 	name: '0x.ee',
 	version: '4.0.0-alpha',

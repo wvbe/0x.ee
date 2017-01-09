@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
+import * as styles from '../styles';
 import ConsoleLogComponent from './ConsoleLogComponent';
 
+const style = styles.merge(
+	styles.display.block,
+	{
+		height: '100%',
+		overflow: 'auto'
+	});
 // The list of all logs, errors, etc.
 export default class ConsoleOutputComponent extends Component {
 	constructor () {
@@ -65,7 +72,7 @@ export default class ConsoleOutputComponent extends Component {
 	}
 
 	render() {
-		return (<oksee-console-output>
+		return (<oksee-console-output { ...style }>
 			{this.history.slice(this.state.historyStart, this.state.historyEnd).map(log => <ConsoleLogComponent key={log.index}>{log.component}</ConsoleLogComponent>)}
 		</oksee-console-output>);
 	}

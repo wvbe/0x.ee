@@ -73,5 +73,11 @@ export const steno = {
 		fontSize: 0.7 * uiLength,
 		textTransform: 'uppercase',
 		color: palette.fgDim
+	},
+	micro: {
+		fontFamily: 'Cousine',
+		fontSize: 0.5 * uiLength,
+		textTransform: 'uppercase',
+		color: palette.fgDim
 	}
 };

@@ -10,20 +10,22 @@ export default class LogErrorComponent extends Component {
 			time: new Date(),
 			key: ++allLogKeys
 		}
+		this.element = null;
 	}
 
 	componentDidMount () {
 		// When the entry is logged, scroll the containing ConsoleOutputComponent to its bottom.
 		// This is a dirty hack, and it assumes the container is el.parentNode.parentNode
 		// But it works, for now
-		console.log('Mount log');
-		let scrollContainer = this.refs.el.parentNode.parentNode;
-		scrollContainer.scrollTop = scrollContainer.scrollHeight;
+		if (!this.element) {
+			return;
+		}
+
+		this.element.parentNode.scrollTop = this.element.parentNode.scrollHeight;
 	}
 
 	componentWillUnmount () {
 
-		console.log('Unmount log');
 	}
 
 	shouldComponentUpdate (nextProps, nextState) {
@@ -31,6 +33,11 @@ export default class LogErrorComponent extends Component {
 	}
 
 	render() {
-		return (<oksee-console-log ref='el' key={this.log.key}>{this.props.children}</oksee-console-log>);
+		return (<oksee-console-log
+			ref={(input) => { this.element = input; }}
+			key={this.log.key}
+		>
+			{this.props.children}
+		</oksee-console-log>);
 	}
 }
