@@ -1,0 +1,40 @@
+@import '../ui';
+oksee-window-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+oksee-window {
+	@include ui-box-colors(ui-color('bg'));
+	box-shadow: 0 13px 39px -9px rgba(0,0,0,0.4);
+}
+
+oksee-window-content {
+	overflow: auto;
+	/* Let's get this party started */
+	&::-webkit-scrollbar {
+		width: ui-length('small');
+
+	}
+
+	/* Track */
+	&::-webkit-scrollbar-track {
+		border-radius: 10px;
+	}
+
+	/* Handle */
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: ui-color('bg-active');
+	}
+	&::-webkit-scrollbar-thumb:window-inactive {
+		background: ui-color('bg-alt');
+	}
+}
+
+oksee-window-header {
+	@include ui-striped-background(ui-color('bg-alt'));
+	> *:first-child {
+		padding: ui-length('small') ui-length('line');
+	}
+}

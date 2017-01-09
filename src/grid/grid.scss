@@ -1,0 +1,116 @@
+@import '../ui';
+
+$grid-cell-inner-width: ui-length('grid-item');
+$grid-cell-padding: 3px;
+$grid-border-width: 1px;
+
+$grid-inverse-bg: darken(ui-color('fg'), 20);
+$grid-inverse-fg: ui-color('bg');
+$grid-length-unit: $grid-cell-inner-width + 2 * $grid-cell-padding;
+
+oksee-grid,
+oksee-grid-item,
+oksee-grid-subitem {
+	display: flex;
+	align-content: flex-start;
+	position: relative;
+}
+
+oksee-grid {
+	min-width: 3 * $grid-length-unit + 3 * $grid-border-width;
+	box-sizing: border-box;
+	flex-wrap: wrap;
+	flex: {
+		direction: row;
+		grow: 1;
+		shrink: 1;
+		basis: auto;
+	}
+
+
+	transition: border-color 2s;
+	&.not-ready {
+		background: ui-crossed-background(ui-color('line'));
+	}
+}
+
+
+oksee-grid-item,
+oksee-grid-subitem {
+	flex: {
+		direction: row;
+		grow: 0;
+		shrink: 1;
+		basis: auto;
+	}
+}
+
+@include ui-border-blink-keyframes('line-strong', 'line-soft');
+
+oksee-grid-item {
+	align-items: stretch;
+	transition: border-color 0.2s;
+	//color: ui-color('line');
+
+
+	border: $grid-border-width dashed ui-color('line-soft');
+	&:hover {
+		@include ui-border-blink-animation('line-strong', 'line-soft', 1.5s);
+		z-index: 1;
+	}
+
+	&.hidden {
+		visibility: hidden;
+	}
+	margin: (-$grid-border-width) (-$grid-border-width) 0 0;
+
+	oksee-grid
+	> & {
+		&,
+		&[vertical-span='1'] {
+			height: 1 * $grid-length-unit + 0 * $grid-border-width;
+		}
+		//&[vertical-span='2'] {
+		//	height: 2 * $grid-length-unit + 1 * $grid-border-width;
+		//}
+		&,
+		&[horizontal-span='1'] {
+			width: 1 * $grid-length-unit + 0 * $grid-border-width;
+		}
+		//&[horizontal-span='2'] {
+		//	width: 2 * $grid-length-unit + 1 * $grid-border-width;
+		//}
+		//&[horizontal-span='3'] {
+		//	width: 3 * $grid-length-unit + 2 * $grid-border-width;
+		//}
+		& &:last-child {
+			border-right-width: 0;
+		}
+	}
+}
+
+oksee-grid-subitem {
+
+	&:not([fixed]) {
+		flex-grow: 1;
+	}
+
+	border-bottom: 1px dashed #444;
+
+	&:last-child {
+		border-bottom-width: 0;
+	}
+}
+
+oksee-grid-item-content {
+	flex: 1 1 auto;
+	margin: $grid-cell-padding;
+	box-sizing: border-box;
+	padding: 3px;
+	@include ui-steno('small');
+}
+
+.oksee-inverse {
+	 background-color: $grid-inverse-bg;
+	 color: $grid-inverse-fg;
+ }

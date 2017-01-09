@@ -1,0 +1,85 @@
+@import '../ui';
+
+oksee-log-prefix {
+	.content,
+	.alt-content {
+		width: ui-length('large');
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		padding-left: ui-length() * 0.3;
+	}
+	.arrow {
+		display: inline-block;
+		content: '';
+		width: 0;
+		height: 0;
+		border-top: ui-length() * 0.5 solid transparent;
+		border-bottom: ui-length() * 0.5 solid transparent;
+
+		border-left: ui-length() * 0.3 solid transparent;
+	}
+}
+
+oksee-log-message {
+	oksee-log-prefix .alt-content {	display: none; }
+	oksee-log-prefix .content {	display: block; }
+	&:hover oksee-log-prefix .alt-content {	display: block; }
+	&:hover oksee-log-prefix .content {	display: none; }
+
+	oksee-log-prefix {
+		.content,
+		.alt-content {
+			@include ui-steno('small');
+		}
+	}
+
+	&[data-connotation='input'] oksee-log-prefix {
+		.content, .alt-content {
+			background-color: ui-color('line-soft');
+			color: ui-color('fg');
+		}
+		.arrow {
+			border-left-color: ui-color('line-soft');
+		}
+	}
+}
+
+oksee-log-content {
+	width: 100%;
+	white-space: pre-wrap;
+
+	color: ui-color('fg');
+	[data-connotation='error'] & {
+		color: ui-color('fg-danger');
+	}
+
+	.log-dim {
+		color: ui-color('fg-dim');
+	}
+	.log-type-small {
+		@include ui-steno('small');
+	}
+
+	.log-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		// { display: 'flex', flexDirection: 'row', flexWrap: 'nowrap' }
+	}
+	.log-col-xs {
+		flex: 0 0 4em;
+	}
+	.log-col-s {
+		flex: 0 0 6em;
+	}
+	.log-col-m {
+		flex: 0 0 8em;
+	}
+	.log-col-l {
+		flex: 0 0 12em;
+	}
+	.log-col-x {
+		flex: 1 1 100%;
+	}
+}

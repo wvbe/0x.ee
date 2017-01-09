@@ -1,0 +1,63 @@
+@import '../ui';
+
+oksee-console-input {
+
+	@include ui-box();
+	@include ui-click-effect() {
+		oksee-console-input-cursor {
+			border-color: #fff !important;
+		}
+		&.has-focus oksee-console-input-cursor {
+			background: #fff !important;
+		}
+	};
+
+	input {
+		width: 0;
+		height: 0;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: -100;
+	}
+
+	&.has-focus oksee-console-input-cursor {
+		background: ui-color('fg');
+		border-color: ui-color('fg');
+	}
+
+	&.has-focus:not(:hover) {
+		@include ui-striped-background(ui-color('line'));
+	}
+
+	&.no-focus:not(:hover) {
+		@include ui-striped-background(ui-color('bg-alt'));
+		oksee-console-input-cursor {
+			background: transparent;
+			border-color: ui-color('fg-dim');
+		}
+	}
+	&.busy oksee-console-input-cursor {
+		display: none;
+	}
+}
+oksee-console-input-field {
+	white-space: pre-wrap;
+	> * {
+		@include ui-user-select();
+		vertical-align: middle;
+	}
+}
+
+@include ui-blink-keyframes();
+oksee-console-input-cursor {
+
+	display: inline-block;
+	height: ui-length('line');
+	min-width: 5px;
+	background-color: transparent;
+	border: 1px solid transparent;
+	color: ui-color('bg');
+	box-sizing: border-box;
+}
+

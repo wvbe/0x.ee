@@ -1,0 +1,10 @@
+@function _ui-lookup($collection, $item, $variation) {
+	@if map-has-key($collection, $item) {
+		$item: map-get($collection, $item);
+	}
+	@elseif type-of($item) != color {
+		@error 'Invalid color name: `#{$item}`.';
+	}
+
+	@return $item;
+}
