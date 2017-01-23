@@ -37,9 +37,6 @@ oksee-console-input {
 			border-color: ui-color('fg-dim');
 		}
 	}
-	&.busy oksee-console-input-cursor {
-		display: none;
-	}
 }
 oksee-console-input-field {
 	white-space: pre-wrap;

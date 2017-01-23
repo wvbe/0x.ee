@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {render} from 'react-dom';
-
 import MenuItemComponent from './menu/MenuItemComponent';
 
 import logoImageUrl from './logo.png';
@@ -61,6 +59,7 @@ function playBootSequence () {
 	secondaryLogger.log('GET', 'Method');
 	secondaryLogger.log('101 Switching Protocols', 'Status code');
 	secondaryLogger.log('Upgrade (websocket)', 'Connection');
+
 	setTimeout(() => {
 		secondaryLogger.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
 		secondaryLogger.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
@@ -73,13 +72,15 @@ function playBootSequence () {
 
 	// Start running the initial command: something from the URL hash or 'motd'
 	setTimeout(() => {
-		let lastVisit = api.store.get('last-submit'),
+		const lastVisit = api.store.get('last-submit'),
 			history = api.store.get('history');
+
 		if(lastVisit) {
-			primaryLogger.log(`Welcome back, last visited on: ${new Date(parseInt(lastVisit))}`);
+			primaryLogger.log(`Welcome back, last visited on: ${new Date(parseInt(lastVisit, 10))}`);
 			primaryLogger.log(`  found ${history.length} commands in your history`);
 			primaryLogger.log(<div>Type <a data-command="profile clear">profile clear</a> to wipe your data or <a data-command="profile history">profile history</a> to view.</div>);
-		} else {
+		}
+		else {
 			primaryLogger.log(`Looks like you haven't visited before, welcome!`);
 		}
 	}, bootTimeLength * 0.7);
@@ -88,8 +89,7 @@ function playBootSequence () {
 		// More rubarb
 		secondaryLogger.log('OK', 'init');
 
-
-		var hashbang = (window.location.hash || '').trim();
+		const hashbang = (window.location.hash || '').trim();
 
 		if(hashbang.length > 3 && hashbang.substr(0,3) === '#!/') {
 			let trimmedHashbang = hashbang.length <= 48
@@ -103,7 +103,8 @@ function playBootSequence () {
 			api.submit(hashbang.substr(3, 1) === '~'
 				? new Buffer(hashbang.substr(4), 'base64').toString()
 				: hashbang.substr(3));
-		} else {
+		}
+		else {
 			primaryLogger.log('OK, opening default request: #!/motd', 'init');
 
 			unsetBusyReason();
@@ -142,29 +143,42 @@ export default class RootComponent extends Component {
 
 	render() {
 
-		const bannerHeight = 100;
+		const bannerHeight = styles.length.gridItem;
 		const style = styles.merge(
+			styles.steno.normal,
 			styles.display.block,
 			{
 				margin: 'auto'
 			});
-		const bannerLeftStyle = styles.merge(styles.flex.vertical);
+		const bannerLeftStyle = styles.merge(styles.flex.vertical, styles.flex.alignStart);
 		const bannerMiddleStyle = styles.merge({
 			height: bannerHeight,
-			width: 'auto'
+			width: 'auto',
+			margin: '0 ' + styles.length.line + 'px'
 		});
 		const bannerRightStyle = styles.merge(
 			styles.display.block,
 			styles.steno.micro,
 			{
-				textAlign: 'right',
+				width: 4 * styles.length.gridItem,
+				textAlign: 'left',
 				height: bannerHeight
 			});
-		const consoleStyle = styles.merge({
+		const consoleStyle = styles.merge(
+			styles.steno.micro,
+			{
 			height: 200
 		});
+		const bottomConsole = styles.merge({
+			paddingTop: styles.length.micro,
+			borderTop: '0.5px solid #999'
+		});
+		const topConsole = styles.merge({
+			marginBottom: styles.length.micro
+		});
 		return (<div { ...style }>
-			<div { ...styles.merge(styles.flex.horizontal) }>
+			<div { ...styles.merge(styles.steno.header) }>wybe minnebo</div>
+			<div { ...styles.merge(styles.flex.horizontal, { marginBottom: styles.length.line }) }>
 				<oksee-menu  { ...bannerLeftStyle }>
 					<MenuItemComponent input='motd' />
 					<MenuItemComponent input='who' />
@@ -172,19 +186,25 @@ export default class RootComponent extends Component {
 					<MenuItemComponent input='cv' />
 					<MenuItemComponent input='--help' />
 				</oksee-menu>
-				<img src={ logoImageUrl } { ...bannerMiddleStyle } />
+				<img src={ logoImageUrl } { ...bannerMiddleStyle } alt='Logo' />
 				<div { ...bannerRightStyle }>
+					<div { ...topConsole }>
 					<ConsoleOutputComponent
 						logger={secondaryLogger}
-						maxHistory={5}
+						maxHistory={ 5 }
+						maxHeight={ 5 }
 					/>
+					</div>
+					<div { ...bottomConsole }>
+						<ConsoleOutputComponent
+							logger={primaryLogger}
+							maxHistory={ 100 }
+							maxHeight={ 10 }
+						/>
+					</div>
 				</div>
 			</div>
 			<oksee-console { ...consoleStyle }>
-				<ConsoleOutputComponent
-					logger={primaryLogger}
-					maxHistory={100}
-				/>
 				<ConsoleInputComponent
 					console={api.console}
 					logger={primaryLogger}

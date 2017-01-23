@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-
+import * as styles from '../styles';
 import api from '../api';
-/**
- * An input bar with reactive cursor hack etc.
- */
+
+const inlineInputStyle = styles.merge({
+	height: styles.length.line,
+	lineHeight: styles.length.line + 'px',
+	verticalAlign: 'middle',
+	whiteSpace: 'pre'
+});
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
@@ -92,6 +96,18 @@ export default class ConsoleInputComponent extends Component {
 		};
 	}
 
+	mouseEnter = () => {
+		this.setState({
+			hasHover: true
+		});
+	};
+
+	mouseLeave = () => {
+		this.setState({
+			hasHover: false
+		});
+	};
+
 	componentDidMount() {
 		window.document.addEventListener('selectionchange', this.handleSelectionChange);
 		this.onDestroy.push(api.on('busy', busyReasons => {
@@ -138,29 +154,74 @@ export default class ConsoleInputComponent extends Component {
 	renderInputRuler () {
 		const spans = [];
 
-		if(this.state.selectionStart > 0)
-			spans.push(<span key='pre-cursor'>{this.state.input.substring(0, this.state.selectionStart)}</span>);
 
-		spans.push(<oksee-console-input-cursor
-			key='cursor'
-			class={this.state.selectionStart === this.state.selectionEnd ? 'collapsed' : 'range'}>
-			{this.state.input.substring(this.state.selectionStart, this.state.selectionEnd)}
-		</oksee-console-input-cursor>);
+		const textStyle = styles.merge(
+			inlineInputStyle,
+			{
+				display: 'inline-block'
+			}),
+			cursorColor = this.state.hasFocus
+				? styles.palette.fg.toString()
+				: this.state.hasHover ? styles.palette.fgDim.toString() : '#ccc',
+			cursorStyle = styles.merge(
+				textStyle,
+				{
+					height: styles.length.line,
+					minWidth: styles.length.small,
+					backgroundColor: cursorColor,
+					border: '1px solid ' + cursorColor,
+					boxSizing: 'border-box',
+					color: styles.palette.bg.toString()
+				});
+
+		if(this.state.selectionStart > 0)
+			spans.push(<span key='pre-cursor' { ...textStyle }>{this.state.input.substring(0, this.state.selectionStart)}</span>);
+
+		if (!this.state.busy)
+			spans.push(<oksee-console-input-cursor
+				key='cursor'
+				{ ...cursorStyle }>
+				{this.state.input.substring(this.state.selectionStart, this.state.selectionEnd)}
+			</oksee-console-input-cursor>);
 
 		if(this.state.selectionEnd < this.state.input.length)
-			spans.push(<span key='post-cursor'>{this.state.input.substring(this.state.selectionEnd)}</span>);
+			spans.push(<span key='post-cursor' { ...textStyle }>{this.state.input.substring(this.state.selectionEnd)}</span>);
 
 		return spans;
 	}
 
 	render() {
+		const inputStyle = styles.merge(
+			styles.display.block,
+			{
+				cursor: 'pointer',
+				backgroundColor: styles.palette.bg,
+				border: '1px dotted ' + styles.palette.fg.toString(),
+				padding: 1
+			});
+		const formStyles = styles.merge({
+			position: 'absolute',
+			opacity: 0,
+			width: 0,
+			height: 0,
+			overflow: 'hidden'
+		});
+		const fieldStyles = styles.merge(
+			styles.display.block,
+			inlineInputStyle
+		);
 		return (<oksee-console-input
+			{ ...inputStyle }
 			onClick={this.onClick.bind(this)}
+			onMouseEnter={ this.mouseEnter }
+			onMouseLeave={ this.mouseLeave }
 			class={[
 				this.state.hasFocus ? 'has-focus' : 'no-focus',
 				'idle'//this.state.busy ? 'busy' : 'idle'
 			].join(' ')}>
-			<form onSubmit={this.onSubmit.bind(this)}>
+			<form
+				onSubmit={this.onSubmit.bind(this)}
+				{ ...formStyles }>
 				<input
 					autoFocus={true}
 					ref={ x => this.inputElement = x }
@@ -170,7 +231,7 @@ export default class ConsoleInputComponent extends Component {
 					onFocus={this.handleFocusChange.bind(this, true)}
 				/>
 			</form>
-			<oksee-console-input-field>{
+			<oksee-console-input-field { ...fieldStyles }>{
 				this.state.busy ? this.state.busyMessage : (this.state.historyInput === null ? this.renderInputRuler() : this.state.historyInput)
 			}</oksee-console-input-field>
 		</oksee-console-input>);

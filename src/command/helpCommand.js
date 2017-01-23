@@ -1,5 +1,5 @@
 import AskNicely from 'ask-nicely';
-import React, {Component} from 'react';
+import React from 'react';
 
 const NO_DESCRIPTION = 'No description';
 

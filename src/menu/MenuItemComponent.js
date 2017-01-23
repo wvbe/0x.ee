@@ -1,7 +1,22 @@
 import React, {Component} from 'react';
 import api from '../api';
+import * as styles from '../styles';
 
-
+const style = styles.merge(
+	styles.display.inlineBlock,
+	styles.connotation.interactive,
+	{
+		marginBottom: 1,
+		padding: '1px 3px',
+		backgroundColor: styles.palette.fg.toString(),
+		color: styles.palette.bg.toString(),
+		':hover': {
+			backgroundColor: styles.palette.bgAlt.toString()
+		}
+	});
+const busyStyle = styles.merge({
+	textDecoration: 'line-through'
+});
 export default class MenuItemComponent extends Component {
 	constructor () {
 		super();
@@ -77,7 +92,9 @@ export default class MenuItemComponent extends Component {
 			'state-' + (this.state.busy ? 'busy' : 'unbusy')
 		].join(' ');
 		return (<oksee-menu-item
-				class={className}
+			className={ className }
+			{ ...style }
+			{ ...(this.state.busy && busyStyle) }
 				onClick={this.handleClick.bind(this)}
 			>
 			{this.props.children || this.props.input}

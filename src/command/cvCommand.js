@@ -1,5 +1,4 @@
-import AskNicely from 'ask-nicely';
-import React, {Component} from 'react';
+import React from 'react';
 import mugshotImage from './mugshot.jpg';
 import terribleAnimatedHeaderImage from './cv-header.gif';
 import terribleAnimatedCounterImage from './cv-counter.gif';
@@ -18,7 +17,7 @@ const cvContent = <div className="cv-root">
 
 	<div className="flex-row flex-gutter flex-items-center">
 		<div className="flex-fixed">
-			<img src={mugshotImage} style={{ width: '100px', height: '100px' }} />
+			<img src={mugshotImage} style={{ width: '100px', height: '100px' }} alt="Logo"/>
 		</div>
 		<div className="flex-fluid">
 			<PropertiesComponent {...cvProperties} />
@@ -52,17 +51,17 @@ const cvContent = <div className="cv-root">
 				<th>Job description</th>
 			</tr>
 			<tr>
-				<td><a href="http://liones.nl" target="_blank">Liones</a><br />Interaction designer</td>
+				<td><a href="http://liones.nl" target="_blank" alt="Liones">Liones</a><br />Interaction designer</td>
 				<td>April '13 - Present</td>
 				<td>Tailoring the FontoXML editor to achieve the best user experience and world domination. Determining user needs and providing integration with their work environment. Design and development of specialized extensions. Train occasional- and power users in this new part of their workflow.</td>
 			</tr>
 			<tr>
-				<td><a href="http://fontoxml.com" target="_blank">FontoXML</a><br />Javascript developer</td>
+				<td><a href="http://fontoxml.com" target="_blank" alt="FontoXML">FontoXML</a><br />Javascript developer</td>
 				<td>January '14 - Present</td>
 				<td>Leveraging state-of-the-art technology for an unparalleled structured authoring experience. Design and development of a highly modular web application.</td>
 			</tr>
 			<tr>
-				<td><a href="http://liones.nl" target="_blank">Liones</a><br />Graduate internship</td>
+				<td><a href="http://liones.nl" target="_blank" alt="Liones">Liones</a><br />Graduate internship</td>
 				<td>February '14 - June '14</td>
 				<td>Researching and developing interaction designs for editing topic-based structured XML documents (DITA) in a presentation-oriented (WYSIWYM) way.</td>
 			</tr>
@@ -101,7 +100,7 @@ const cvContent = <div className="cv-root">
 	</table>
 
 	<div style={{textAlign: 'center'}}>
-		<p>The amount of visitors on my home page: <img src={terribleAnimatedCounterImage} /></p>
+		<p>The amount of visitors on my home page: <img src={terribleAnimatedCounterImage} alt="A thousant million visitors!" /></p>
 		<p><b>Copyright (c) 2003 Wybe Minnebo, the netherlands</b></p>
 		<p style={{fontSize: '0.5em'}}>If you are the maker of the animated gifs on this site you can have full copyright. please email us and we will give you major credit or even affiliate with you!!!!</p>
 	</div>

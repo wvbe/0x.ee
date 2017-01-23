@@ -5,7 +5,6 @@ import ConsoleLogComponent from './ConsoleLogComponent';
 const style = styles.merge(
 	styles.display.block,
 	{
-		height: '100%',
 		overflow: 'auto'
 	});
 // The list of all logs, errors, etc.
@@ -72,7 +71,7 @@ export default class ConsoleOutputComponent extends Component {
 	}
 
 	render() {
-		return (<oksee-console-output { ...style }>
+		return (<oksee-console-output { ...style } { ...styles.merge({ maxHeight: this.props.maxHeight + 'em' }) }>
 			{this.history.slice(this.state.historyStart, this.state.historyEnd).map(log => <ConsoleLogComponent key={log.index}>{log.component}</ConsoleLogComponent>)}
 		</oksee-console-output>);
 	}

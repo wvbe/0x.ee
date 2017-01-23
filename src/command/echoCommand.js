@@ -1,6 +1,3 @@
-import AskNicely from 'ask-nicely';
-import React, {Component} from 'react';
-
 export default function (app) {
 	app.console
 		.addCommand('echo')

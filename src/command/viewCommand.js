@@ -1,6 +1,3 @@
-import AskNicely from 'ask-nicely';
-import React, {Component} from 'react';
-
 export default (app) => {
 	app.console
 		.addCommand('view')
