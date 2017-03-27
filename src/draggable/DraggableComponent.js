@@ -1,5 +1,31 @@
 import React, {Component} from 'react';
-import PropertiesComponent from '../components/PropertiesComponent';
+
+import * as styles from '../styles';
+
+const wrapperStyle = styles.merge(styles.position.relative);
+const ghostBaseStyle = styles.merge(
+	styles.display.block,
+	styles.position.absolute,
+	styles.border.subtle,
+	{
+		boxSizing: 'border-box',
+		padding: styles.length.line,
+		backgroundColor: styles.palette.bg.setAlpha(0.8).toString()
+	});
+const ghostCanvasStyle = styles.merge(
+	styles.position.absolute,
+	{
+		top: 0,
+		left: 0,
+		transform: 'translate(-50%, -50%)'
+	});
+
+const ghostLineStyle = Object.assign({}, styles.position.absolute,
+	{
+		transformOrigin: 'top left',
+		borderTop: '1px dotted ' + styles.palette.fgDim.toString()
+	});
+
 
 function stopDrag (component, e) {
 	component.lastDragStart = null;
@@ -32,36 +58,51 @@ function getGhostElement (component) {
 			y: state.y - lastDragStart.top
 		},
 		connectingLineTransformation = getTransformationForDelta(delta),
-		connectingLineStyle = {
-			width: `${connectingLineTransformation.width}px`,
-			transform: `rotate(${connectingLineTransformation.transform}rad)`
-		},
+		connectingLineStyle = Object.assign(
+			{},
+			ghostLineStyle,
+			{
+				width: `${connectingLineTransformation.width}px`,
+				transform: `rotate(${connectingLineTransformation.transform}rad)`
+			}),
 		connectingLineInfo = {
-			'position': [
-				state.x,
-				state.y
-			].join(', '),
-			'delta': [
-				delta.x,
-				delta.y
-			].join(', '),
-			'size': [
-				lastDragStart.width,
-				lastDragStart.height
-			].join(' x '),
-			'vector': [
-				Math.round(connectingLineTransformation.width * 1000) / 1000,
-				(Math.round(connectingLineTransformation.transform * 1000) / 1000) + 'rad'
-			].join(', ')
-		};
+				'position': [
+					state.x,
+					state.y
+				].join(', '),
+				'delta': [
+					delta.x,
+					delta.y
+				].join(', '),
+				'size': [
+					lastDragStart.width,
+					lastDragStart.height
+				].join(' x '),
+				'vector': [
+					Math.round(connectingLineTransformation.width * 1000) / 1000,
+					(Math.round(connectingLineTransformation.transform * 1000) / 1000) + 'rad'
+				].join(', ')
+			};
 
-	return (<oksee-draggable-ghost style={state.ghost}>
-		<hr style={connectingLineStyle}/>
-		<hr style={connectingLineStyle}/>
-		<hr style={connectingLineStyle}/>
-		<hr style={connectingLineStyle}/>
-		<canvas width="36" height="36" ref={(c) => component.angleCanvas = c }/>
-		<PropertiesComponent {...connectingLineInfo} />
+
+
+	const ghostStyle = styles.merge(
+		ghostBaseStyle,
+		state.ghost);
+	return (<oksee-draggable-ghost { ...ghostStyle }>
+		{ [
+			{ top: 0, left: 0 },
+			{ top: '100%', left: 0 },
+			{ top: '100%', left: '100%' },
+			{ top: 0, left: '100%' }
+		].map((offset, i) => {
+			const style = styles.merge(connectingLineStyle, offset);
+			return <hr key={ i } { ...style } />
+		}) }
+
+		<canvas { ...ghostCanvasStyle} width="36" height="36" ref={(c) => component.angleCanvas = c }/>
+
+		<pre>{ JSON.stringify(connectingLineInfo, null, '  ') } </pre>
 	</oksee-draggable-ghost>);
 }
 export default class DraggableComponent extends Component {
@@ -151,14 +192,19 @@ export default class DraggableComponent extends Component {
 	}
 
 	render() {
-		return (<oksee-draggable-wrapper>
+		const draggableStyle = styles.merge(
+			styles.display.block,
+			styles.position.absolute,
+			{
+				top: this.state.y,
+				left: this.state.x
+			});
+
+		return (<oksee-draggable-wrapper { ...wrapperStyle }>
 			{this.state.ghost ? getGhostElement(this) : null}
 			<oksee-draggable
 				ref='draggable'
-				style={{
-					top: this.state.y,
-					left: this.state.x
-				}}
+				{ ...draggableStyle }
 				onMouseDown={this.onDragStart}
 			>{this.props.children}</oksee-draggable>
 		</oksee-draggable-wrapper>);

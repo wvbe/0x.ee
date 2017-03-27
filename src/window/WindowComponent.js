@@ -3,6 +3,37 @@ import api from '../api';
 import MenuItemComponent from '../menu/MenuItemComponent';
 import ToastComponent from '../toast/ToastComponent';
 
+import * as styles from '../styles';
+
+const windowStyle = styles.merge(
+	styles.flex.vertical,
+	styles.border.subtle,
+	styles.border.strong,
+	styles.background.opaque,
+	{
+		padding: 1
+	});
+const rowStyle = styles.merge(
+	styles.flex.horizontal);
+
+const contentStyle = styles.merge(
+	styles.flex.fluid,
+	styles.overflow.auto,
+	{
+		maxHeight: 4 * styles.length.large
+	});
+
+const headerStyles = styles.merge(
+	styles.flex.fixed,
+	styles.flex.horizontal,
+	styles.flex.spaceBetween,
+	styles.flex.gutter,
+	styles.steno.normal);
+
+const headerNameStyles = styles.merge(
+	styles.flex.fluid,
+	styles.theme.inverse,
+	styles.padding.field);
 export default class WindowComponent extends Component {
 	constructor () {
 		super();
@@ -23,14 +54,14 @@ export default class WindowComponent extends Component {
 		let toast = this.state.ready
 			? null
 			: <ToastComponent message="Loading window..."/>;
-		return (<oksee-window class="flex-column">
-			<oksee-window-header class="flex-fixed flex-row flex-gutter flex-space-between">
-				<div className="flex-fluid">{this.props.name}</div>
-				<div className="flex-fixed flex-row">
+		return (<oksee-window { ...windowStyle }>
+			<oksee-window-header { ...headerStyles } { ...rowStyle }>
+				<div { ...headerNameStyles }>{this.props.name}</div>
+				<div { ...styles.merge(styles.flex.fixed) } { ...rowStyle }>
 					<MenuItemComponent onClick={this.close.bind(this)}>&times;</MenuItemComponent>
 				</div>
 			</oksee-window-header>
-			<oksee-window-content class="flex-fluid">
+			<oksee-window-content { ...contentStyle } class="fuck-you-scroll">
 				{toast ? toast : null}
 				<div style={{visibility: toast ? 'hidden' : 'visible'}}>{this.props.children}</div>
 			</oksee-window-content>

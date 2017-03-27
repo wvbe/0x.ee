@@ -148,6 +148,7 @@ export default class RootComponent extends Component {
 			styles.steno.normal,
 			styles.display.block,
 			{
+				maxWidth: 700,
 				margin: 'auto'
 			});
 		const bannerLeftStyle = styles.merge(styles.flex.vertical, styles.flex.alignStart);

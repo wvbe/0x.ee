@@ -8,6 +8,23 @@ const inlineInputStyle = styles.merge({
 	verticalAlign: 'middle',
 	whiteSpace: 'pre'
 });
+const inputStyle = styles.merge(
+	styles.display.block,
+	styles.border.subtle,
+	styles.background.opaque,
+	{
+		cursor: 'pointer',
+		padding: 1
+	});
+
+const formStyles = styles.merge({
+	position: 'absolute',
+	opacity: 0,
+	width: 0,
+	height: 0,
+	overflow: 'hidden'
+});
+
 export default class ConsoleInputComponent extends Component {
 	constructor() {
 		super();
@@ -23,22 +40,27 @@ export default class ConsoleInputComponent extends Component {
 
 		this.onDestroy = [];
 
-		this.stashedInput = null;
 		this.historyCursor = 0;
 		this.handleKeyDown = function (event) {
 			if(event.which === 38 || event.which === 40) {
 				let history = api.store.get('history');
+
 				// 38 (up)
-				if(event.which === 38 && this.historyCursor < history.length)
+				if(event.which === 38 && this.historyCursor < history.length) {
 					++this.historyCursor;
-				else if(event.which === 40 && this.historyCursor > 0)
+				}
+				// 40 (down)
+				else if(event.which === 40 && this.historyCursor > 0) {
 					--this.historyCursor;
+				}
+
 				this.setState({
 					historyInput: history[history.length - this.historyCursor] || null
 				});
 
 				return event.preventDefault();
-			} else if(this.historyCursor) {
+			}
+			else if(this.historyCursor) {
 				this.historyCursor = 0;
 				this.setState({
 					input: this.state.historyInput,
@@ -65,7 +87,7 @@ export default class ConsoleInputComponent extends Component {
 				old = this.state.input;
 
 			this.setState({
-				input
+				input: input.toLowerCase()
 			});
 
 			// Hack to avoid focus-but-not-focused bug
@@ -154,7 +176,6 @@ export default class ConsoleInputComponent extends Component {
 	renderInputRuler () {
 		const spans = [];
 
-
 		const textStyle = styles.merge(
 			inlineInputStyle,
 			{
@@ -191,34 +212,28 @@ export default class ConsoleInputComponent extends Component {
 	}
 
 	render() {
-		const inputStyle = styles.merge(
-			styles.display.block,
-			{
-				cursor: 'pointer',
-				backgroundColor: styles.palette.bg,
-				border: '1px dotted ' + styles.palette.fg.toString(),
-				padding: 1
-			});
-		const formStyles = styles.merge({
-			position: 'absolute',
-			opacity: 0,
-			width: 0,
-			height: 0,
-			overflow: 'hidden'
-		});
+		let renderedInput = null;
+
+		if (this.state.busy) {
+			renderedInput = <div { ...styles.merge(styles.padding.field) }>{ this.state.busyMessage }</div>;
+		}
+		else if(this.state.historyInput !== null) {
+			renderedInput = <div { ...styles.merge(styles.padding.field) }>{ this.state.historyInput }</div>;
+		}
+		else {
+			renderedInput = this.renderInputRuler();
+		}
+
 		const fieldStyles = styles.merge(
 			styles.display.block,
-			inlineInputStyle
-		);
-		return (<oksee-console-input
+			inlineInputStyle,
+			this.state.input.length ? styles.padding.field : {});
+
+		return (<bzzt
 			{ ...inputStyle }
 			onClick={this.onClick.bind(this)}
 			onMouseEnter={ this.mouseEnter }
-			onMouseLeave={ this.mouseLeave }
-			class={[
-				this.state.hasFocus ? 'has-focus' : 'no-focus',
-				'idle'//this.state.busy ? 'busy' : 'idle'
-			].join(' ')}>
+			onMouseLeave={ this.mouseLeave }>
 			<form
 				onSubmit={this.onSubmit.bind(this)}
 				{ ...formStyles }>
@@ -231,9 +246,7 @@ export default class ConsoleInputComponent extends Component {
 					onFocus={this.handleFocusChange.bind(this, true)}
 				/>
 			</form>
-			<oksee-console-input-field { ...fieldStyles }>{
-				this.state.busy ? this.state.busyMessage : (this.state.historyInput === null ? this.renderInputRuler() : this.state.historyInput)
-			}</oksee-console-input-field>
-		</oksee-console-input>);
+			<oksee-console-input-field { ...fieldStyles }>{ renderedInput }</oksee-console-input-field>
+		</bzzt>);
 	}
 }

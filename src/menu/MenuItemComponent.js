@@ -6,7 +6,6 @@ const style = styles.merge(
 	styles.display.inlineBlock,
 	styles.connotation.interactive,
 	{
-		marginBottom: 1,
 		padding: '1px 3px',
 		backgroundColor: styles.palette.fg.toString(),
 		color: styles.palette.bg.toString(),

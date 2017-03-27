@@ -30,6 +30,12 @@ export const flex = {
 		// @TODO
 	}
 };
+export const padding = {
+	field: {
+		padding: '0 2px'
+	}
+};
+
 
 export const connotation = {
 	interactive: {
@@ -48,9 +54,9 @@ export const display = {
 };
 
 export const position = {
-	relative: {
-		position: 'relative'
-	}
+	relative: { position: 'relative' },
+	fixed: { position: 'fixed' },
+	absolute: { position: 'absolute' }
 };
 
 const uiLength = 14;
@@ -85,6 +91,7 @@ const fontFamily = glamor.fontFace({
 	src: "local('Share Tech Mono'), local('ShareTechMono-Regular'), url(https://fonts.gstatic.com/s/sharetechmono/v6/RQxK-3RA0Lnf3gnnnNrAsVlgUn8GogvcKKzoM9Dh-4E.woff2) format('woff2')",
 	unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
 });
+
 export const steno = {
 	header: {
 		fontFamily: fontFamily,
@@ -109,5 +116,41 @@ export const steno = {
 		textTransform: 'uppercase',
 		color: palette.fgDim,
 		lineHeight: '1em'
+	}
+};
+
+export const border = {
+	subtle: {
+		border: '1px dotted ' + palette.fg.toString()
+	},
+	strong: {
+		borderWidth: '1px',
+		borderStyle: 'solid',
+		borderColor: palette.fg.toString()
+	}
+};
+
+export const background = {
+	opaque: {
+		backgroundColor: palette.bg.toString()
+	},
+	inverse: {
+		backgroundColor: palette.fg.toString()
+	}
+};
+
+
+export const theme = {
+	inverse: Object.assign({},
+		background.inverse,
+		{
+			color: palette.bg.toString()
+		})
+};
+
+export const overflow = {
+	auto: {
+		// @TODO scrollbars
+		overflow: 'auto'
 	}
 };

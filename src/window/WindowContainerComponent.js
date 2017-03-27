@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
+import * as styles from '../styles';
 import api from '../api';
 import WindowComponent from './WindowComponent';
 import DraggableComponent from '../draggable/DraggableComponent';
 var windowIndex = 0;
+
+
+const containerStyle = styles.merge(
+	styles.position.fixed,
+	{
+		top: 0,
+		left: 0
+	});
 
 export default class WindowContainerComponent extends Component {
 	constructor () {
@@ -47,7 +56,7 @@ export default class WindowContainerComponent extends Component {
 
 	render() {
 		return (
-			<oksee-window-container>
+			<oksee-window-container { ...containerStyle }>
 				{this.state.windows.map(win => win.content)}
 			</oksee-window-container>);
 	}
