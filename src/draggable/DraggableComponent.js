@@ -7,10 +7,10 @@ const ghostBaseStyle = styles.merge(
 	styles.display.block,
 	styles.position.absolute,
 	styles.border.subtle,
+	styles.theme.dim,
 	{
 		boxSizing: 'border-box',
-		padding: styles.length.line,
-		backgroundColor: styles.palette.bg.setAlpha(0.8).toString()
+		padding: styles.length.line
 	});
 const ghostCanvasStyle = styles.merge(
 	styles.position.absolute,

@@ -12,7 +12,7 @@ const cvProperties = {
 	'Birth': '10-JUL-1988'
 };
 
-const cvContent = <div className="cv-root">
+const cvContent = <div className="cv-root" style={{ minWidth: '25vw', maxWidth: '80vw', width: '800px' }}>
 	<img src={terribleAnimatedHeaderImage} alt="curriculum vitae" />
 
 	<div className="flex-row flex-gutter flex-items-center">

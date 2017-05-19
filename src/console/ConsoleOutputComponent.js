@@ -73,7 +73,7 @@ export default class ConsoleOutputComponent extends Component {
 	render() {
 		return (<oksee-console-output
 			{ ...style }
-			{ ...styles.merge({ maxHeight: this.props.maxHeight + 'em' }) }
+			{ ...styles.merge({ maxHeight: this.props.maxHeight ? this.props.maxHeight + 'em' : 'auto' }) }
 			class="fuck-you-scroll">
 			{this.history.slice(this.state.historyStart, this.state.historyEnd).map(log => <ConsoleLogComponent key={log.index}>{log.component}</ConsoleLogComponent>)}
 		</oksee-console-output>);

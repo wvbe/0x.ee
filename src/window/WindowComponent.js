@@ -9,7 +9,7 @@ const windowStyle = styles.merge(
 	styles.flex.vertical,
 	styles.border.subtle,
 	styles.border.strong,
-	styles.background.opaque,
+	styles.theme.normal,
 	{
 		padding: 1
 	});
@@ -33,7 +33,8 @@ const headerStyles = styles.merge(
 const headerNameStyles = styles.merge(
 	styles.flex.fluid,
 	styles.theme.inverse,
-	styles.padding.field);
+	styles.padding.field,
+	styles.padding.button);
 export default class WindowComponent extends Component {
 	constructor () {
 		super();

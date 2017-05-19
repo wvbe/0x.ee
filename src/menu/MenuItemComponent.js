@@ -5,10 +5,9 @@ import * as styles from '../styles';
 const style = styles.merge(
 	styles.display.inlineBlock,
 	styles.connotation.interactive,
+	styles.padding.button,
+	styles.theme.inverse,
 	{
-		padding: '1px 3px',
-		backgroundColor: styles.palette.fg.toString(),
-		color: styles.palette.bg.toString(),
 		':hover': {
 			backgroundColor: styles.palette.bgAlt.toString()
 		}

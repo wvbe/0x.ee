@@ -148,35 +148,41 @@ export default class RootComponent extends Component {
 			styles.steno.normal,
 			styles.display.block,
 			{
-				maxWidth: 700,
+				maxWidth: 800,
 				margin: 'auto'
 			});
-		const bannerLeftStyle = styles.merge(styles.flex.vertical, styles.flex.alignStart);
-		const bannerMiddleStyle = styles.merge({
-			height: bannerHeight,
-			width: 'auto',
-			margin: '0 ' + styles.length.line + 'px'
-		});
+		const bannerLeftStyle = styles.merge(
+			styles.flex.vertical,
+			styles.flex.alignStart,
+			styles.flex.fixed);
 		const bannerRightStyle = styles.merge(
-			styles.display.block,
+			styles.flex.fluid,
+			styles.flex.vertical,
 			styles.steno.micro,
 			{
 				width: 4 * styles.length.gridItem,
 				textAlign: 'left',
-				height: bannerHeight
+				marginLeft: styles.length.line
 			});
 		const consoleStyle = styles.merge(
 			styles.steno.micro,
 			{
 			height: 200
 		});
-		const bottomConsole = styles.merge({
-			paddingTop: styles.length.micro,
-			borderTop: '0.5px solid #999'
-		});
-		const topConsole = styles.merge({
-			marginBottom: styles.length.micro
-		});
+		const bottomConsole = styles.merge(
+			styles.flex.fluid,
+			styles.flex.vertical,
+			styles.flex.justifyEnd,
+			{
+				height: '300px',
+				paddingTop: styles.length.micro,
+				borderTop: '0.5px solid #999'
+			});
+		const topConsole = styles.merge(
+			styles.flex.fixed,
+			{
+				marginBottom: styles.length.micro
+			});
 		return (<div { ...style }>
 			<div { ...styles.merge(styles.steno.header) }>wybe minnebo</div>
 			<div { ...styles.merge(styles.flex.horizontal, { marginBottom: styles.length.line }) }>
@@ -187,20 +193,18 @@ export default class RootComponent extends Component {
 					<MenuItemComponent input='cv' />
 					<MenuItemComponent input='--help' />
 				</oksee-menu>
-				<img src={ logoImageUrl } { ...bannerMiddleStyle } alt='Logo' />
 				<div { ...bannerRightStyle }>
 					<div { ...topConsole }>
-					<ConsoleOutputComponent
-						logger={secondaryLogger}
-						maxHistory={ 5 }
-						maxHeight={ 5 }
-					/>
+						<ConsoleOutputComponent
+							logger={secondaryLogger}
+							maxHistory={ 5 }
+						/>
 					</div>
 					<div { ...bottomConsole }>
 						<ConsoleOutputComponent
 							logger={primaryLogger}
 							maxHistory={ 100 }
-							maxHeight={ 10 }
+							maxHeight={ 100 }
 						/>
 					</div>
 				</div>

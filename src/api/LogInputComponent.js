@@ -7,23 +7,42 @@ function getClockTime (date) {
 	return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
 
-const style = styles.merge(
-	styles.flex.horizontal
-);
 const prefixStyle = styles.merge(
 	styles.flex.fixed,
 	styles.flex.horizontal,
-	{ width: styles.length.gridItem });
+	{ width: 1.5 * styles.length.gridItem });
 
 const nuggetStyle = styles.merge({
 	marginRight: styles.length.line
 });
+
+
 export default class LogInputComponent extends Component {
 	shouldComponentUpdate (nextProps, nextState) {
 		return false;
 	}
 
 	render() {
+		let style = null;
+
+		if (this.props.connotation === 'input') {
+			style = styles.merge(
+				styles.flex.horizontal,
+				styles.theme.inverse,
+				styles.padding.button);
+		}
+		else if (this.props.connotation === 'error') {
+			style = styles.merge(
+				styles.flex.horizontal,
+				styles.theme.error,
+				styles.padding.button);
+		}
+		else {
+			style = styles.merge(
+				styles.flex.horizontal,
+				styles.padding.flatButton);
+		}
+
 		return (<oksee-log-message { ...style } data-connotation={this.props.connotation || 'log'}>
 			<oksee-log-prefix { ...prefixStyle }>
 				<div { ...nuggetStyle }>{getClockTime(this.props.time)}</div>
