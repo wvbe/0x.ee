@@ -6,7 +6,7 @@
     "react-scripts": "0.8.5"
   },
   "dependencies": {
-    "ask-nicely": "^1.1.0",
+    "ask-nicely": "^2.0.0-rc1",
     "color-js": "^1.0.3",
     "glamor": "^2.20.20",
     "react": "^15.4.2",
@@ -17,5 +17,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "homepage": "."
 }
