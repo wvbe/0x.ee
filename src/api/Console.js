@@ -1,4 +1,4 @@
-import AskNicely from 'ask-nicely';
+import * as AskNicely from 'ask-nicely';
 
 console.log('AskNicely', AskNicely);
 const instance = Symbol('ask-nicely instance');
@@ -22,7 +22,7 @@ function getArgs (input = '') {
 
 export default class Console {
 	constructor () {
-		this[instance] = new AskNicely();
+		this[instance] = new AskNicely.Root();
 	}
 
 	input (input, ...args) {

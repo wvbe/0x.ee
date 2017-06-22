@@ -1,4 +1,4 @@
-import AskNicely from 'ask-nicely';
+import * as AskNicely from 'ask-nicely';
 import React from 'react';
 
 const NO_DESCRIPTION = 'No description';

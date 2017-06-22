@@ -1,4 +1,4 @@
-import AskNicely from 'ask-nicely';
+import * as AskNicely from 'ask-nicely';
 
 export default function (app) {
 	let profileCommand = app.console
