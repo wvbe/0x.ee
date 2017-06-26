@@ -22,7 +22,7 @@ const QUEUE = Symbol('submit queue');
 
 
 const debounced = {
-	fakeExceptionReport: debounce(3000, (index, logger) => {
+	fakeExceptionReport: debounce(60000, (index, logger) => {
 		logger.log(`Send ExceptionReport (${index})`, `debug`);
 
 		setTimeout(() => {

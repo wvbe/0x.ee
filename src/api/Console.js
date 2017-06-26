@@ -1,6 +1,5 @@
 import * as AskNicely from 'ask-nicely';
 
-console.log('AskNicely', AskNicely);
 const instance = Symbol('ask-nicely instance');
 
 function getArgs (input = '') {

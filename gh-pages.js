@@ -8,6 +8,6 @@ ghpages.publish(
 		branch: 'master'
 	},
 	err => err ?
-		console.log('  FAIL\n\n' + err.message) :
+		console.error('  FAIL\n\n' + err.message) :
 		console.log('  OK')
 );

@@ -3,10 +3,7 @@ import * as styles from '../styles';
 import ConsoleLogComponent from './ConsoleLogComponent';
 
 const style = styles.merge(
-	styles.display.block,
-	{
-		overflow: 'auto'
-	});
+	styles.display.block);
 // The list of all logs, errors, etc.
 export default class ConsoleOutputComponent extends Component {
 	constructor () {
@@ -73,7 +70,10 @@ export default class ConsoleOutputComponent extends Component {
 	render() {
 		return (<oksee-console-output
 			{ ...style }
-			{ ...styles.merge({ maxHeight: this.props.maxHeight ? this.props.maxHeight + 'em' : 'auto' }) }
+			{ ...styles.merge({
+				maxHeight: this.props.maxHeight ? this.props.maxHeight + 'em' : 'auto',
+				overflow: this.props.overflow ? 'auto' : 'hidden'
+			}) }
 			class="fuck-you-scroll">
 			{this.history.slice(this.state.historyStart, this.state.historyEnd).map(log => <ConsoleLogComponent key={log.index}>{log.component}</ConsoleLogComponent>)}
 		</oksee-console-output>);

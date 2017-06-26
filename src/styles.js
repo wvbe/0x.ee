@@ -122,7 +122,7 @@ const fontFamily = {
 
 export const steno = {
 	header: {
-		fontFamily: fontFamily.header,
+		fontFamily: fontFamily.normal,
 		fontSize: 2 * uiLength,
 		lineHeight: '1em',
 		marginBottom: '0.25em'
@@ -141,8 +141,9 @@ export const steno = {
 	},
 	micro: {
 		fontFamily: fontFamily.normal,
-		fontSize: 0.8 * uiLength,
+		fontSize: 0.6 * uiLength,
 		color: palette.fgDim,
+		textTransform: 'uppercase',
 		lineHeight: '1em'
 	}
 };

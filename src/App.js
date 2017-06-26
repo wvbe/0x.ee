@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import MenuItemComponent from './menu/MenuItemComponent';
 
-import logoImageUrl from './logo.png';
 import ConsoleOutputComponent from './console/ConsoleOutputComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import WindowContainerComponent from './window/WindowContainerComponent';
@@ -158,14 +157,14 @@ export default class RootComponent extends Component {
 		const bannerRightStyle = styles.merge(
 			styles.flex.fluid,
 			styles.flex.vertical,
-			styles.steno.micro,
+			styles.steno.normal,
 			{
 				width: 4 * styles.length.gridItem,
 				textAlign: 'left',
 				marginLeft: styles.length.line
 			});
 		const consoleStyle = styles.merge(
-			styles.steno.micro,
+			styles.steno.normal,
 			{
 			height: 200
 		});
@@ -184,7 +183,10 @@ export default class RootComponent extends Component {
 				marginBottom: styles.length.micro
 			});
 		return (<div { ...style }>
-			<div { ...styles.merge(styles.steno.header) }>wybe minnebo</div>
+			<div>
+				<div { ...styles.merge(styles.steno.header) }>wvbe</div>
+				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer</div>
+			</div>
 			<div { ...styles.merge(styles.flex.horizontal, { marginBottom: styles.length.line }) }>
 				<oksee-menu  { ...bannerLeftStyle }>
 					<MenuItemComponent input='motd' />
