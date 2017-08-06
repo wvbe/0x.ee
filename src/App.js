@@ -142,19 +142,22 @@ export default class RootComponent extends Component {
 
 	render() {
 
-		const bannerHeight = styles.length.gridItem;
 		const style = styles.merge(
 			styles.steno.normal,
-			styles.display.block,
+			styles.flex.vertical,
+			styles.flex.fluid,
+			styles.theme.normal,
 			{
-				maxWidth: 800,
-				margin: 'auto'
+				padding: styles.length.line
 			});
-		const bannerLeftStyle = styles.merge(
+		const bannerStyle = styles.merge(
+			styles.flex.vertical,
+			styles.flex.fixed);
+		const menuStyle = styles.merge(
 			styles.flex.vertical,
 			styles.flex.alignStart,
 			styles.flex.fixed);
-		const bannerRightStyle = styles.merge(
+		const consoleOutputStyle = styles.merge(
 			styles.flex.fluid,
 			styles.flex.vertical,
 			styles.steno.normal,
@@ -164,10 +167,9 @@ export default class RootComponent extends Component {
 				marginLeft: styles.length.line
 			});
 		const consoleStyle = styles.merge(
+			styles.flex.vertical,
 			styles.steno.normal,
-			{
-			height: 200
-		});
+			styles.flex.fixed);
 		const bottomConsole = styles.merge(
 			styles.flex.fluid,
 			styles.flex.vertical,
@@ -183,19 +185,19 @@ export default class RootComponent extends Component {
 				marginBottom: styles.length.micro
 			});
 		return (<div { ...style }>
-			<div>
+			<div { ...bannerStyle}>
 				<div { ...styles.merge(styles.steno.header) }>wvbe</div>
 				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer</div>
 			</div>
-			<div { ...styles.merge(styles.flex.horizontal, { marginBottom: styles.length.line }) }>
-				<oksee-menu  { ...bannerLeftStyle }>
+			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line }) }>
+				<oksee-menu  { ...menuStyle }>
 					<MenuItemComponent input='motd' />
 					<MenuItemComponent input='who' />
 					<MenuItemComponent input='view' />
 					<MenuItemComponent input='cv' />
 					<MenuItemComponent input='--help' />
 				</oksee-menu>
-				<div { ...bannerRightStyle }>
+				<div { ...consoleOutputStyle }>
 					<div { ...topConsole }>
 						<ConsoleOutputComponent
 							logger={secondaryLogger}
@@ -211,13 +213,13 @@ export default class RootComponent extends Component {
 					</div>
 				</div>
 			</div>
-			<oksee-console { ...consoleStyle }>
+			<div { ...consoleStyle }>
 				<ConsoleInputComponent
 					console={api.console}
 					logger={primaryLogger}
 					handleSubmit={api.submit.bind(api)}
 				/>
-			</oksee-console>
+			</div>
 		<WindowContainerComponent />
 </div>);
 	}

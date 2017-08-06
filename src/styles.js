@@ -82,28 +82,29 @@ export function color (input) {
 	return colorJs(input);
 };
 
-const fg = color('#000'),
-	bg = color('#fff');
+const fg = color('#e2e2e2'),
+	bg = color('#0f161d');
 
 export const palette = {
 	fg: fg,
 	fgDim: fg.blend(bg, 0.5),
-
+	fgAlt: color('#13b85c'),
 	bg: bg,
-	bgAlt: color('orange').darkenByRatio(0.5),
+	bgAlt: color('#fff'), //color('#008c39'),
 
 
-	error: color('crimson'),
+	error: color('#f14b32'),
 };
 
 const fontFamily = {
-		normal: glamor.fontFace({
-			fontFamily: 'Share Tech Mono',
-			fontStyle: 'normal',
-			fontWeight: 400,
-			src: "local('Share Tech Mono'), local('ShareTechMono-Regular'), url(https://fonts.gstatic.com/s/sharetechmono/v6/RQxK-3RA0Lnf3gnnnNrAsVlgUn8GogvcKKzoM9Dh-4E.woff2) format('woff2')",
-			unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
-		}),
+	normal: 'Courier New',
+	// normal: glamor.fontFace({
+	// 	fontFamily: 'Share Tech Mono',
+	// 	fontStyle: 'normal',
+	// 	fontWeight: 400,
+	// 	src: "local('Share Tech Mono'), local('ShareTechMono-Regular'), url(https://fonts.gstatic.com/s/sharetechmono/v6/RQxK-3RA0Lnf3gnnnNrAsVlgUn8GogvcKKzoM9Dh-4E.woff2) format('woff2')",
+	// 	unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
+	// }),
 		// normal: glamor.fontFace({
 		// 	fontFamily: 'Share Tech Mono',
 		// 	fontStyle: 'normal',
@@ -124,27 +125,27 @@ export const steno = {
 	header: {
 		fontFamily: fontFamily.normal,
 		fontSize: 2 * uiLength,
-		lineHeight: '1em',
+		lineHeight: 2 * uiLength + 'px',
 		marginBottom: '0.25em'
 	},
 	normal: {
 		fontFamily: fontFamily.normal,
 		fontSize: 0.8 * uiLength,
-		lineHeight: '1em'
+		lineHeight: 1 * uiLength + 'px'
 	},
 	small: {
 		fontFamily: fontFamily.normal,
 		fontSize: 0.7 * uiLength,
 		textTransform: 'uppercase',
 		color: palette.fgDim,
-		lineHeight: '1em'
+		lineHeight: 1 * uiLength + 'px'
 	},
 	micro: {
 		fontFamily: fontFamily.normal,
 		fontSize: 0.6 * uiLength,
 		color: palette.fgDim,
 		textTransform: 'uppercase',
-		lineHeight: '1em'
+		lineHeight: 1 * uiLength + 'px'
 	}
 };
 
@@ -159,28 +160,17 @@ export const border = {
 	}
 };
 
-export const background = {
-	opaque: {
-		backgroundColor: palette.bg.toString()
-	},
-	inverse: {
-		backgroundColor: color('blue').toString()//palette.fg.toString()
-	}
-};
-
-
 export const theme = {
 	normal: {
 		color: palette.fg.toString(),
 		backgroundColor: palette.bg.toString()
 	},
 	dim: {
-		color: palette.fg.blend(palette.bg, 0.5).toString(),
-		backgroundColor: palette.bg.setAlpha(0.8).toString()
+		color: palette.fg.blend(palette.bg, 0.5).toString()
 	},
 	inverse: {
 		color: palette.bg.toString(),
-		backgroundColor: palette.fg.toString()
+		backgroundColor: palette.fg.blend(bg, 0.3).toString()
 	},
 	error: {
 		color: palette.error.darkenByRatio(0.3).toString(),

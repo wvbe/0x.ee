@@ -11,7 +11,6 @@ const inlineInputStyle = styles.merge({
 const inputStyle = styles.merge(
 	styles.display.block,
 	styles.border.subtle,
-	styles.theme.normal,
 	{
 		cursor: 'pointer',
 		padding: 1
