@@ -97,28 +97,13 @@ export const palette = {
 };
 
 const fontFamily = {
-	normal: 'Courier New',
-	// normal: glamor.fontFace({
-	// 	fontFamily: 'Share Tech Mono',
-	// 	fontStyle: 'normal',
-	// 	fontWeight: 400,
-	// 	src: "local('Share Tech Mono'), local('ShareTechMono-Regular'), url(https://fonts.gstatic.com/s/sharetechmono/v6/RQxK-3RA0Lnf3gnnnNrAsVlgUn8GogvcKKzoM9Dh-4E.woff2) format('woff2')",
-	// 	unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
-	// }),
-		// normal: glamor.fontFace({
-		// 	fontFamily: 'Share Tech Mono',
-		// 	fontStyle: 'normal',
-		// 	fontWeight: 400,
-		// 	src: "local('Share Tech Mono'), local('ShareTechMono-Regular'), url(https://fonts.gstatic.com/s/sharetechmono/v6/RQxK-3RA0Lnf3gnnnNrAsVlgUn8GogvcKKzoM9Dh-4E.woff2) format('woff2')",
-		// 	unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
-		// }),
-		header: glamor.fontFace({
-			fontFamily: 'Abril Fatface',
-			fontStyle: 'normal',
-			fontWeight: 400,
-			src: "local('Abril Fatface'), local('AbrilFatface-Regular'), url(https://fonts.gstatic.com/s/abrilfatface/v8/X1g_KwGeBV3ajZIXQ9VnDgYWpCd0FFfjqwFBDnEN0bM.woff2) format('woff2')",
-			unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
-		})
+	normal: glamor.fontFace({
+		fontFamily: 'Roboto Mono',
+		fontStyle: 'normal',
+		fontWeight: 400,
+		src: "local('Roboto Mono'), local('RobotoMono-Regular'), url(https://fonts.gstatic.com/s/robotomono/v4/hMqPNLsu_dywMa4C_DEpY4gp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2')",
+		unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215'
+	})
 };
 
 export const steno = {
@@ -131,7 +116,8 @@ export const steno = {
 	normal: {
 		fontFamily: fontFamily.normal,
 		fontSize: 0.8 * uiLength,
-		lineHeight: 1 * uiLength + 'px'
+		lineHeight: 1 * uiLength + 'px',
+		whiteSpace: 'pre-wrap'
 	},
 	small: {
 		fontFamily: fontFamily.normal,

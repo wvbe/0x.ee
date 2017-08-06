@@ -23,7 +23,7 @@ const ghostCanvasStyle = styles.merge(
 const ghostLineStyle = Object.assign({}, styles.position.absolute,
 	{
 		transformOrigin: 'top left',
-		borderTop: '1px dotted ' + styles.palette.fgDim.toString()
+		borderTop: '1px dotted ' + styles.palette.fg.toString()
 	});
 
 
@@ -164,7 +164,7 @@ export default class DraggableComponent extends Component {
 				ctx.clearRect(0, 0, 36, 36);
 				ctx.beginPath();
 				ctx.arc(18, 18, 16, 0, transform.transform, true);
-				ctx.strokeStyle = '#2c2c2c';
+				ctx.strokeStyle = styles.palette.fg.toString();
 				ctx.stroke();
 			}
 

@@ -186,7 +186,7 @@ export default class RootComponent extends Component {
 			});
 		return (<div { ...style }>
 			<div { ...bannerStyle}>
-				<div { ...styles.merge(styles.steno.header) }>wvbe</div>
+				<div { ...styles.merge(styles.steno.header) }>wvbe minnebo</div>
 				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer</div>
 			</div>
 			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line }) }>
