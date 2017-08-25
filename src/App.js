@@ -34,6 +34,8 @@ function submitFromClick (event) {
 	if(command) {
 		api.secondaryLogger.log('Submit "' + command + '"', 'mouse');
 		api.submit(command);
+
+		event.preventDefault();
 	}
 
 	else if(href) {
@@ -41,33 +43,29 @@ function submitFromClick (event) {
 		api.submit('redir ' + href);
 	}
 
-	else {
-		return;
-	}
-
-	event.preventDefault();
 }
 
+const versionNumber = 'v5-rc1';
 function playBootSequence () {
 	let bootTimeLength = api.config('bootTimeLength'),
 		unsetBusyReason = api.setBusyReason('console offline');
 
 	// Bunch of rubarb
-	secondaryLogger.log('Connected to 0x.ee, welcome ANON', '$');
+	secondaryLogger.log('Connected to http://wyb.be, welcome ANON', '$');
 	secondaryLogger.log('0x://websocket', 'Request URL');
 	secondaryLogger.log('GET', 'Method');
 	secondaryLogger.log('101 Switching Protocols', 'Status code');
 	secondaryLogger.log('Upgrade (websocket)', 'Connection');
 
 	setTimeout(() => {
-		secondaryLogger.log('permessage-deflate; client_max_window_bits', 'SWS-Extensions');
+		secondaryLogger.log('permessage-deflate; client_max_window_bits', 'SWS-Ext.');
 		secondaryLogger.log('MeIy8A1qAhcqufFKmIr/qw==', 'SWS-Key');
 		secondaryLogger.log('aLE6oM0LDpu0+YGAiEbKf4Qnx98=', 'SWS-Accept');
-		secondaryLogger.log('ANON user (0x.ee v4.0.0-alpha)', 'New client');
+		secondaryLogger.log('ANON user (wyb.be ' + versionNumber + ')', 'New client');
 		secondaryLogger.log('Loading profile', 'init');
 	}, bootTimeLength/2);
 
-	primaryLogger.log('0x.ee v4.0.0-alpha, waiting for OK...', 'init');
+	primaryLogger.log('wyb.be ' + versionNumber + ', waiting for OK...', 'init');
 
 	// Start running the initial command: something from the URL hash or 'motd'
 	setTimeout(() => {
@@ -174,8 +172,8 @@ export default class RootComponent extends Component {
 			styles.flex.fluid,
 			styles.flex.vertical,
 			styles.flex.justifyEnd,
+			styles.position.relative,
 			{
-				height: '300px',
 				paddingTop: styles.length.micro,
 				borderTop: '0.5px solid #999'
 			});
@@ -186,8 +184,8 @@ export default class RootComponent extends Component {
 			});
 		return (<div { ...style }>
 			<div { ...bannerStyle}>
-				<div { ...styles.merge(styles.steno.header) }>wvbe minnebo</div>
-				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer</div>
+				<div { ...styles.merge(styles.steno.header) }>wybe minnebo</div>
+				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer / problem solver</div>
 			</div>
 			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line }) }>
 				<oksee-menu  { ...menuStyle }>

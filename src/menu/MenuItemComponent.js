@@ -8,9 +8,7 @@ const style = styles.merge(
 	styles.padding.button,
 	styles.theme.inverse,
 	{
-		':hover': {
-			backgroundColor: styles.palette.bgAlt.toString()
-		}
+		':hover': styles.theme.inverseFocused
 	});
 const busyStyle = styles.merge({
 	textDecoration: 'line-through'

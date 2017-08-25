@@ -3,6 +3,7 @@ import * as glamor from 'glamor';
 
 export { merge } from 'glamor';
 
+
 export const flex = {
 	horizontal: {
 		display: 'flex',
@@ -92,7 +93,6 @@ export const palette = {
 	bg: bg,
 	bgAlt: color('#fff'), //color('#008c39'),
 
-
 	error: color('#f14b32'),
 };
 
@@ -158,9 +158,14 @@ export const theme = {
 		color: palette.bg.toString(),
 		backgroundColor: palette.fg.blend(bg, 0.3).toString()
 	},
+	inverseFocused: {
+		color: palette.bg.toString(),
+		backgroundColor: palette.bgAlt.toString(),
+		cursor: 'pointer'
+	},
 	error: {
-		color: palette.error.darkenByRatio(0.3).toString(),
-		backgroundColor: palette.error.lightenByRatio(0.9).toString()
+		color: palette.error.toString(),
+		backgroundColor: palette.error.darkenByRatio(0.6).toString()
 	}
 };
 
@@ -170,3 +175,11 @@ export const overflow = {
 		overflow: 'auto'
 	}
 };
+
+console.log(glamor);
+glamor.insertGlobal('a[data-command], a[href]', Object.assign({
+		textDecoration: 'none'
+	},
+	theme.inverse));
+
+glamor.insertGlobal('a[data-command]:hover, a[href]:hover', theme.inverseFocused);

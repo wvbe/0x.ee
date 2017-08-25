@@ -39,7 +39,7 @@ export default (app) => {
 			let command = req.command,
 				isRoot = !command.parent;
 
-			res.log(`# 0x.ee --help`);
+			res.log(`# wyb.be --help`);
 
 			if(isRoot) {
 				res.log('');
