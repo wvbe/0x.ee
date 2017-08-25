@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import MenuItemComponent from './menu/MenuItemComponent';
+import MenuComponent from './menu/MenuComponent';
 
-import ConsoleOutputComponent from './console/ConsoleOutputComponent';
+import BigBadAccordeon from './console/BigBadAccordeon';
+import FlagComponent from './components/FlagComponent';
 import ConsoleInputComponent from './console/ConsoleInputComponent';
 import WindowContainerComponent from './window/WindowContainerComponent';
 
@@ -119,8 +120,6 @@ export default class RootComponent extends Component {
 			isSkewed: api.config('isSkewed'),
 			windows: []
 		};
-
-		this.nerfPerDerpDestroyer = null;
 	}
 
 	componentDidMount () {
@@ -134,8 +133,6 @@ export default class RootComponent extends Component {
 	componentWillUnmount () {
 		window.removeEventListener('hashchange', submitFromHash);
 		window.removeEventListener('click', submitFromClick);
-
-		clearInterval(this.nerfPerDerpDestroyer);
 	}
 
 	render() {
@@ -148,74 +145,34 @@ export default class RootComponent extends Component {
 			{
 				padding: styles.length.line
 			});
-		const bannerStyle = styles.merge(
-			styles.flex.vertical,
-			styles.flex.fixed);
-		const menuStyle = styles.merge(
-			styles.flex.vertical,
-			styles.flex.alignStart,
-			styles.flex.fixed);
-		const consoleOutputStyle = styles.merge(
-			styles.flex.fluid,
-			styles.flex.vertical,
-			styles.steno.normal,
-			{
-				width: 4 * styles.length.gridItem,
-				textAlign: 'left',
-				marginLeft: styles.length.line
-			});
 		const consoleStyle = styles.merge(
 			styles.flex.vertical,
 			styles.steno.normal,
 			styles.flex.fixed);
-		const bottomConsole = styles.merge(
-			styles.flex.fluid,
-			styles.flex.vertical,
-			styles.flex.justifyEnd,
-			styles.position.relative,
-			{
-				paddingTop: styles.length.micro,
-				borderTop: '0.5px solid #999'
-			});
-		const topConsole = styles.merge(
-			styles.flex.fixed,
-			{
-				marginBottom: styles.length.micro
-			});
+
 		return (<div { ...style }>
-			<div { ...bannerStyle}>
-				<div { ...styles.merge(styles.steno.header) }>wybe minnebo</div>
-				<div { ...styles.merge(styles.theme.dim, styles.steno.normal, { marginBottom: styles.length.line }) }>interaction designer / javascript programmer / problem solver</div>
-			</div>
+			<FlagComponent
+				title={ 'wybe minnebo' }
+				subtitle={'interaction designer / javascript programmer / problem solver' }
+			/>
 			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line }) }>
-				<oksee-menu  { ...menuStyle }>
-					<MenuItemComponent input='motd' />
-					<MenuItemComponent input='who' />
-					<MenuItemComponent input='view' />
-					<MenuItemComponent input='cv' />
-					<MenuItemComponent input='--help' />
-				</oksee-menu>
-				<div { ...consoleOutputStyle }>
-					<div { ...topConsole }>
-						<ConsoleOutputComponent
-							logger={secondaryLogger}
-							maxHistory={ 5 }
-						/>
-					</div>
-					<div { ...bottomConsole }>
-						<ConsoleOutputComponent
-							logger={primaryLogger}
-							maxHistory={ 100 }
-							maxHeight={ 100 }
-						/>
-					</div>
-				</div>
+				<MenuComponent commands={[
+					'motd',
+					'who',
+					'view',
+					'cv',
+					'--help'
+				]} />
+				<BigBadAccordeon
+					loggerTop={ secondaryLogger }
+					loggerBottom={ primaryLogger }
+				/>
 			</div>
 			<div { ...consoleStyle }>
 				<ConsoleInputComponent
-					console={api.console}
-					logger={primaryLogger}
-					handleSubmit={api.submit.bind(api)}
+					console={ api.console }
+					logger={ primaryLogger }
+					handleSubmit={ api.submit.bind(api) }
 				/>
 			</div>
 		<WindowContainerComponent />

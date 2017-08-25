@@ -26,7 +26,7 @@ export default function (app) {
 			res.log(
 				<div>    <a href={req.parameters.url} target="_blank">{req.parameters.url}</a></div>,
 				'target');
-			res.log('If you want to abort, you are fucked');
+			res.log('Nobody will be able to hear you scream.');
 			res.log('-----------------------------------------------------------------------------');
 			res.error('Warning, opening new internet connection on protected port: 80');
 			res.log('Charging lasers...');

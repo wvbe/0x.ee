@@ -63,6 +63,11 @@ export default class Api extends EventEmitter {
 		this[CONFIG][name] = value;
 	}
 
+	emit (...args) {
+		console.log('emit', args);
+		super.emit(...args);
+	}
+
 	submit (content) {
 		if(!content || !content.trim())
 			return;
@@ -91,7 +96,8 @@ export default class Api extends EventEmitter {
 
 		this.console.input(content, this.primaryLogger)
 			.catch(e => {
-
+				// Format a nice error message and print something cool. Errors are, after all, the best features of
+				// this site.
 				let mysteriousString = turnIntoMysteriousString(e.message || e);
 
 				this.primaryLogger.error(e.message || e);
