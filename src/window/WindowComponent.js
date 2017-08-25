@@ -6,6 +6,7 @@ import ToastComponent from '../toast/ToastComponent';
 import * as styles from '../styles';
 
 const windowStyle = styles.merge(
+	styles.flex.fluid,
 	styles.flex.vertical,
 	styles.border.subtle,
 	styles.border.strong,
@@ -18,10 +19,7 @@ const rowStyle = styles.merge(
 
 const contentStyle = styles.merge(
 	styles.flex.fluid,
-	styles.overflow.auto,
-	{
-		maxHeight: 4 * styles.length.large
-	});
+	styles.overflow.auto);
 
 const headerStyles = styles.merge(
 	styles.flex.fixed,

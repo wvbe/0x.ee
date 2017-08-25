@@ -25,7 +25,7 @@ export default class WindowContainerComponent extends Component {
 	}
 
 	componentDidMount () {
-		this.onComponentWillUnmount.push(api.on('window:new', (name, content) => {
+		this.onComponentWillUnmount.push(api.on('window:new', (name, content, options) => {
 			if(this.state.windows.find(win => win.name === name)) {
 				api.secondaryLogger.log('Already exists: ' + name, 'window');
 				return;
@@ -38,8 +38,8 @@ export default class WindowContainerComponent extends Component {
 					...this.state.windows,
 					{
 						name,
-						content: (<DraggableComponent key={key}>
-							<WindowComponent name={name}>{content}</WindowComponent>
+						content: (<DraggableComponent key={key} { ...options }>
+							<WindowComponent name={name} options={ options }>{content}</WindowComponent>
 						</DraggableComponent>)
 					}
 				]

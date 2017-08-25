@@ -105,6 +105,32 @@ function getGhostElement (component) {
 		<pre>{ JSON.stringify(connectingLineInfo, null, '  ') } </pre>
 	</oksee-draggable-ghost>);
 }
+
+function getSquareForSizeAndRatio (zoomFactor, ratioLandscapeness) {
+	const screenSides = [window.innerWidth, window.innerHeight];
+	const screenLandscapeness = screenSides[0]/screenSides[1];
+	const ratioSides = [1, 1 / ratioLandscapeness]; // ratio = 0/1 landscape > 1 > portrait
+	// ratioLandscapeness = ratioSides[0] / ratioSides[1];
+
+	// 1:1 <
+	return (screenLandscapeness < ratioLandscapeness ?
+		[
+			// if the screen is more landscape than the picture, the picture touches the top and bottom of the space
+			screenSides[0],
+			screenSides[1] / (ratioLandscapeness / (screenLandscapeness))
+		] :
+		[
+			screenSides[0] * (ratioLandscapeness / (screenLandscapeness)),
+			screenSides[1]
+		]).map(length => Math.round(length * zoomFactor));
+}
+
+function getCoordinatesForCenteredPicture (sizes) {
+	const screenSides = [window.innerWidth, window.innerHeight];
+
+	return sizes.map((size, i) => Math.round(screenSides[i] - size)/2);
+}
+
 export default class DraggableComponent extends Component {
 	constructor () {
 		super();
@@ -181,6 +207,17 @@ export default class DraggableComponent extends Component {
 		};
 	}
 
+	componentWillMount () {
+		const size = getSquareForSizeAndRatio(this.props.size || 0.8, this.props.ratio || 16/9);
+		const offset = getCoordinatesForCenteredPicture(size);
+		this.state = {
+			w: size[0],
+			h: size[1],
+			x: offset[0],
+			y: offset[1]
+		};
+	};
+
 	componentDidMount () {
 		this.refs.draggable.addEventListener('mousedown', this.onDragStart);
 	}
@@ -193,12 +230,15 @@ export default class DraggableComponent extends Component {
 
 	render() {
 		const draggableStyle = styles.merge(
-			styles.display.block,
+			styles.flex.vertical,
 			styles.position.absolute,
 			{
+				width: this.state.w,
+				height: this.state.h,
 				top: this.state.y,
-				left: this.state.x
+				left: this.state.x,
 			});
+
 
 		return (<oksee-draggable-wrapper { ...wrapperStyle }>
 			{this.state.ghost ? getGhostElement(this) : null}
