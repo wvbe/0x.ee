@@ -12,9 +12,6 @@ const prefixStyle = styles.merge(
 	styles.flex.horizontal,
 	{ width: 1.5 * styles.length.gridItem });
 
-const nuggetStyle = styles.merge({
-	marginRight: styles.length.line
-});
 
 
 export default class LogInputComponent extends Component {
@@ -24,6 +21,11 @@ export default class LogInputComponent extends Component {
 
 	render() {
 		let style = null;
+
+		const nuggetStyle = styles.merge({
+			marginRight: styles.length.line,
+			maxWidth: this.props.connotation === 'input' ? 'initial' : '60em'
+		});
 
 		if (this.props.connotation === 'input') {
 			style = styles.merge(
@@ -40,7 +42,8 @@ export default class LogInputComponent extends Component {
 		else {
 			style = styles.merge(
 				styles.flex.horizontal,
-				styles.padding.flatButton);
+				styles.padding.flatButton)
+
 		}
 
 		return (<oksee-log-message { ...style } data-connotation={this.props.connotation || 'log'}>
@@ -49,7 +52,7 @@ export default class LogInputComponent extends Component {
 				<div { ...nuggetStyle }>{this.props.prefix}</div>
 				{/*<div className="arrow" />*/}
 			</oksee-log-prefix>
-			<oksee-log-content { ...nuggetStyle }>{this.props.children}</oksee-log-content>
+			<oksee-log-content { ...nuggetStyle } { ...styles.merge(styles.flex.fluid) }>{this.props.children}</oksee-log-content>
 		</oksee-log-message>);
 	}
 }

@@ -18,6 +18,7 @@ const rowStyle = styles.merge(
 	styles.flex.horizontal);
 
 const contentStyle = styles.merge(
+	styles.flex.vertical,
 	styles.flex.fluid,
 	styles.overflow.auto);
 
@@ -62,7 +63,7 @@ export default class WindowComponent extends Component {
 			</oksee-window-header>
 			<oksee-window-content { ...contentStyle } class="fuck-you-scroll">
 				{toast ? toast : null}
-				<div style={{visibility: toast ? 'hidden' : 'visible'}}>{this.props.children}</div>
+				{!toast ? this.props.children : null }
 			</oksee-window-content>
 		</oksee-window>);
 	}

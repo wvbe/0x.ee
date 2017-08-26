@@ -22,9 +22,9 @@ export default function (app) {
 
 			if(req.options.email) {
 				[
-					'wybe@hotmail.com',
 					'wybe.x54@gmail.com',
-					'wybe.minnebo@liones.nl'
+					'wybe.minnebo@liones.nl',
+					'wybe@hotmail.com'
 				].forEach(add => res.log(
 					<a href={'mailto:' + add} target="_blank">{add}</a>,
 					'Email alt'));

@@ -1,5 +1,6 @@
 import * as AskNicely from 'ask-nicely';
 import React from 'react';
+import * as styles from '../styles';
 
 const NO_DESCRIPTION = 'No description';
 
@@ -23,6 +24,24 @@ function getAllOptions (command) {
 
 function getAllParameters (command) {
 	return getCommandHierarchy(command).reduce((options, command) => options.concat(command.parameters), []);
+}
+const rowStyle = styles.merge(
+	styles.flex.horizontal);
+const smallColStyle = styles.merge(
+	styles.flex.fixed,
+	{
+		width: '15%'
+	});
+const largeColStyle = styles.merge(
+	styles.flex.fluid);
+
+function HelpRow ({ small, description, short }) {
+	return (
+		<div { ...rowStyle }>
+			{ small.map((c, i) => <div key={ i } { ...smallColStyle }>{ c }</div>) }
+			<div { ...largeColStyle }>{ description || NO_DESCRIPTION }</div>
+		</div>
+	)
 }
 
 export default (app) => {
@@ -53,11 +72,12 @@ export default (app) => {
 				res.log(``);
 				res.log('## Child commands');
 				command.children.sort(sortByName).forEach(child => {
-					res.log(<div className="log-row">
-						<div className="log-col-s"><a data-command={child.name}>{child.name}</a></div>
-						<div className="log-col-s"><a data-command={child.name + ' -h'}>--help</a></div>
-						<div className="log-col-x">{(child.description || NO_DESCRIPTION)}</div>
-					</div>);
+					res.log(<HelpRow
+						small={[
+							<a data-command={ child.name }>{child.name}</a>
+						]}
+						description={ child.description || NO_DESCRIPTION}
+					/>);
 				});
 			}
 
@@ -66,10 +86,11 @@ export default (app) => {
 				res.log('');
 				res.log('## Parameters');
 				parameters.forEach(param => {
-					res.log(<div className="log-row">
-						<div className="log-col-s">&#60;{param.name}&#62;</div>
-						<div className="log-col-x">{(param.description || NO_DESCRIPTION)}{param.required ? ' [required]' : ''}</div>
-					</div>);
+					res.log(
+						<HelpRow
+							name={ param.name }
+							description={ (param.description || NO_DESCRIPTION) + (param.required ? ' [required]' : '') }
+						/>);
 				});
 			}
 
@@ -78,11 +99,14 @@ export default (app) => {
 				res.log('');
 				res.log('## Options');
 				options.sort(sortByName).forEach(option => {
-					res.log(<div className="log-row">
-						<div className="log-col-xs">{option.short ? `-${option.short}` : '--'}</div>
-						<div className="log-col-s">--{option.name}</div>
-						<div className="log-col-x">{(option.description || NO_DESCRIPTION)}{option.required ? ' [required]' : ''}</div>
-					</div>);
+					res.log(<HelpRow
+
+						small={[
+							option.short ? `-${option.short}` : '--',
+							'--' + option.name
+						]}
+						description={ (option.description || NO_DESCRIPTION) + (option.required ? ' [required]' : '') }
+						/>);
 				});
 			}
 
