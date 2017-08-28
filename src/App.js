@@ -155,7 +155,7 @@ export default class RootComponent extends Component {
 				title={ 'wybe minnebo' }
 				subtitle={'interaction designer / javascript programmer / problem solver' }
 			/>
-			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line }) }>
+			<div { ...styles.merge(styles.flex.horizontal, { flex: '1 1 auto', marginBottom: styles.length.line, overflow: 'hidden' }) }>
 				<MenuComponent commands={[
 					'motd',
 					'who',

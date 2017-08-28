@@ -17,6 +17,7 @@ const bottomConsole = styles.merge(
 	styles.flex.justifyEnd,
 	styles.position.relative,
 	{
+		overflow: 'hidden',
 		paddingTop: styles.length.micro,
 		borderTop: '0.5px solid #999'
 	});
