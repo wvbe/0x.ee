@@ -1,8 +1,4 @@
 import React from 'react';
-import mugshotImage from './mugshot.jpg';
-import terribleAnimatedHeaderImage from './cv-header.gif';
-import terribleAnimatedCounterImage from './cv-counter.gif';
-import PropertiesComponent from '../components/PropertiesComponent';
 
 
 const cvProperties = {
