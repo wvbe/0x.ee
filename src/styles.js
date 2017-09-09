@@ -83,17 +83,18 @@ export function color (input) {
 	return colorJs(input);
 };
 
-const fg = color('#e2e2e2'),
-	bg = color('#0f161d');
+const fg = color('#666666'),
+	bg = color('#eeeeee');
 
 export const palette = {
 	fg: fg,
-	fgDim: fg.blend(bg, 0.5),
-	fgAlt: color('#13b85c'),
+	fgDim: color('#999999'),
+	//fgAlt: color('red'),
 	bg: bg,
-	bgAlt: color('#fff'), //color('#008c39'),
+	bgAlt: color('#6c6cff'), //color('#008c39'),
 
-	error: color('#f14b32'),
+	bgError: color('#ffd942'),
+	error: fg
 };
 
 const fontFamily = {
@@ -154,9 +155,12 @@ export const theme = {
 	dim: {
 		color: palette.fg.blend(palette.bg, 0.5).toString()
 	},
+	highlighted: {
+		backgroundColor: palette.fg.blend(bg, 0.8).toString()
+	},
 	inverse: {
 		color: palette.bg.toString(),
-		backgroundColor: palette.fg.blend(bg, 0.3).toString()
+		backgroundColor: palette.fg.blend(bg, 0.1).toString()
 	},
 	inverseFocused: {
 		color: palette.bg.toString(),
@@ -165,7 +169,7 @@ export const theme = {
 	},
 	error: {
 		color: palette.error.toString(),
-		backgroundColor: palette.error.darkenByRatio(0.6).toString()
+		backgroundColor: palette.bgError.toString()
 	}
 };
 
@@ -178,7 +182,8 @@ export const overflow = {
 
 console.log(glamor);
 glamor.insertGlobal('a[data-command], a[href]', Object.assign({
-		textDecoration: 'none'
+		textDecoration: 'none',
+		padding: '0 0.3333em'
 	},
 	theme.inverse));
 

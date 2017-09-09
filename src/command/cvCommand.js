@@ -8,7 +8,7 @@ const cvProperties = {
 	'Birth': '10-JUL-1988'
 };
 
-const cvContent = <iframe style={{display:'flex', flex: '1 1 auto' }} src={ '/cv.pdf' } />;
+const cvContent = <iframe style={{display:'flex', flex: '1 1 auto', width: '100%' }} src={ '/cv.pdf' } />;
 
 export default function (app) {
 	app.console

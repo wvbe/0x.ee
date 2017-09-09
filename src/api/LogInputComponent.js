@@ -30,7 +30,7 @@ export default class LogInputComponent extends Component {
 		if (this.props.connotation === 'input') {
 			style = styles.merge(
 				styles.flex.horizontal,
-				styles.theme.inverse,
+				styles.theme.highlighted,
 				styles.padding.button);
 		}
 		else if (this.props.connotation === 'error') {
