@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 
 import perspective from './perspective';
 
+// .luggage-tile {
+// 	transition: 0.2s all;
+// 	position: absolute;
+// }
+
 export default class TileComponent extends Component {
 	render() {
 		let xyz = [
