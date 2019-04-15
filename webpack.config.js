@@ -20,14 +20,7 @@ module.exports = {
 				test: /\.jsx?$/,
 				loaders: ['babel'],
 				include: path.join(__dirname, 'scripts')
-			},
-			{
-				test: /\.scss$/,
-				loaders: ['style', 'css', 'sass']
 			}
 		]
-	},
-	sassLoader: {
-		sourceMap: true
 	}
 };
