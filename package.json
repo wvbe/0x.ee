@@ -4,6 +4,7 @@
   "description": "My personal homepage/sandbox",
   "main": "index.js",
   "scripts": {
+	  "docker": "docker run --rm -ti -v $(pwd):/var/www beevelop/nodejs-python bash",
     "start": "node webpack.serve.js",
     "build": "BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.build.js",
     "lint": "./node_modules/.bin/eslint ."
